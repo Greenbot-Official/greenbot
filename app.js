@@ -5,7 +5,7 @@ const client = new Discord.Client();
 const { Users, CurrencyShop } = require('./dbObjects');
 const { Op } = require('sequelize');
 const currency = new Discord.Collection();
-const PREFIX = '!';
+const PREFIX = '::';
 
 Reflect.defineProperty(currency, 'add', {
 	value: async function add(id, amount) {
@@ -15,7 +15,6 @@ Reflect.defineProperty(currency, 'add', {
 			return user.save();
 		}
 		const newUser = await Users.create({ user_id: id, balance: amount });
-		currency.set(id, newUser);
 		return newUser;
 	},
 });
@@ -23,7 +22,7 @@ Reflect.defineProperty(currency, 'add', {
 Reflect.defineProperty(currency, 'getBalance', {
 	value: function getBalance(id) {
 		const user = currency.get(id);
-		return user ? user.balance : 0;
+		return user ? user.balance : -1;
 	},
 });
 
@@ -34,14 +33,16 @@ client.once('ready', async () => {
 });
 
 client.on('message', async message => {
+	const id = message.author.id;
+	const user = currency.get(id);
 	if (message.author.bot) return;
-	currency.add(message.author.id, 1);
+	currency.add(id, 1);
 	if (!message.content.startsWith(PREFIX)) return;
 	const input = message.content.slice(PREFIX.length).trim();
 	if (!input.length) return;
 	const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
 
-	if (command === 'balance') {
+	if (command === 'balance' || command === 'bal') {
 		const target = message.mentions.users.first() || message.author;
 		return message.channel.send(`${target.tag} has ${currency.getBalance(target.id)}:apple:`);
   
@@ -88,12 +89,22 @@ client.on('message', async message => {
 			{ code: true }
 		);
   
-  } else if (command === 'hello') {
-    message.channel.send("hi, I am greenbot");
-  
-  } else if (commad === 'help') {
+	} else if (command === 'fish') {
+		var rand = Math.abs(Math.round(Math.random()*10));
+		message.channel.send(`you caught a ${rand}in :fish:`);
+		return currency.add(id, rand);
 
-  }
+	} else if (command === 'hello') {
+    return message.channel.send("hi, I am greenbot");
+  
+  } else if (command === 'help') {
+
+  } else if (command === 'dummy') {
+		const target = message.mentions.users.first()
+		if (!target) return;
+		return message.channel.send(`${target} is a poopyface`)
+
+	}
   
 });
 
