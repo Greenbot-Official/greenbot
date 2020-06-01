@@ -11,7 +11,7 @@ client.once('ready', async () => {
 
 function log(text , guild , time) {
 	var readmessagefile = fs.readFileSync('log.txt', `utf-8`);
-	var writemessagefile = fs.writeFileSync('log.txt', `${time}: ${guild} - ${text}`)
+	var writemessagefile = fs.writeFileSync('log.txt', `${time}: ${guild} - ${text} \n` + readmessagefile)
 	console.log(`${time}: ${guild} - ${text}`)
 }
 
@@ -39,6 +39,7 @@ client.on('message', async message => {
 		return log(`${author} sent ${mentionMessage} to ${dUser}`, guild, message.createdAt)
 
 	} else if (command === 'help') {
+		message.channel.send('help \nhello - says hello \ndummy {@target} - calls target a dummy \ndm {@target} {message} - sends target a dm (admin only)')
 		return log(`${author} is looking for help`, guild, message.createdAt)
 
   } else if (command === 'dummy') {
