@@ -3,8 +3,9 @@ const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 
 const client = new Discord.Client();
-const Users = require('./dbObjects');
+const { Users , Shop } = require('./dbObjects');
 const currency = new Discord.Collection();
+const { Op } = require('sequelize');
 const fs = require('fs');
 
 Reflect.defineProperty(currency, 'add', {
@@ -57,11 +58,10 @@ Reflect.defineProperty(currency, 'getBiggestCatch', {
 	},
 });
 
-
 client.once('ready', async () => {
-	console.log(`Logged in as ${client.user.tag}!`);
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
+	console.log(`Logged in as ${client.user.tag}!`);
 });
 
 function log(text , message) {
@@ -72,6 +72,7 @@ function log(text , message) {
 
 client.on('message', async message => {
 	if (message.author.bot) return;
+	if (message.channel.type === 'dm') return;
 	const id = message.author.id;
 	currency.add(id, 1);
 	const author = message.author
@@ -95,7 +96,7 @@ client.on('message', async message => {
 		return log(`${author} sent ${mentionMessage} to ${target}`, message)
 
 	} else if (command === 'help') {
-		message.channel.send('help \nhello - says hello \ndummy {@target} - calls target a dummy \ndm {@target} {message} - sends target a dm (admin only)')
+		message.channel.send(fs.readFileSync('helpmsg.txt', `utf-8`))
 		return log(`${author} is looking for help`, message)
 
   } else if (command === 'dummy') {
@@ -107,8 +108,8 @@ client.on('message', async message => {
 	} else if (command === 'balance' || command === 'bal') {
 		const target = message.mentions.users.first() || message.author
 		const bal = currency.getBalance(target.id)
-		log (`${target} checked their balance of ${bal}`, message)
-		return message.channel.send(`${target} has ${bal}:apple:`)
+		log (`${author} checked ${target}'s balance of ${bal}`, message)
+		return message.channel.send(`${target} has ${bal}💰`)
 
 	} else if (command === 'fish') {
 		const fishexp = currency.getFishexp(id);
@@ -126,6 +127,36 @@ client.on('message', async message => {
 		const target = message.mentions.users.first() || message.author
 		log(`${target}'s record is a ${currency.getBiggestCatch(target.id)}`, message)
 		return message.channel.send(`${target}'s record is a ${currency.getBiggestCatch(target.id)}in :fish:`)
+
+	} else if (command === 'shop') {
+		const items = await Shop.findAll();
+		log(`${author} is browsing the shop`, message)
+		return message.channel.send(items.map(item => `${item.name}: ${item.cost}💰`).join('\n'), { code: true });
+
+	} else if (command === 'buy') {
+		const [buyName, amount] = commandArgs.split(' ')
+		const buyAmmount = amount || 1
+		const item = await Shop.findOne({ where: { name: { [Op.like]: buyName } } });
+		if (!item) return message.channel.send('That item doesn\'t exist.');
+		const totalCost = item.cost * buyAmmount
+		if (totalCost > currency.getBalance(id)) {
+			return message.channel.send(`You don't have enough currency, ${author}`);
+		}
+		const user = await Users.findOne({ where: { user_id: id } });
+		currency.add(id, -totalCost);
+		for (i=0 ; i < buyAmmount ; i++) {
+			await user.addItem(item);
+		}
+		log(`${author} bought ${buyAmmount} ${item.name}`, message)
+		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
+
+	} else if (command === 'inventory' || command === 'inv') {
+		const target = message.mentions.users.first() || message.author;
+		const user = await Users.findOne({ where: { user_id: target.id } });
+		const items = await user.getItems();
+		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
+		log(`${author} checked ${target}'s inventory`, message)
+		return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item.name}`).join('\n')}`);
 
 	}
   
