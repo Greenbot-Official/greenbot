@@ -16,15 +16,15 @@ const Stocks = sequelize.import('models/Stocks');
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 Stocks.belongsTo(StockMarket, { foreignKey: 'stock_id', as: 'stock'})
 
-Users.prototype.addItem = async function(item, amount) {
+Users.prototype.addItem = async function(item, add) {
 	const userItem = await UserItems.findOne({
 		where: { user_id: this.user_id, item_id: item.id },
 	});
 	if (userItem) {
-		userItem.amount += amount;
+		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 1 });
+	return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: add });
 };
 
 Users.prototype.removeItem = async function(item) {
