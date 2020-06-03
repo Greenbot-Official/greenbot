@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		balance: {
 			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			defaultValue: 10,
 			allowNull: false,
 		},
 		fish_exp: {
@@ -15,11 +15,6 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		biggest_catch: {
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
-			allowNull: false,
-		},
-		farmland: {
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 			allowNull: false,

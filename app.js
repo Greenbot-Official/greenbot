@@ -1,11 +1,12 @@
-const { token , prefix } = require('./config');
+const { token , globalPrefix } = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 
 const client = new Discord.Client();
-const { Users , Shop } = require('./dbObjects');
+const { Users , Shop , StockMarket } = require('./dbObjects');
 const currency = new Discord.Collection();
 const { Op } = require('sequelize');
+
 const fs = require('fs');
 
 Reflect.defineProperty(currency, 'add', {
@@ -58,6 +59,20 @@ Reflect.defineProperty(currency, 'getBiggestCatch', {
 	},
 });
 
+Reflect.defineProperty(currency, 'plantCrop', {
+	value: async function plantCrop(id, crop, amount) {
+		const user = currency.get(id);
+		var addIncome = 0;
+		for (i=0 ; i < amount ; i++) {
+			await user.removeItem(crop);
+			await user.removeItem('farmland')
+			addIncome += getCropIncome(crop)
+		}
+		user.farm_income += Number(addIncome);
+		return user.save();
+	},
+});
+
 client.once('ready', async () => {
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
@@ -74,13 +89,15 @@ client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
 	const id = message.author.id;
-	currency.add(id, 1);
 	const author = message.author
 	const guild = message.guild
+	currency.add(id, 1);
+	let prefix = globalPrefix;
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
 	if (!input.length) return;
-	const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
+	const [, command, args] = input.match(/(\w+)\s*([\s\S]*)/);
+	const commandArgs = args.split(' ')
 
 	if (command === 'hello') {
 		log(`${author} says hello`, message)
@@ -90,7 +107,7 @@ client.on('message', async message => {
 		const target = message.mentions.users.first()
 		if (!target) return message.channel.send("Can't find user!")
     if(!message.member.hasPermission("ADMINISTRATOR")) return message.reply("You can't you that command!")
-    mentionMessage = commandArgs;
+    mentionMessage = args;
     if(mentionMessage.length < 1) return message.reply('You must supply a message!')
 		target.send(`${mentionMessage}`)
 		return log(`${author} sent ${mentionMessage} to ${target}`, message)
@@ -134,19 +151,15 @@ client.on('message', async message => {
 		return message.channel.send(items.map(item => `${item.name}: ${item.cost}💰`).join('\n'), { code: true });
 
 	} else if (command === 'buy') {
-		const [buyName, amount] = commandArgs.split(' ')
-		const buyAmmount = amount || 1
+		const buyName = commandArgs[0]
+		const buyAmmount = commandArgs[1] || 1
 		const item = await Shop.findOne({ where: { name: { [Op.like]: buyName } } });
 		if (!item) return message.channel.send('That item doesn\'t exist.');
 		const totalCost = item.cost * buyAmmount
-		if (totalCost > currency.getBalance(id)) {
-			return message.channel.send(`You don't have enough currency, ${author}`);
-		}
+		if (totalCost > currency.getBalance(id)) return message.channel.send(`You don't have enough currency, ${author}`);
 		const user = await Users.findOne({ where: { user_id: id } });
 		currency.add(id, -totalCost);
-		for (i=0 ; i < buyAmmount ; i++) {
-			await user.addItem(item);
-		}
+		for (i=0 ; i < buyAmmount ; i++) await user.addItem(item);
 		log(`${author} bought ${buyAmmount} ${item.name}`, message)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 
@@ -157,6 +170,27 @@ client.on('message', async message => {
 		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
 		log(`${author} checked ${target}'s inventory`, message)
 		return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item.name}`).join('\n')}`);
+
+	} else if (command === 'stockmarket') {
+		const stocks = await StockMarket.findAll();
+		log(`${author} is browsing the stock market`, message)
+		return message.channel.send(stocks.map(stock => `${stock.company_name}: ${stock.value_per_stock}💰`).join('\n'), { code: true });
+
+	} else if (command === 'stock') {
+		if (commandArgs[0] === 'buy') {
+			const stockName = commandArgs[1]
+			const buyAmmount = commandArgs[2] || 1
+			const stock = await StockMarket.findOne({ where: { company_name: { [Op.like]: stockName } } });
+			if (!stock) return message.channel.send('That stock doesn\'t exist.');
+			const totalCost = stock.value_per_stock * buyAmmount
+			if (totalCost > currency.getBalance(id)) return message.channel.send(`You don't have enough currency, ${author}`);
+			const user = await Users.findOne({ where: { user_id: id } });
+			currency.add(id, -totalCost);
+			for (i=0 ; i < buyAmmount ; i++) await user.addStock(stock);
+			log(`${author} bought ${buyAmmount} ${stock.company_name}`, message)
+			return message.channel.send(`You've bought ${buyAmmount} ${stock.company_name}`);
+
+		}
 
 	}
   
