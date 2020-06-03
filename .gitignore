@@ -2,3 +2,4 @@ config.json
 log.txt
 oldlog.txt
 start.bat
+package-lock.json
