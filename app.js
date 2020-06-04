@@ -7,6 +7,7 @@ const { Op } = require('sequelize');
 const client = new Discord.Client();
 const currency = new Discord.Collection();
 client.commands = new Discord.Collection();
+const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
 
@@ -87,19 +88,32 @@ client.on('message', async message => {
 	if (!input.length) return;
 	const [, command, args] = input.match(/(\w+)\s*([\s\S]*)/);
 	const commandArgs = args.split(' ')
-	try {
-		const commandToRun = client.commands.get(command)
-			|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
-		if(!commandToRun){
-			return;
-		} else {
-			return commandToRun.execute(message, commandArgs, client);
-		}
-	} catch (e) {
-		message.reply('an error occured while finding command');
-		console.log(e)
+	
+	const commandToRun = client.commands.get(command)
+		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
+	if(!commandToRun){
+		return;
 	}
-	return;
+
+	// cooldown stuff
+	if (!cooldowns.has(commandToRun.name)) {
+		cooldowns.set(commandToRun.name, new Discord.Collection());
+	}
+	const now = Date.now();
+	const timestamps = cooldowns.get(commandToRun.name);
+	const cooldownAmount = (commandToRun.cooldown || 1) * 1000;
+	if (timestamps.has(message.author.id)) {
+		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+		if (now < expirationTime) {
+			const timeLeft = (expirationTime - now) / 1000;
+			return message.reply(`ahhhhh! too fast, slow it down for ${timeLeft.toFixed(1)} more second(s) before reusing the \`${commandToRun.name}\` command.`);
+		}
+	}
+	timestamps.set(message.author.id, now);
+	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+	// dynamic commands
+	return commandToRun.execute(message, commandArgs, client);
 	
 });
 

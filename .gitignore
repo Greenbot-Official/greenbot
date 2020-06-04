@@ -3,3 +3,4 @@ log.txt
 oldlog.txt
 start.bat
 package-lock.json
+database.sqlite

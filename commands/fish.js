@@ -2,7 +2,8 @@ module.exports = {
   name: 'fish',
   aliases: 'fish',
   description: 'go fishing',
-  usage: 'fish',
+	usage: 'fish',
+	cooldown: '5',
   execute (message, args) {
 		const fishexp = require('../app').getFishexp(message.author.id);
 		const randmult = fishexp / 5
