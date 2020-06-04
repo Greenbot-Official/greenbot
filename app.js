@@ -1,4 +1,4 @@
-const { token , globalPrefix , ownerId } = require('./config');
+const { token , globalPrefix , ownerId , support_guildId , suggestion_channelId } = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const { Users , Shop , StockMarket } = require('./dbObjects');
@@ -11,7 +11,48 @@ const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
 
-
+module.exports = {
+	log: function(text, message) {
+		var readmessagefile = fs.readFileSync('log.txt', `utf-8`);
+		var writemessagefile = fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${text}`)
+		return console.log(`${message.createdAt}: ${message.guild} - ${text}`);
+	},
+	getBalance: function(id) {
+		const user = currency.get(id);
+		return user ? user.balance : 0;
+	},
+	add: async function(id, amount) {
+		const user = currency.get(id);
+		if (user) {
+			user.balance += Number(amount);
+			return user.save();
+		}
+		const newUser = await Users.create({ user_id: id, balance: amount, fish_exp: 1});
+		currency.set(id, newUser);
+		return newUser;
+	},
+	addFishexp: async function(id, amount) {
+		const user = currency.get(id);
+		user.fish_exp += Number(amount);
+		return user.save();
+	},
+	setBiggestCatch: async function(id, amount) {
+		const user = currency.get(id);
+		user.biggest_catch = Number(amount);
+		return user.save();
+	},
+	getFishexp: function(id) {
+		const user = currency.get(id);
+		return user ? user.fish_exp : 0;
+	},
+	getBiggestCatch: function(id) {
+		const user = currency.get(id);
+		return user ? user.biggest_catch : 0;
+	},
+	getCommands: function() {
+		return client.commands
+	},
+};
 
 async function add(id, amount) {
 	const user = currency.get(id);
@@ -32,48 +73,6 @@ client.once('ready', async () => {
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
-	module.exports = {
-		log: function(text, message) {
-			var readmessagefile = fs.readFileSync('log.txt', `utf-8`);
-			var writemessagefile = fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${text}`)
-			return console.log(`${message.createdAt}: ${message.guild} - ${text}`);
-		},
-		getBalance: function(id) {
-			const user = currency.get(id);
-			return user ? user.balance : 0;
-		},
-		add: async function(id, amount) {
-			const user = currency.get(id);
-			if (user) {
-				user.balance += Number(amount);
-				return user.save();
-			}
-			const newUser = await Users.create({ user_id: id, balance: amount, fish_exp: 1});
-			currency.set(id, newUser);
-			return newUser;
-		},
-		addFishexp: async function(id, amount) {
-			const user = currency.get(id);
-			user.fish_exp += Number(amount);
-			return user.save();
-		},
-		setBiggestCatch: async function(id, amount) {
-			const user = currency.get(id);
-			user.biggest_catch = Number(amount);
-			return user.save();
-		},
-		getFishexp: function(id) {
-			const user = currency.get(id);
-			return user ? user.fish_exp : 0;
-		},
-		getBiggestCatch: function(id) {
-			const user = currency.get(id);
-			return user ? user.biggest_catch : 0;
-		},
-		getCommands: function() {
-			return client.commands
-		}
-	};
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 

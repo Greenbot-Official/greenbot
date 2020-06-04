@@ -1,3 +1,5 @@
+const app = require('../app')
+
 module.exports = {
   name: 'dummy',
   aliases: 'dummy',
@@ -6,7 +8,7 @@ module.exports = {
   execute (message, args) {
 		const target = message.mentions.users.first()
 		if (!target) return;
-		require('../app').log(`${message.author} called ${target} a dummy`, message)
+		app.log(`${message.author} called ${target} a dummy`, message)
 		return message.channel.send(`${target} is a dummy`)
 
   }

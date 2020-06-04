@@ -1,3 +1,5 @@
+const app = require('../app')
+
 module.exports = {
   name: 'dm',
   aliases: 'dm',
@@ -10,7 +12,7 @@ module.exports = {
     mentionMessage = args;
     if(mentionMessage.length < 1) return message.reply('You must supply a message!')
 		target.send(`${mentionMessage}`)
-		return require('../app').log(`${message.author} sent ${mentionMessage} to ${target}`, message)
+		return app.log(`${message.author} sent ${mentionMessage} to ${target}`, message)
 
   }
 }

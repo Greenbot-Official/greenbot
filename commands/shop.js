@@ -1,3 +1,4 @@
+const app = require('../app')
 const { Shop } = require('../dbObjects')
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
   usage: 'shop',
   async execute(message, args) {
 		const items = await Shop.findAll();
-		require('../app').log(`${message.author} is browsing the shop`, message)
+		app.log(`${message.author} is browsing the shop`, message)
 		return message.channel.send(items.map(item => `${item.name}: ${item.cost}💰`).join('\n'), { code: true });
 
   }
