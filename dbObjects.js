@@ -49,4 +49,4 @@ Users.prototype.getItemCount = function(item) {
 	});
 };
 
-module.exports = { Users, Shop, UserItems, StockMarket, Stocks, CompanyItems, CompanyShop };
+module.exports = { Users, Shop, UserItems };
