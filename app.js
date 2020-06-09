@@ -1,7 +1,7 @@
 const { token , globalPrefix , ownerId , support_guildId , suggestion_channelId } = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
-const { Users , Shop , StockMarket } = require('./dbObjects');
+const { Users } = require('./dbObjects');
 const { Op } = require('sequelize');
 
 const client = new Discord.Client();
@@ -14,7 +14,7 @@ const fs = require('fs');
 module.exports = {
 	log: function(text, message) {
 		var readmessagefile = fs.readFileSync('log.txt', `utf-8`);
-		var writemessagefile = fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${text}`)
+		fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${text}`)
 		return console.log(`${message.createdAt}: ${message.guild} - ${text}`);
 	},
 	getBalance: function(id) {
@@ -80,7 +80,7 @@ client.once('ready', async () => {
 client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
-	add(message.author.id, 1);
+	add(message.author.id, 0);
 	let prefix = globalPrefix;
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
@@ -111,7 +111,6 @@ client.on('message', async message => {
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
-	// dynamic commands
 	return commandToRun.execute(message, commandArgs, client);
 	
 });

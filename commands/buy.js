@@ -16,7 +16,7 @@ module.exports = {
 		if (totalCost > app.getBalance(message.author.id)) return message.channel.send(`You don't have enough currency, ${message.author}`);
 		const user = await Users.findOne({ where: { user_id: message.author.id } });
 		app.add(message.author.id, -totalCost);
-		for (i=0 ; i < buyAmmount ; i++) user.addItem(item, buyAmmount);
+		user.addItem(item, buyAmmount);
 		app.log(`${message.author} bought ${buyAmmount} ${item.name}`, message)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 

@@ -10,11 +10,8 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Users = sequelize.import('models/Users');
 const Shop = sequelize.import('models/Shop');
 const UserItems = sequelize.import('models/UserItems');
-const StockMarket = sequelize.import('models/StockMarket');
-const Stocks = sequelize.import('models/Stocks');
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
-Stocks.belongsTo(StockMarket, { foreignKey: 'stock_id', as: 'stock'})
 
 Users.prototype.addItem = async function(item, add) {
 	const userItem = await UserItems.findOne({
@@ -52,17 +49,4 @@ Users.prototype.getItemCount = function(item) {
 	});
 };
 
-Users.prototype.addStock = async function(stock_name) {
-	const userStock = await Stocks.findOne({
-		where: { user_id: this.user_id, stock_id: stock_name.id },
-	});
-
-	if (userStock) {
-		userStock.amount += 1;
-		return userStock.save();
-	}
-
-	return Stocks.create({ user_id: this.user_id, stock_id: stock_name.id, amount: 1 });
-};
-
-module.exports = { Users, Shop, UserItems, StockMarket, Stocks };
+module.exports = { Users, Shop, UserItems, StockMarket, Stocks, CompanyItems, CompanyShop };
