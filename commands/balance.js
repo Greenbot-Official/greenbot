@@ -1,4 +1,4 @@
-const app = require('../app')
+const func = require('../resources/functions')
 
 module.exports = {
   name: 'balance',
@@ -7,9 +7,9 @@ module.exports = {
   usage: 'balance [@user]',
   execute(message, args) {
     const target = message.mentions.users.first() || message.author
-    const bal = app.getBalance(target.id)
-    if (!bal) throw app.throwError('invalidUser')
-		app.log(`${message.author} checked ${target}'s balance of ${bal}`, message)
+		const bal = func.getBalance(target.id)
+    if (!bal) throw func.throwError('invalidUser')
+		func.log(`${message.author} checked ${target}'s balance of ${bal}`, message)
 		return message.channel.send(`${target} has ${bal}💰`)
 
   },

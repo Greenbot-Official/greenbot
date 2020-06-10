@@ -1,4 +1,4 @@
-const app = require('../app')
+const func = require('../resources/functions')
 const { Users } = require('../dbObjects')
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
 		const user = await Users.findOne({ where: { user_id: target.id } });
 		const items = await user.getItems();
 		if (!items.length) message.channel.send(`${target.tag} has nothing!`);
-    app.log(`${message.author} checked ${target}'s inventory`, message)
+    func.log(`${message.author} checked ${target}'s inventory`, message)
 		return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item.name}`).join('\n')}`);
 
   }

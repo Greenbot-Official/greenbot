@@ -1,4 +1,4 @@
-const app = require('../app')
+const func = require('../resources/functions')
 const { Users , Shop } = require('../dbObjects')
 const { Op } = require('sequelize');
 
@@ -11,13 +11,13 @@ module.exports = {
 		const buyName = args[0]
 		const buyAmmount = args[1] || 1
 		const item = await Shop.findOne({ where: { name: { [Op.like]: buyName } } });
-		if (!item) throw app.throwError('unknownItem')
+		if (!item) throw func.throwError('unknownItem')
 		const totalCost = item.cost * buyAmmount
-		if (totalCost > app.getBalance(message.author.id)) throw app.throwError('invalidCurrency')
+		if (totalCost > func.getBalance(message.author.id)) throw func.throwError('invalidCurrency')
 		const user = await Users.findOne({ where: { user_id: message.author.id } });
-		app.add(message.author.id, -totalCost);
+		func.add(message.author.id, -totalCost);
 		user.addItem(item, buyAmmount);
-		app.log(`${message.author} bought ${buyAmmount} ${item.name}`, message)
+		func.log(`${message.author} bought ${buyAmmount} ${item.name}`, message)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 
   }
