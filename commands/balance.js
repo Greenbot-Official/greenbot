@@ -8,6 +8,7 @@ module.exports = {
   execute(message, args) {
     const target = message.mentions.users.first() || message.author
 		const bal = func.getBalance(target.id)
+    if (!bal) throw func.throwError('invalidUser')
 		func.log(`${message.author} checked ${target}'s balance of ${bal}`, message)
 		return message.channel.send(`${target} has ${bal}💰`)
 
