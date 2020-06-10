@@ -7,7 +7,7 @@ module.exports = {
   usage: 'dm {@user} {message}',
   execute(message, args) {
 		const target = message.mentions.users.first()
-		if (!target) return message.channel.send("Can't find user!")
+		if (!target) throw 'invalid target'
     if(!message.member.hasPermission("ADMINISTRATOR")) return message.reply("You can't you that command!")
     mentionMessage = args;
     if(mentionMessage.length < 1) return message.reply('You must supply a message!')

@@ -7,6 +7,7 @@ const { Op } = require('sequelize');
 const client = new Discord.Client();
 const currency = new Discord.Collection();
 client.commands = new Discord.Collection();
+client.errors = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
@@ -57,6 +58,9 @@ module.exports = {
 	getCommands: function() {
 		return client.commands
 	},
+	throwError: function(error) {
+		return require(`./errors/${error}`).name
+	},
 	getCrimeExp: function(id) {
 		const user = currency.get(id);
 		return user ? user.crime_exp : 0
@@ -71,24 +75,22 @@ module.exports = {
 		currency.set(id, newUser);
 		return newUser;
 	},
+	getUser: function(id) {
+		const user = currency.get(id)
+		return user
+	},
 };
-
-async function add(id, amount) {
-	const user = currency.get(id);
-	if (user) {
-		user.balance += Number(amount);
-		return user.save();
-	}
-	const newUser = await Users.create({ user_id: id, balance: amount, fish_exp: 1});
-	currency.set(id, newUser);
-	return newUser;
-}
 
 client.once('ready', async () => {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);
 		client.commands.set(command.name, command);
+	}
+	const errorFiles = fs.readdirSync('./errors').filter(file => file.endsWith('.js'));
+	for (const file of errorFiles) {
+		const error = require(`./errors/${file}`);
+		client.errors.set(error.name, error);
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
@@ -99,7 +101,6 @@ client.once('ready', async () => {
 client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
-	add(message.author.id, 0);
 	let prefix = globalPrefix;
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
@@ -130,7 +131,13 @@ client.on('message', async message => {
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
-	return commandToRun.execute(message, commandArgs, client);
+	try {
+		return commandToRun.execute(message, commandArgs, client);
+	} catch (e) {
+		const error = client.errors.get(e)
+		if (!client.errors.has(e)) console.log(e)
+		return message.channel.send(`${error.message}`)
+	}
 	
 });
 
