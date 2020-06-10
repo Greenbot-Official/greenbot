@@ -27,14 +27,19 @@ module.exports = {
 			user.balance += Number(amount);
 			return user.save();
 		}
-		const newUser = await Users.create({ user_id: id, balance: amount, fish_exp: 1});
+		const newUser = await Users.create({ user_id: id, balance: amount });
 		currency.set(id, newUser);
 		return newUser;
 	},
 	addFishexp: async function(id, amount) {
 		const user = currency.get(id);
-		user.fish_exp += Number(amount);
-		return user.save();
+		if (user) {
+			user.fish_exp += Number(amount);
+			return user.save();
+		}
+		const newUser = await Users.create({ user_id: id, fish_exp: amount });
+		currency.set(id, newUser);
+		return newUser;
 	},
 	setBiggestCatch: async function(id, amount) {
 		const user = currency.get(id);
@@ -51,6 +56,20 @@ module.exports = {
 	},
 	getCommands: function() {
 		return client.commands
+	},
+	getCrimeExp: function(id) {
+		const user = currency.get(id);
+		return user ? user.crime_exp : 0
+	},
+	addCrimeExp: async function(id, amount) {
+		const user = currency.get(id);
+		if (user) {
+			user.crime_exp += Number(amount);
+			return user.save();
+		}
+		const newUser = await Users.create({ user_id: id, crime_exp: amount });
+		currency.set(id, newUser);
+		return newUser;
 	},
 };
 
