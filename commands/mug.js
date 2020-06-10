@@ -20,7 +20,7 @@ module.exports = {
       return message.channel.send(`${message.author} mugged an innocent civilian for ${rand}💰`)
 
     } else {
-      if (!app.getUser(target.id)) throw app.throwError('invalidTarget')
+      if (!app.getUser(target.id)) throw app.throwError('invalidUser')
       app.addCrimeExp(message.author.id, 1)
       rand = Math.min(rand, tBal)
       app.add(message.author.id, rand)

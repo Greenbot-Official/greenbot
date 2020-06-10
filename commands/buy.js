@@ -11,9 +11,9 @@ module.exports = {
 		const buyName = args[0]
 		const buyAmmount = args[1] || 1
 		const item = await Shop.findOne({ where: { name: { [Op.like]: buyName } } });
-		if (!item) return message.channel.send('That item doesn\'t exist.');
+		if (!item) throw app.throwError('unknownItem')
 		const totalCost = item.cost * buyAmmount
-		if (totalCost > app.getBalance(message.author.id)) return message.channel.send(`You don't have enough currency, ${message.author}`);
+		if (totalCost > app.getBalance(message.author.id)) throw app.throwError('invalidCurrency')
 		const user = await Users.findOne({ where: { user_id: message.author.id } });
 		app.add(message.author.id, -totalCost);
 		user.addItem(item, buyAmmount);
