@@ -7,7 +7,7 @@ module.exports = {
   usage: 'dummy {@user}',
   execute (message, args) {
 		const target = message.mentions.users.first()
-		if (!target) return;
+		if (!target) throw 'invalid target'
 		app.log(`${message.author} called ${target} a dummy`, message)
 		return message.channel.send(`${target} is a dummy`)
 
