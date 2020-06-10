@@ -7,10 +7,10 @@ module.exports = {
   usage: 'dm {@user} {message}',
   execute(message, args) {
 		const target = message.mentions.users.first()
-		if (!target) throw app.throwError('invalidUser')
-    if(!message.member.hasPermission("ADMINISTRATOR")) app.throwError('invalidPerms')
+		if (!target) throw func.throwError('invalidUser')
+    if(!message.member.hasPermission("ADMINISTRATOR")) func.throwError('invalidPerms')
     mentionMessage = args;
-    if(mentionMessage.length < 1) throw app.throwError('invalidSyntax')
+    if(mentionMessage.length < 1) throw func.throwError('invalidSyntax')
 		target.send(`${mentionMessage}`)
 		return func.log(`${message.author} sent ${mentionMessage} to ${target}`, message)
 
