@@ -1,4 +1,4 @@
-const app = require('../app')
+const func = require('../resources/functions')
 
 module.exports = {
   name: 'dm',
@@ -12,7 +12,7 @@ module.exports = {
     mentionMessage = args;
     if(mentionMessage.length < 1) return message.reply('You must supply a message!')
 		target.send(`${mentionMessage}`)
-		return app.log(`${message.author} sent ${mentionMessage} to ${target}`, message)
+		return func.log(`${message.author} sent ${mentionMessage} to ${target}`, message)
 
   }
 }

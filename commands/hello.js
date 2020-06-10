@@ -1,4 +1,4 @@
-const app = require('../app')
+const func = require('../resources/functions')
 
 module.exports = {
   name: 'hello',
@@ -6,7 +6,7 @@ module.exports = {
   description: 'says hello',
   usage: 'hello',
   execute(message, args) {
-		app.log(`${message.author} says hello`, message);
+		func.log(`${message.author} says hello`, message);
     return message.channel.send("hi, I am greenbot");
 
   }

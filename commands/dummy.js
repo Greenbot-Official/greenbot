@@ -1,4 +1,4 @@
-const app = require('../app')
+const func = require('../resources/functions')
 
 module.exports = {
   name: 'dummy',
@@ -8,7 +8,7 @@ module.exports = {
   execute (message, args) {
 		const target = message.mentions.users.first()
 		if (!target) throw 'invalid target'
-		app.log(`${message.author} called ${target} a dummy`, message)
+		func.log(`${message.author} called ${target} a dummy`, message)
 		return message.channel.send(`${target} is a dummy`)
 
   }
