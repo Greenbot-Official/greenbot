@@ -4,6 +4,25 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			primaryKey: true,
 		},
+		exp: {
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+			allowNull: false,
+		},
+		max_health: {
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+			allowNull: false,
+		},
+		health: {
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+			allowNull: false,
+		},
+		weapon: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 		balance: {
 			type: DataTypes.INTEGER,
 			defaultValue: 10,

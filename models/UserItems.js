@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			'default': 0,
 		},
+		type: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		damage: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		}
 	}, {
 		timestamps: false,
 	});

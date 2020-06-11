@@ -1,4 +1,4 @@
-const { Users , client , currency , fs } = require('../app')
+const { Users , client , currency , fs , Shop } = require('../app')
 
 module.exports = {
 	log: function(text, message) {
@@ -66,5 +66,11 @@ module.exports = {
 	getUser: function(id) {
 		const user = currency.get(id)
 		return user
+	},
+	findAllInShop: async function(category) {
+		return Shop.findAll({
+			where: { item_type: category }
+		})
+
 	},
 }

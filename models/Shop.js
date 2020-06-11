@@ -8,6 +8,14 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		item_type: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
+		damage: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
 	}, {
 		timestamps: false,
 	});

@@ -1,7 +1,7 @@
 const { token , globalPrefix , ownerId , support_guildId , suggestion_channelId } = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
-const { Users } = require('./dbObjects');
+const { Users , Shop } = require('./dbObjects');
 const { Op } = require('sequelize');
 
 const client = new Discord.Client();
@@ -12,7 +12,7 @@ const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
 
-module.exports = { Users , client , currency , fs };
+module.exports = { Users , client , currency , fs , Shop };
 
 client.once('ready', async () => {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
