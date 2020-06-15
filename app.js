@@ -3,27 +3,26 @@ const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const { Users , Shop } = require('./dbObjects');
 const { Op } = require('sequelize');
+const func = require('./resources/functions')
 
 const client = new Discord.Client();
 const currency = new Discord.Collection();
 client.commands = new Discord.Collection();
-client.errors = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
 
-module.exports = { Users , client , currency , fs , Shop };
+function getCommands() {
+	return client.commands
+}
 
-client.once('ready', async () => {
+module.exports = { Users , client , currency , fs , Shop , Discord , getCommands };
+
+client.once('ready', async () => {	
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);
 		client.commands.set(command.name, command);
-	}
-	const errorFiles = fs.readdirSync('./errors').filter(file => file.endsWith('.js'));
-	for (const file of errorFiles) {
-		const error = require(`./errors/${file}`);
-		client.errors.set(error.name, error);
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
@@ -63,15 +62,12 @@ client.on('message', async message => {
 	}
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
 	try {
-		return commandToRun.execute(message, commandArgs, client);
+		return commandToRun.execute(message, commandArgs);
 	} catch (e) {
-		const error = client.errors.get(e)
-		if (!client.errors.has(e)) console.log(e)
-		return message.channel.send(`${error.message}`)
+		console.log(e)
 	}
-	
+
 });
 
 client.login(token);

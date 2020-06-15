@@ -4,24 +4,24 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			primaryKey: true,
 		},
-		exp: {
+		level: {
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 			allowNull: false,
 		},
 		max_health: {
 			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			defaultValue: 5,
 			allowNull: false,
 		},
 		health: {
 			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			defaultValue: 5,
 			allowNull: false,
 		},
 		weapon: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 		},
 		balance: {
 			type: DataTypes.INTEGER,
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		biggest_catch: {
 			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			defaultValue: 1,
 			allowNull: false,
 		},
 		crime_exp: {

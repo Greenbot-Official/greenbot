@@ -1,3 +1,4 @@
+const app = require('../app')
 const func = require('../resources/functions')
 
 module.exports = {
@@ -7,8 +8,10 @@ module.exports = {
   usage: 'biggestcatch [@user]',
   execute(message, args) {
 		const target = message.mentions.users.first() || message.author
-		func.log(`${target}'s record is a ${func.getBiggestCatch(target.id)}`, message)
-		return message.channel.send(`${target}'s record is a ${func.getBiggestCatch(target.id)}in :fish:`)
+		const user = app.currency.get(target.id);
+		const biggest = user ? user.biggest_catch : 0;
+		func.log(`${target}'s record is a ${biggest}`, message)
+		return message.channel.send(`${target}'s record is a ${biggest}in :fish:`)
 
   }
 }

@@ -1,0 +1,28 @@
+const app = require('../app')
+const func = require('../resources/functions')
+
+module.exports = {
+  name: 'levelup',
+  aliases: 'levelup',
+  description: 'levels a stat up at the cost of money',
+  usage: 'levelup {stat}',
+  execute(message, args) {
+		const user = app.currency.get(message.author.id);
+		const bal = user ? user.balance : 0;
+		const calclvl = Math.pow(user.level + 1, 2)
+    if (bal < calclvl) return message.channel.send(`you do not have enough currency to level up`)
+    if (args[0] === 'health') {
+      const stat = 'health'
+      user.max_health += Number(1)
+      user.health = user.max_health
+      user.save()
+      func.log(`${message.author} leveled up their ${stat}`, message)
+      return message.channel.send(`${message.author.username} leveled up their ${stat}`)
+      
+    } else {
+      return message.channel.send(`unknown stat ${args}`)
+
+    }
+
+  }
+}

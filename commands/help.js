@@ -1,4 +1,5 @@
 const func = require('../resources/functions')
+const app = require('../app')
 const fs = require('fs');
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
   description: 'displays help menu',
   usage: 'help',
   execute(message, args, client) {
-    const commands = func.getCommands()
+    const commands = app.getCommands()
     func.log(`${message.author} is looking for help`, message)
     return message.channel.send(commands.map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
 

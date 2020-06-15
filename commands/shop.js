@@ -1,3 +1,4 @@
+const app = require('../app')
 const func = require('../resources/functions')
 const { Shop } = require('../dbObjects')
 
@@ -9,11 +10,11 @@ module.exports = {
   async execute(message, args) {
 		const items = await Shop.findAll();
 		func.log(`${message.author} is browsing the shop`, message)
-    const foods = await func.findAllInShop('food')
-    const weapons = await func.findAllInShop('weapon')
+    const consumables = await Shop.findAll({where: { item_type: 'consumable' }})
+    const weapons = await Shop.findAll({where: { item_type: 'weapon' }})
 		return message.channel.send(
-      'foods:\n' +
-      foods.map(item => `${item.name}: ${item.cost}💰`).join('\n') + '\n' +
+      'consumables:\n' +
+      consumables.map(item => `${item.name}: ${item.cost}💰`).join('\n') + '\n\n' +
       'weapons:\n' +
       weapons.map(item => `${item.name}: ${item.cost}💰 damage:${item.damage}`).join('\n')
       , { code: true }
