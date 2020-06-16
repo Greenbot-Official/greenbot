@@ -11,6 +11,9 @@ module.exports = {
 		const bal = user ? user.balance : 0;
 		const calclvl = Math.pow(user.level + 1, 2)
     if (bal < calclvl) return message.channel.send(`you do not have enough currency to level up`)
+    user.level += Number(1)
+    user.balance -= Number(calclvl)
+    user.save()
     if (args[0] === 'health') {
       const stat = 'health'
       user.max_health += Number(1)

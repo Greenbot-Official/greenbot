@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 module.exports = {
   name: 'eat',
   aliases: 'eat',
-  description: 'says hello',
+  description: 'eats a consumable to heal you',
   usage: 'eat {consumable}',
   async execute(message, args) {
     const user = app.currency.get(message.author.id)

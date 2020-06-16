@@ -12,7 +12,7 @@ module.exports = {
 		const buyAmmount = args[1] || 1
 		if (!buyName) return message.channel.send('please enter a item to buy')
 		const user = app.currency.get(message.author.id);
-		const item = await Shop.findOne({ where: { name: `${buyName}` }});
+		const item = await Shop.findOne({ where: { name: buyName }});
 		if (!item) return message.channel.send(`unable to find item ${args[0]}`)
 		const totalCost = item.cost * buyAmmount
 		const bal = user ? user.balance : 0;

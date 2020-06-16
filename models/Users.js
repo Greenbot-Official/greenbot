@@ -9,6 +9,19 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: 0,
 			allowNull: false,
 		},
+		combat: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
+		combat_target_id: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
+		combat_target: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
 		max_health: {
 			type: DataTypes.INTEGER,
 			defaultValue: 5,
@@ -18,10 +31,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			defaultValue: 5,
 			allowNull: false,
-		},
-		weapon: {
-			type: DataTypes.STRING,
-			allowNull: true,
 		},
 		balance: {
 			type: DataTypes.INTEGER,
@@ -39,6 +48,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		crime_exp: {
+			type: DataTypes.INTEGER,
+			defaultValue: 1,
+			allowNull: false,
+		},
+		combat_exp: {
 			type: DataTypes.INTEGER,
 			defaultValue: 1,
 			allowNull: false,

@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
+		equipped: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
 		damage: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
