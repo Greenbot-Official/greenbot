@@ -22,7 +22,7 @@ module.exports = {
     tUser.save()
 
 		func.log(`${message.author} attacked ${user.combat_target_id}`, message);
-    message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${weapon.damage}`);
+    message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${rand}`);
     if (tUser.health < 1) {
       user.combat = Boolean(false)
       tUser.combat = Boolean(false)
