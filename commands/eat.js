@@ -15,14 +15,9 @@ module.exports = {
     if (item.amount < 0) return message.channel.send(`you do not own any ${item.item_id}s`)
     const heal = item.heal
 
-    if (user) {
-      user.health = Number(Math.min(user.max_health, user.health + heal))
-    } else {
-      const newUser = await app.Users.create({ user_id: message.author.id });
-      app.currency.set(message.author.id, newUser);
-    }
-
+    user.health = Number(Math.min(user.max_health, user.health + heal))
     user.addItem(item.item_id, -1)
+    
 		func.log(`${message.author} ate a ${args[0]}`, message);
     return message.channel.send(`${message.author.username} healed for ${heal}`);
 

@@ -18,14 +18,9 @@ module.exports = {
     var rand = Math.round(Math.random() * randmult + 1)
     if (target === message.author) {
       
-      if (user) {
-        user.crime_exp += Number(1);
-        user.balance += Number(rand);
-        user.save();
-      } else {
-        const newUser = await app.Users.create({ user_id: id, balance: rand, crime_exp: 1 });
-        app.currency.set(id, newUser);
-      }
+      user.crime_exp += Number(1);
+      user.balance += Number(rand);
+      user.save();
 
       func.log(`${message.author} mugged an innocent civilian for ${rand}`, message)
       return message.channel.send(`${message.author} mugged an innocent civilian for ${rand}💰`)
@@ -34,22 +29,11 @@ module.exports = {
       if (!user) return message.channel.send(`${target.username} was not found`)
       rand = Math.min(rand, tBal)
       
-      if (user) {
-        user.crime_exp += Number(1);
-        user.balance += Number(rand);
-        user.save();
-      } else {
-        const newUser = await app.Users.create({ user_id: id, balance: rand, crime_exp: 1 });
-        app.currency.set(id, newUser);
-      }
-
-      if (tUser) {
-        tUser.balance += Number(-rand);
-        tUser.save();
-      } else {
-        const newUser = await app.Users.create({ user_id: id, balance: -rand });
-        app.currency.set(id, newUser);
-      }
+      user.crime_exp += Number(1);
+      user.balance += Number(rand);
+      user.save();
+      tUser.balance -= Number(rand);
+      tUser.save();
 
       func.log(`${message.author} mugged ${target} for ${rand}`, message)
       return message.channel.send(`${message.author} mugged ${target} for ${rand}💰`)

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		balance: {
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 5,
 			allowNull: false,
 		},
 		fish_exp: {

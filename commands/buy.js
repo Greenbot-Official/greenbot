@@ -18,12 +18,10 @@ module.exports = {
 		const bal = user ? user.balance : 0;
 		if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)
 		
-		if (user) {
-			user.balance -= Number(totalCost);
-			user.save();
-		}
-
+		user.balance -= Number(totalCost);
+		user.save();
 		await user.addItem(item.name, buyAmmount);
+		
 		func.log(`${message.author} bought ${buyAmmount} ${item.name}`, message)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 
