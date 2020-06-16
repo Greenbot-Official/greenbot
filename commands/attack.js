@@ -14,6 +14,8 @@ module.exports = {
     const tUser = app.currency.get(user.combat_target_id)
     const weapon = await UserItems.findOne({ where: { equipped: true }})
     var rand = Math.round(((Math.random() - 0.5) * 2) + weapon.damage)
+    var crit = Boolean((Math.round(Math.random() * 100) + user.luck) > 99)
+    if (crit) rand * 2
 
     user.turn = Boolean(false)
     tUser.turn = Boolean(true)
@@ -22,7 +24,8 @@ module.exports = {
     tUser.save()
 
 		func.log(`${message.author} attacked ${user.combat_target_id}`, message);
-    message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${rand}`);
+    if (!crit) { message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${rand}`); }
+    else { message.channel.send(`${message.author.username} CRIT ${user.combat_target} for ${rand}`) }
     if (tUser.health < 1) {
       user.combat = Boolean(false)
       tUser.combat = Boolean(false)

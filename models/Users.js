@@ -62,6 +62,11 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: 1,
 			allowNull: false,
 		},
+		luck: {
+			type: DataTypes.INTEGER,
+			defaultValue: 3,
+			allowNull: false,
+		},
 	}, {
 		timestamps: false,
 	});
