@@ -19,13 +19,17 @@ module.exports = {
       user.max_health += Number(1)
       user.health = user.max_health
       user.save()
-      func.log(`${message.author} leveled up their ${stat}`, message)
-      return message.channel.send(`${message.author.username} leveled up their ${stat}`)
       
+    } else if (args[0] === 'luck') {
+      const stat = 'luck'
+      user.luck += Number(1)
+      user.save()
+
     } else {
       return message.channel.send(`unknown stat ${args}`)
-
     }
+    func.log(`${message.author} leveled up their ${stat}`, message)
+    return message.channel.send(`${message.author.username} leveled up their ${stat}`)
 
   }
 }

@@ -6,6 +6,7 @@ module.exports = {
   aliases: 'event',
   description: 'calls a random event',
   usage: 'event',
+  cooldown: '120',
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
     const rand = Math.round(Math.random() * 0)
