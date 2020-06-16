@@ -7,7 +7,7 @@ module.exports = {
   aliases: 'help',
   description: 'displays help menu',
   usage: 'help',
-  execute(message, args, client) {
+  execute(message, args) {
     const commands = app.getCommands()
     func.log(`${message.author} is looking for help`, message)
     return message.channel.send(commands.map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })

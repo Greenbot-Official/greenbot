@@ -8,6 +8,7 @@ const func = require('./resources/functions')
 const client = new Discord.Client();
 const currency = new Discord.Collection();
 client.commands = new Discord.Collection();
+client.events = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
@@ -16,13 +17,22 @@ function getCommands() {
 	return client.commands
 }
 
-module.exports = { Users , client , currency , fs , Shop , Discord , getCommands };
+function getEvents() {
+	return client.events
+}
 
-client.once('ready', async () => {	
+module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents };
+
+client.once('ready', async () => {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);
 		client.commands.set(command.name, command);
+	}
+	const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+	for (const file of eventFiles) {
+		const event = require(`./events/${file}`);
+		client.events.set(event.id, event);
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
@@ -65,6 +75,7 @@ client.on('message', async message => {
 			return message.reply(`ahhhhh! too fast, slow it down for ${timeLeft.toFixed(1)} more second(s) before reusing the \`${commandToRun.name}\` command.`);
 		}
 	}
+	
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 	try {
