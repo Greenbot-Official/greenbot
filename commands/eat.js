@@ -14,6 +14,14 @@ module.exports = {
 		if (!item) return message.channel.send(`unnable to find item ${item.name}`)
     if (item.amount < 0) return message.channel.send(`you do not own any ${item.item_id}s`)
     const heal = item.heal
+    if (user.combat) {
+      if (!user.turn) return message.channel.send('not your turn in combat')
+      const tUser = app.currency.get(user.combat_target_id)
+      user.turn = Boolean(false)
+      tUser.turn = Boolean(true)
+      user.save()
+      tUser.save()
+    }
 
     user.health = Number(Math.min(user.max_health, user.health + heal))
     user.addItem(item.item_id, -1)

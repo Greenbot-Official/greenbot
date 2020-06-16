@@ -1,7 +1,6 @@
 const func = require('../resources/functions')
 const app = require('../app')
 const { UserItems } = require('../dbObjects')
-const { DOUBLE } = require('sequelize/types')
 
 module.exports = {
   name: 'combat',
