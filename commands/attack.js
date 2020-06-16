@@ -13,10 +13,11 @@ module.exports = {
     if (!user.turn) return message.channel.send('not your turn')
     const tUser = app.currency.get(user.combat_target_id)
     const weapon = await UserItems.findOne({ where: { equipped: true }})
+    var rand = Math.round(((Math.random() - 0.5) * 2) + weapon.damage)
 
     user.turn = Boolean(false)
     tUser.turn = Boolean(true)
-    tUser.health -= Number(weapon.damage)
+    tUser.health -= Number(rand)
     user.save()
     tUser.save()
 
