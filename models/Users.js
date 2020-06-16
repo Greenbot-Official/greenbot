@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: 0,
 			allowNull: false,
 		},
+		turn: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
 		combat: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false,
