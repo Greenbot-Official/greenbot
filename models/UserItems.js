@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
 		damage: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
-		}
+		},
+		heal: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
 	}, {
 		timestamps: false,
 	});

@@ -8,11 +8,19 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		item_type: {
+		sell: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		type: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		damage: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
+		heal: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 		},

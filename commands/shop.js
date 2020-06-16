@@ -10,11 +10,11 @@ module.exports = {
   async execute(message, args) {
 		const items = await Shop.findAll();
 		func.log(`${message.author} is browsing the shop`, message)
-    const consumables = await Shop.findAll({where: { item_type: 'consumable' }})
-    const weapons = await Shop.findAll({where: { item_type: 'weapon' }})
+    const consumables = await Shop.findAll({where: { type: 'consumable' }})
+    const weapons = await Shop.findAll({where: { type: 'weapon' }})
 		return message.channel.send(
       'consumables:\n' +
-      consumables.map(item => `${item.name}: ${item.cost}💰`).join('\n') + '\n\n' +
+      consumables.map(item => `${item.name}: ${item.cost}💰 heal:${item.heal}`).join('\n') + '\n\n' +
       'weapons:\n' +
       weapons.map(item => `${item.name}: ${item.cost}💰 damage:${item.damage}`).join('\n')
       , { code: true }

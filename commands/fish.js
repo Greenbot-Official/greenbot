@@ -25,6 +25,7 @@ module.exports = {
 			const newUser = await app.Users.create({ user_id: message.author.id, balance: rand, fish_exp: 1, biggest_catch: newrec });
 			app.currency.set(message.author.id, newUser);
 		}
+		
 		func.log(`${message.author} caught a ${rand}in fish`, message)
 		return message.channel.send(`${message.author} caught a ${rand}in :fish:`)
 

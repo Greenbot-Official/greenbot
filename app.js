@@ -34,6 +34,11 @@ client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
 	let prefix = globalPrefix;
+	const user = currency.get(message.author.id)
+	if (!user) {
+		const newUser = await Users.create({ user_id: message.author.id });
+		currency.set(message.author.id, newUser);
+	}
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
 	if (!input.length) return;

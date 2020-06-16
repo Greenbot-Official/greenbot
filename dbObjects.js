@@ -15,37 +15,22 @@ UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
 Users.prototype.addItem = async function(item, add) {
 	const userItem = await UserItems.findOne({
-		where: { user_id: this.user_id, item_id: item.id },
+		where: { user_id: this.user_id, item_id: item },
+	});
+	const shopItem = await Shop.findOne({
+		where: { name: item },
 	});
 	if (userItem) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: add });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, damage: shopItem.damage, heal: shopItem.heal });
 };
 
-Users.prototype.removeItem = async function(item) {
-	const userItem = await UserItems.findOne({
-		where: { user_id: this.user_id, item_id: item.id },
-	});
-	if (userItem) {
-		userItem.amount -= 1;
-		return userItem.save();
-	}
-	return UserItems.create({ user_id: this.user_id, item_id: item.id, amount: 0 });
-};
-
-Users.prototype.getItems = function() {
-	return UserItems.findAll({
+Users.prototype.getItems = async function() {
+	return await UserItems.findAll({
 		where: { user_id: this.user_id },
 		include: ['item'],
-	});
-};
-
-Users.prototype.getItemCount = function(item) {
-	return UserItems.findAll({
-		where: { user_id: this.user_id, item_id: item.id },
-		include: ['amount'],
 	});
 };
 

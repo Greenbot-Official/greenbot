@@ -3,7 +3,7 @@ const func = require('../resources/functions')
 
 module.exports = {
   name: 'biggestcatch',
-  aliases: 'biggestcatch',
+  aliases: 'bc',
   description: 'shows target\'s biggest catch',
   usage: 'biggestcatch [@user]',
   execute(message, args) {

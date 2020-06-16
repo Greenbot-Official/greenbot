@@ -12,7 +12,7 @@ module.exports = {
 		const level = user ? user.level : 0;
 		const calclvl = Math.pow(user.level + 1, 2)
     func.log(`${message.author} checked ${target}'s level`, message)
-    return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}`, { code: true})
+    return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰`, { code: true})
 
   }
 }
