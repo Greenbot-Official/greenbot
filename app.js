@@ -24,6 +24,8 @@ function getEvents() {
 module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents };
 
 client.once('ready', async () => {
+	var count = 1
+	var i = 1
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);

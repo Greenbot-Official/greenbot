@@ -9,8 +9,8 @@ module.exports = {
   cooldown: '120',
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
-    const rand = Math.round(Math.random() * 0)
-    const event = app.getEvents().get(rand)
+    const eventFiles = app.fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+    const event = app.getEvents().get(Math.round(Math.random() * (eventFiles.length - 1)))
     try {
       return event.execute(message, user);
     } catch (e) {

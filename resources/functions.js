@@ -1,4 +1,3 @@
-const {currency , client} = require('../app');
 const fs = require('fs');
 
 module.exports = {

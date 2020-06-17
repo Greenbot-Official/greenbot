@@ -14,14 +14,15 @@ module.exports = {
     user.level += Number(1)
     user.balance -= Number(calclvl)
     user.save()
+    var stat;
     if (args[0] === 'health') {
-      const stat = 'health'
+      stat = 'health'
       user.max_health += Number(1)
       user.health = user.max_health
       user.save()
       
     } else if (args[0] === 'luck') {
-      const stat = 'luck'
+      stat = 'luck'
       user.luck += Number(1)
       user.save()
 
