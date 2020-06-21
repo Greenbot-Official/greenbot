@@ -1,5 +1,5 @@
-const func = require('../resources/functions')
-const app = require('../app')
+const func = require('../functions')
+const app = require('../../app')
 
 module.exports = {
   name: 'goblin',

@@ -1,5 +1,5 @@
-const func = require('../resources/functions')
-const app = require('../app')
+const func = require('../functions')
+const app = require('../../app')
 
 module.exports = {
   name: 'teacher',
@@ -27,6 +27,7 @@ module.exports = {
         break;
     }
     user.save()
+    func.log(`${message.author} was tought about ${stat}`, message)
     return message.channel.send(`you met someone who tought you about ${stat}`)
   },
 }

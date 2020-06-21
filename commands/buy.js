@@ -15,7 +15,7 @@ module.exports = {
 		const item = await Shop.findOne({ where: { name: buyName }});
 		if (!item) return message.channel.send(`unable to find item ${args[0]}`)
 		const totalCost = item.cost * buyAmmount
-		const bal = user ? user.balance : 0;
+		const bal = user.balance || 0;
 		if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)
 		
 		user.balance -= Number(totalCost);

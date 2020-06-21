@@ -12,8 +12,8 @@ module.exports = {
     const id = target.id
 		const user = app.currency.get(message.author.id);
 		const tUser = app.currency.get(id);
-		const tBal = user ? user.balance : 0;
-		const crimexp = user ? user.crime_exp : 0
+		const tBal = user.balance || 0;
+		const crimexp = user.crime_exp || 0
 		const randmult = crimexp / 3
     var rand = Math.round(Math.random() * randmult + 1)
     if (target === message.author) {

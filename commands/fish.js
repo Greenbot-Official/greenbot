@@ -9,11 +9,11 @@ module.exports = {
 	cooldown: '5',
   async execute (message, args) {
 		const user = app.currency.get(message.author.id);
-		const fishexp = user ? user.fish_exp : 0;
+		const fishexp = user.fish_exp || 0;
 		const randmult = fishexp / 5
 		const rand = Math.round(Math.random() * randmult + 1)
 		const money = rand / 2
-		const biggest = user ? user.biggest_catch : 0;
+		const biggest = user.biggest_catch || 0;
 		const newrec = Math.max(rand, biggest)
 		
 		user.balance += Number(rand);

@@ -9,6 +9,7 @@ const client = new Discord.Client();
 const currency = new Discord.Collection();
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
+client.enchants = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
@@ -16,12 +17,14 @@ const fs = require('fs');
 function getCommands() {
 	return client.commands
 }
-
 function getEvents() {
 	return client.events
 }
+function getEnchants() {
+	return client.enchants
+}
 
-module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents };
+module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents , getEnchants };
 
 client.once('ready', async () => {
 	var count = 1
@@ -31,10 +34,15 @@ client.once('ready', async () => {
 		const command = require(`./commands/${file}`);
 		client.commands.set(command.name, command);
 	}
-	const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+	const eventFiles = fs.readdirSync('./resources/events').filter(file => file.endsWith('.js'));
 	for (const file of eventFiles) {
-		const event = require(`./events/${file}`);
+		const event = require(`./resources/events/${file}`);
 		client.events.set(event.id, event);
+	}
+	const enchantFiles = fs.readdirSync('./resources/enchants').filter(file => file.endsWith('.js'));
+	for (const file of enchantFiles) {
+		const ench = require(`./resources/enchants/${file}`);
+		client.enchants.set(ench.id, ench);
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));

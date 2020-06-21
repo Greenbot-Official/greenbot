@@ -9,7 +9,7 @@ module.exports = {
   execute(message, args) {
 		const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);
-		const biggest = user ? user.biggest_catch : 0;
+		const biggest = user.biggest_catch || 0;
 		func.log(`${target}'s record is a ${biggest}`, message)
 		return message.channel.send(`${target}'s record is a ${biggest}in :fish:`)
 

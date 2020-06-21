@@ -8,7 +8,7 @@ module.exports = {
   usage: 'levelup {stat}',
   execute(message, args) {
 		const user = app.currency.get(message.author.id);
-		const bal = user ? user.balance : 0;
+		const bal = user.balance || 0;
 		const calclvl = Math.pow(user.level + 1, 2)
     if (bal < calclvl) return message.channel.send(`you do not have enough currency to level up`)
     user.level += Number(1)
