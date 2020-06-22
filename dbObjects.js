@@ -10,7 +10,6 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Users = sequelize.import('models/Users');
 const Shop = sequelize.import('models/Shop');
 const UserItems = sequelize.import('models/UserItems');
-const UniqueItems = sequelize.import('models/UniqueItems');
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
@@ -29,8 +28,15 @@ Users.prototype.addItem = async function(item, add) {
 	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, damage: shopItem.damage, heal: shopItem.heal });
 };
 
-Users.prototype.addUniqueItem = function(item, type, damage, heal, effect) {
-	return UniqueItems.create({ user_id: this.user_id, item_id: item, type: type, damage: damage, heal: heal, effect: effect});
+Users.prototype.addUniqueItem = function(item, type, enchant, damage, heal) {
+	const userItem = await UserItems.findOne({
+		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, heal: heal },
+	});
+	if (userItem) {
+		userItem.amount += Number(1)
+		return userItem.save()
+	}
+	return UserItems.create({ user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, heal: heal });
 };
 
 Users.prototype.getItems = async function() {

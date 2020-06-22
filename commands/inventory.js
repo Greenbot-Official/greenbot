@@ -14,10 +14,6 @@ module.exports = {
 		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
     const uniqueItems = await user.getUniqueItems()
     func.log(`${message.author} checked ${target}'s inventory`, message)
-    if (!uniqueItems.length) {
-      return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item_id}`).join('\n')}`, { code: true });
-    } else {
-      return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item_id}`).join('\n')}\n unique items:\n${uniqueItems.map(t => `${t.item_id}`).join('\n')}`, { code: true });
-    }
+    return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item_id}`).join('\n')}}`, { code: true });
   }
 }

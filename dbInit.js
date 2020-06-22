@@ -10,7 +10,6 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const CurrencyShop = sequelize.import('models/Shop');
 sequelize.import('models/Users');
 sequelize.import('models/UserItems');
-sequelize.import('models/UniqueItems');
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
