@@ -11,7 +11,7 @@ module.exports = {
     const user = app.currency.get(message.author.id)
     if (!args[0]) {
       func.log(`${message.author} is veiwing the leaderboard help`, message)
-      return message.channel.send(`toggle: - toggles public stats (default off) \nbalance: - top balances \nfish: - top fish exp \ncrime: - top crime exp \ncombat: - top combat exp`, { code: true })
+      return message.channel.send(`toggle: - toggles public stats (currently: ${user.leaderboard}) \nbalance: - top balances \nfish: - shows biggest catch \ncrime: - top crime exp \ncombat: - top combat exp`, { code: true })
 
     } else if (args[0] === 'toggle') {
       user.leaderboard = !(user.leaderboard)
@@ -30,11 +30,11 @@ module.exports = {
 
     } else if (args[0] === 'fish') {
       func.log(`${message.author} is veiwing the fishing leaderboard`, message)
-      return message.channel.send(app.currency.sort((a, b) => b.fish_exp - a.fish_exp)
+      return message.channel.send(app.currency.sort((a, b) => b.biggest_catch - a.biggest_catch)
         .filter(user => client.users.cache.has(user.user_id))
         .filter(user => user.leaderboard)
         .first(10)
-        .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.fish_exp}`)
+        .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.biggest_catch}`)
         .join('\n'), { code: true })
 
     } else if (args[0] === 'crime') {

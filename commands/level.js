@@ -10,7 +10,7 @@ module.exports = {
     const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);
 		const level = user.level || 0;
-		const calclvl = Math.pow(user.level + 1, 2)
+		const calclvl = (user.level + 1) * 3
     func.log(`${message.author} checked ${target}'s level`, message)
     return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰`, { code: true})
 
