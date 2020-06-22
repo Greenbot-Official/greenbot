@@ -28,7 +28,7 @@ Users.prototype.addItem = async function(item, add) {
 	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, damage: shopItem.damage, heal: shopItem.heal });
 };
 
-Users.prototype.addUniqueItem = function(item, type, enchant, damage, heal) {
+Users.prototype.addUniqueItem = async function(item, type, enchant, damage, heal) {
 	const userItem = await UserItems.findOne({
 		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, heal: heal },
 	});
@@ -43,12 +43,6 @@ Users.prototype.getItems = async function() {
 	return await UserItems.findAll({
 		where: { user_id: this.user_id },
 		include: ['item'],
-	});
-};
-
-Users.prototype.getUniqueItems = async function() {
-	return await UniqueItems.findAll({
-		where: { user_id: this.user_id },
 	});
 };
 
@@ -68,19 +62,4 @@ Users.prototype.equip = async function(item) {
 	return
 };
 
-Users.prototype.equipUnique = async function(item) {
-	const equip = await UniqueItems.findOne({
-		where: { user_id: this.user_id, item_id: item },
-	});
-	const prev = await UserItems.findOne({
-		where: { user_id: this.user_id, equipped: true },
-		include: ['item'],
-	}) || equip
-	prev.equipped = Boolean(false);
-	equip.equipped = Boolean(true);
-	prev.save()
-	equip.save()
-	return
-};
-
-module.exports = { Users, Shop, UserItems, UniqueItems };
+module.exports = { Users, Shop, UserItems };

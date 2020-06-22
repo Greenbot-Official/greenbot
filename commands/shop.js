@@ -14,9 +14,9 @@ module.exports = {
     const weapons = await Shop.findAll({where: { type: 'weapon' }})
 		return message.channel.send(
       'consumables:\n' +
-      consumables.map(item => `${item.name}: ${item.cost}💰 heal:${item.heal}`).join('\n') + '\n\n' +
+      consumables.sort((a, b) => a.id - b.id).map(item => `[${item.id}]${item.name}: ${item.cost}💰 heal:${item.heal}`).join('\n') + '\n\n' +
       'weapons:\n' +
-      weapons.map(item => `${item.name}: ${item.cost}💰 damage:${item.damage}`).join('\n')
+      weapons.sort((a, b) => a.id - b.id).map(item => `[${item.id}]${item.name}: ${item.cost}💰 damage:${item.damage}`).join('\n')
       , { code: true }
       );
 

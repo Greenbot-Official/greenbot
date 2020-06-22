@@ -6,14 +6,17 @@ module.exports = {
   name: 'buy',
   aliases: 'buy',
   description: 'buys specified item from the shop',
-  usage: 'buy {item name} [amount]',
+  usage: 'buy {item name/id} [amount]',
   async execute(message, args) {
 		const buyName = args[0]
 		const buyAmmount = args[1] || 1
 		if (!buyName) return message.channel.send('please enter a item to buy')
 		const user = app.currency.get(message.author.id);
-		const item = await Shop.findOne({ where: { name: buyName }});
-		if (!item) return message.channel.send(`unable to find item ${args[0]}`)
+		var item = await Shop.findOne({ where: { name: buyName }});
+		if (!item) {
+			item = await Shop.findOne({ where: { id: buyName }});
+			if (!item) return message.channel.send(`could not find item: ${buyName}`)
+		}
 		const totalCost = item.cost * buyAmmount
 		const bal = user.balance || 0;
 		if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)

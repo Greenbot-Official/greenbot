@@ -18,10 +18,10 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'apple', cost: 5, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'bread', cost: 10, type: 'consumable', heal: 2}),
 		CurrencyShop.upsert({ name: 'stick', cost: 5, type: 'weapon', damage: 1}),
-		CurrencyShop.upsert({ name: 'woodDagger', cost: 10, type: 'weapon', damage: 2}),
-		CurrencyShop.upsert({ name: 'woodSword', cost: 16, type: 'weapon', damage: 3}),
-		CurrencyShop.upsert({ name: 'ironDagger', cost: 22, type: 'weapon', damage: 4}),
-		CurrencyShop.upsert({ name: 'ironGreatsword', cost: 34, type: 'weapon', damage: 6}),
+		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 10, type: 'weapon', damage: 2}),
+		CurrencyShop.upsert({ name: 'wood\_sword', cost: 16, type: 'weapon', damage: 3}),
+		CurrencyShop.upsert({ name: 'iron\_dagger', cost: 22, type: 'weapon', damage: 4}),
+		CurrencyShop.upsert({ name: 'iron\_greatsword', cost: 34, type: 'weapon', damage: 6}),
 	];
 	try {
 		await Promise.all(shop);

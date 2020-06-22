@@ -44,14 +44,14 @@ module.exports = {
         var weapon;
         switch (rand3) {
           case 0:
-            weapon = 'ironDagger'
+            weapon = 'iron\_dagger'
             break;
           case 1:
-            weapon = 'ironGreatsword'
+            weapon = 'iron\_greatsword'
             break;
         }
         find = `an ${weapon} of ${ench.name}`
-        user.addUniqueItem(`${weapon} of ${ench.name}`,'weapon',5,null,ench.id)
+        user.addUniqueItem(`${weapon}\_of\_${ench.name}`,'weapon',5,null,ench.id)
         break;
     }
     user.save()

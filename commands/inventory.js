@@ -12,8 +12,7 @@ module.exports = {
 		const user = app.currency.get(target.id);
     const items = await user.getItems();
 		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
-    const uniqueItems = await user.getUniqueItems()
     func.log(`${message.author} checked ${target}'s inventory`, message)
-    return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item_id}`).join('\n')}}`, { code: true });
+    return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item_id}`).join('\n')}`, { code: true });
   }
 }
