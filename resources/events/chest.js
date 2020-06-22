@@ -18,7 +18,7 @@ module.exports = {
         user.balance += g
         break;
       case 2:
-        const rand2 = Math.round(Math.random() * 3)
+        const rand2 = Math.round(Math.random() * 2)
         var stat;
         switch (rand2) {
           case 0:
@@ -26,14 +26,10 @@ module.exports = {
             user.luck += Number(1)
             break;
           case 1:
-            stat = 'fighting'
-            user.combat_exp += Number(2)
-            break;
-          case 2:
             stat = 'fishing'
             user.fish_exp += Number(2)
             break;
-          case 3:
+          case 2:
             stat = 'crime'
             user.crime_exp += Number(2)
             break;
@@ -59,7 +55,7 @@ module.exports = {
         break;
     }
     user.save()
-    func.log(`${message.author} found a chest with ${find}`)
-    return message.channel.send(`you found a chest with ${find}in it`)
+    func.log(`${message.author} found a chest with ${find}`, message)
+    return message.reply(`found a chest with ${find} in it`)
   },
 }

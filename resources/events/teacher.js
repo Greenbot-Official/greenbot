@@ -6,7 +6,7 @@ module.exports = {
   id: 1,
   level: '1',
   async execute(message, user) {
-    const rand = Math.round(Math.random() * 3)
+    const rand = Math.round(Math.random() * 2)
     var stat;
     switch (rand) {
       case 0:
@@ -14,20 +14,16 @@ module.exports = {
         user.luck += Number(1)
         break;
       case 1:
-        stat = 'fighting'
-        user.combat_exp += Number(2)
-        break;
-      case 2:
         stat = 'fishing'
         user.fish_exp += Number(2)
         break;
-      case 3:
+      case 2:
         stat = 'crime'
         user.crime_exp += Number(2)
         break;
     }
     user.save()
     func.log(`${message.author} was tought about ${stat}`, message)
-    return message.channel.send(`you met someone who tought you about ${stat}`)
+    return message.reply(`met someone who tought you about ${stat}`)
   },
 }

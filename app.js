@@ -85,11 +85,11 @@ client.on('message', async message => {
 			return message.reply(`ahhhhh! too fast, slow it down for ${timeLeft.toFixed(1)} more second(s) before reusing the \`${commandToRun.name}\` command.`);
 		}
 	}
-	
+
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 	try {
-		return commandToRun.execute(message, commandArgs);
+		return commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
 		console.log(e)
 	}
