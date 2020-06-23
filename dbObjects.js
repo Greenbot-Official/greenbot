@@ -22,7 +22,6 @@ Users.prototype.addItem = async function(item, add) {
 	});
 	if (userItem) {
 		userItem.amount += Number(add);
-		userItem.type = shopItem.type
 		return userItem.save();
 	}
 	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, damage: shopItem.damage, heal: shopItem.heal });

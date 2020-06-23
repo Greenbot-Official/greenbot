@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		type: {
 			type: DataTypes.STRING,
+			defaultValue: 'default',
 			allowNull: false,
 		},
 		equipped: {
