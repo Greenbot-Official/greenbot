@@ -13,6 +13,11 @@ module.exports = {
     const items = await user.getItems();
 		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
     func.log(`${message.author} checked ${target}'s inventory`, message)
-    return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item_id}`).join('\n')}`, { code: true });
+    return message.channel.send(
+      'consumables:\n' +
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'consumable').map(item => `[${item.id}]${item.amount} ${item.item_id} heal:${item.heal}`).join('\n') + '\n\n' +
+      'weapons:\n' +
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'weapon').map(item => `[${item.id}]${item.amount} ${item.item_id} damage:${item.damage}`).join('\n')
+      , { code: true });
   }
 }

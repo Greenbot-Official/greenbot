@@ -35,7 +35,7 @@ Users.prototype.addUniqueItem = async function(item, type, enchant, damage, heal
 		userItem.amount += Number(1)
 		return userItem.save()
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, heal: heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: 1, type: type, enchant: enchant, damage: damage, heal: heal });
 };
 
 Users.prototype.getItems = async function() {

@@ -22,6 +22,7 @@ module.exports = {
     tUser.health -= Number(rand)
     user.save()
     tUser.save()
+    if (weapon.enchant) app.getEnchants.get(weapon.enchant).execute(user, tUser)
 
 		func.log(`${message.author} attacked ${user.combat_target_id}`, message);
     if (!crit) { message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${rand}`); }

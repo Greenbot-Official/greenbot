@@ -10,8 +10,8 @@ module.exports = {
   usage: 'eat {consumable}',
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
-		const item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } } });
-		if (!item) return message.channel.send(`unnable to find item ${item.name}`)
+		const item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } }});
+		if (!item) return message.channel.send(`unnable to find item ${args[0]}`)
     if (item.amount < 0) return message.channel.send(`you do not own any ${item.item_id}s`)
     const heal = item.heal
     if (user.combat) {

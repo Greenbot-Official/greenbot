@@ -59,6 +59,20 @@ client.on('message', async message => {
 		const newUser = await Users.create({ user_id: message.author.id });
 		currency.set(message.author.id, newUser);
 	}
+	var cause
+	if (user.burn > 0) {
+		user.health -= Number(1)
+		user.burn -= Number(1)
+		user.save()
+		cause = 'burned to death'
+	}
+	if (user.health < 1) {
+		user.health = Number(1)
+		user.save()
+		func.clearStatus()
+		func.log(`${message.author} ${cause}`, message)
+		message.reply(`${cause}`)
+	}
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
 	if (!input.length) return;
