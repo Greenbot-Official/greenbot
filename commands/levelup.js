@@ -3,11 +3,12 @@ const func = require('../resources/functions')
 
 module.exports = {
   name: 'levelup',
-  aliases: 'levelup',
+  aliases: 'lvlup',
   description: 'levels a stat up at the cost of money',
   usage: 'levelup {stat}',
   execute(message, args) {
 		const user = app.currency.get(message.author.id);
+		if (user.combat) return message.channel.send('you cannot do that while in combat')
 		const bal = user.balance || 0;
 		const calclvl = (user.level + 1) * 3
     if (bal < calclvl) return message.channel.send(`you do not have enough currency to level up`)

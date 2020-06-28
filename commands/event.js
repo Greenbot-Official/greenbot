@@ -9,6 +9,7 @@ module.exports = {
   cooldown: '120',
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
+		if (user.combat) return message.channel.send('you cannot do that while in combat')
     if (user.health < 1) return message.channel.send('you do not have enough health to do that')
     const eventFiles = app.fs.readdirSync('./resources/events').filter(file => file.endsWith('.js'));
     const event = app.getEvents().get(Math.round(Math.random() * (eventFiles.length - 1)))

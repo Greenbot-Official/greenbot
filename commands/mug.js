@@ -11,6 +11,7 @@ module.exports = {
     const target = message.mentions.users.first() || message.author
     const id = target.id
 		const user = app.currency.get(message.author.id);
+		if (user.combat) return message.channel.send('you cannot do that while in combat')
 		const tUser = app.currency.get(id);
 		const tBal = user.balance || 0;
 		const crimexp = user.crime_exp || 0

@@ -9,6 +9,7 @@ module.exports = {
 	cooldown: '5',
   async execute (message, args) {
 		const user = app.currency.get(message.author.id);
+		if (user.combat) return message.channel.send('you cannot do that while in combat')
 		const fishexp = user.fish_exp || 0;
 		const randmult = fishexp / 5
 		const rand = Math.round(Math.random() * randmult + 1)
