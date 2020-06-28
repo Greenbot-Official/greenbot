@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		enchant: {
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 		damage: {

@@ -16,6 +16,7 @@ const force = process.argv.includes('--force') || process.argv.includes('-f');
 sequelize.sync({ force }).then(async () => {
 	const shop = [
 		CurrencyShop.upsert({ name: 'apple', cost: 5, type: 'consumable', heal: 1}),
+		CurrencyShop.upsert({ name: 'water', cost: 8, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'bread', cost: 10, type: 'consumable', heal: 2}),
 		CurrencyShop.upsert({ name: 'stick', cost: 5, type: 'weapon', damage: 1}),
 		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 10, type: 'weapon', damage: 2}),

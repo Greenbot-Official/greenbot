@@ -12,6 +12,7 @@ module.exports = {
     const target = message.mentions.users.first()
     const user = app.currency.get(message.author.id)
     if (!args[0]) {
+      this.cooldown = '0'
       if (!user.combat) return message.channel.send('you are not in combat')
       return message.channel.send(`you are in combat with ${user.combat_target}`)
     }

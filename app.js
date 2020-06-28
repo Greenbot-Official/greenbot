@@ -50,7 +50,7 @@ client.once('ready', async () => {
 	client.user.setPresence({
     status: 'online',
     activity: {
-        name: 'chillin with Lightning27009#1842',
+				name: `chillin with Lightning27009#1842`,
         type: 'PLAYING',
         url: 'https://discord.com/oauth2/authorize?client_id=703642701974995085&scope=bot&permissions=8'
     }
@@ -68,8 +68,8 @@ client.on('message', async message => {
 		const newUser = await Users.create({ user_id: message.author.id });
 		currency.set(message.author.id, newUser);
 		if (newUser.user_id === config.author) {
-			newUser.addUniqueItem('god\_sword','weapon','flame',10,null)
-			newUser.addUniqueItem('debug\_stick','weapon','flame',0,null)
+			newUser.addUniqueItem('god\_sword','weapon',0,10,null)
+			newUser.addUniqueItem('debug\_stick','weapon',0,0,null)
 		}
 	}
 	var cause
