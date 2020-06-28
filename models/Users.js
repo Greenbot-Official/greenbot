@@ -44,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		burn: {
 			type: DataTypes.INTEGER,
-			allowNull: true,
+			defaultValue: 0,
+			allowNull: false,
 		},
 		balance: {
 			type: DataTypes.INTEGER,

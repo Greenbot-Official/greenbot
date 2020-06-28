@@ -1,4 +1,4 @@
-const { token , globalPrefix , ownerId , support_guildId , suggestion_channelId } = require('./config');
+const config = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const { Users , Shop } = require('./dbObjects');
@@ -13,6 +13,7 @@ client.enchants = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
+const { CLIENT_RENEG_LIMIT } = require('tls');
 
 function getCommands() {
 	return client.commands
@@ -46,6 +47,14 @@ client.once('ready', async () => {
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
+	client.user.setPresence({
+    status: 'online',
+    activity: {
+        name: 'chillin with Lightning27009#1842',
+        type: 'PLAYING',
+        url: 'https://discord.com/oauth2/authorize?client_id=703642701974995085&scope=bot&permissions=8'
+    }
+	})
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
@@ -53,11 +62,15 @@ client.once('ready', async () => {
 client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
-	let prefix = globalPrefix;
+	let prefix = config.globalPrefix;
 	const user = currency.get(message.author.id)
 	if (!user) {
 		const newUser = await Users.create({ user_id: message.author.id });
 		currency.set(message.author.id, newUser);
+		if (newUser.user_id === config.author) {
+			newUser.addUniqueItem('god\_sword','weapon','flame',10,null)
+			newUser.addUniqueItem('debug\_stick','weapon','flame',0,null)
+		}
 	}
 	var cause
 	if (user.burn > 0) {
@@ -110,4 +123,4 @@ client.on('message', async message => {
 
 });
 
-client.login(token);
+client.login(config.token);
