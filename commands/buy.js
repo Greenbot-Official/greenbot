@@ -26,7 +26,7 @@ module.exports = {
 		await user.addItem(item.name, buyAmmount);
 		user.save();
 		
-		func.log(`${message.author} bought ${buyAmmount} ${item.name}`, message)
+		func.log(`bought ${buyAmmount} ${item.name}`, message)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 
   }

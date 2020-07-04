@@ -30,7 +30,7 @@ module.exports = {
     } else {
       return message.channel.send(`unknown stat ${args}`)
     }
-    func.log(`${message.author} leveled up their ${stat}`, message)
+    func.log(`leveled up their ${stat}`, message)
     return message.channel.send(`${message.author.username} leveled up their ${stat}`)
 
   }

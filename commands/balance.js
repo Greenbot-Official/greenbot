@@ -11,7 +11,7 @@ module.exports = {
 		const user = app.currency.get(target.id);
 		var bal = user.balance
     if (!bal) bal = 0
-		func.log(`${message.author} checked ${target}'s balance of ${bal}`, message)
+		func.log(`checked ${target}'s balance of ${bal}`, message)
 		return message.channel.send(`${target} has ${bal}💰`)
 
   },

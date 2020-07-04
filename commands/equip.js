@@ -19,7 +19,7 @@ module.exports = {
     }
     if (weapon.type != 'weapon') return message.channel.send(`${name} is not a weapon`)
     await user.equip(weapon.item_id)
-    func.log(`${message.author.id} equipped ${weapon.item_id}`, message);
+    func.log(`equipped ${weapon.item_id}`, message);
     return message.channel.send(`${message.author.username} equipped ${weapon.item_id}`);
 
   }

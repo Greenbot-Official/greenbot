@@ -27,7 +27,7 @@ module.exports = {
     user.save()
     tUser.save()
 
-		func.log(`${message.author} ran away from ${user.combat_target_id}`, message);
+		func.log(`ran away from ${user.combat_target_id}`, message);
     return message.channel.send(`${message.author.username} ran away from ${user.combat_target}`);
 
   }

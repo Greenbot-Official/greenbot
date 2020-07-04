@@ -55,7 +55,7 @@ module.exports = {
         break;
     }
     user.save()
-    func.log(`${message.author} found a chest with ${find}`, message)
+    func.log(`found a chest with ${find}`, message)
     return message.reply(`found a chest with ${find} in it`)
   },
 }

@@ -22,7 +22,7 @@ module.exports = {
 		user.biggest_catch = Number(newrec)
 		user.save();
 
-		func.log(`${message.author} caught a ${rand}in fish`, message)
+		func.log(`caught a ${rand}in fish`, message)
 		return message.channel.send(`${message.author} caught a ${rand}in :fish:`)
 
   }

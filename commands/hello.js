@@ -6,7 +6,7 @@ module.exports = {
   description: 'says hello',
   usage: 'hello',
   execute(message, args) {
-		func.log(`${message.author} says hello`, message);
+		func.log(`says hello`, message);
     return message.channel.send("hi, I am greenbot");
 
   }

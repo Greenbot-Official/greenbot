@@ -23,7 +23,7 @@ module.exports = {
         break;
     }
     user.save()
-    func.log(`${message.author} was tought about ${stat}`, message)
+    func.log(`was tought about ${stat}`, message)
     return message.reply(`met someone who tought you about ${stat}`)
   },
 }

@@ -7,23 +7,23 @@ module.exports = {
   aliases: 'combat',
   description: 'initiates combat with a player',
   usage: 'combat [@target]',
-  cooldown: '300',
+  cooldown: '0',
   async execute(message, args) {
     const target = message.mentions.users.first()
     const user = app.currency.get(message.author.id)
     if (!args[0]) {
-      this.cooldown = '0'
       if (!user.combat) return message.channel.send('you are not in combat')
       return message.channel.send(`you are in combat with ${user.combat_target}`)
     }
     const tUser = app.currency.get(target.id)
     const equipped = await UserItems.findOne({ where: { equipped: true }})
-    if (!tUser) return message.channel.send('unnable to find that user')
+    if (!tUser || !target) return message.channel.send('unnable to find that user')
     if (user.combat) return message.channel.send('you are unnable to initiate combat')
     if (tUser.combat) return message.channel.send('that player is already in combat')
     if (!equipped) return message.channel.send('you cannot enter combat without a weapon')
     if (Number(tUser.health / tUser.max_health) < Number(3/4)) return message.channel.send('that player\'s is too low health')
 
+    this.cooldown = '300'
     user.combat = Boolean(true)
     user.combat_target = target.username
     user.combat_target_id = target.id

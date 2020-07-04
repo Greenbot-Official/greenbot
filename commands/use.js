@@ -27,10 +27,10 @@ module.exports = {
     }
 
     user.health = Number(Math.min(user.max_health, user.health + heal))
-    if (item.item_id === 'water') user.burn = Number(0)
+    if (item.item_id === 'water') func.clearStatus(user)
     user.addItem(item.item_id, -1)
     
-		func.log(`${message.author} used a ${args[0]}`, message);
+		func.log(`used a ${args[0]}`, message);
     return message.channel.send(`${message.author.username} healed for ${heal}`);
 
   }

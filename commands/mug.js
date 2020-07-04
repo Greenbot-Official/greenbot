@@ -23,7 +23,7 @@ module.exports = {
       user.balance += Number(rand);
       user.save();
 
-      func.log(`${message.author} mugged an innocent civilian for ${rand}`, message)
+      func.log(`mugged an innocent civilian for ${rand}`, message)
       return message.channel.send(`${message.author} mugged an innocent civilian for ${rand}💰`)
 
     } else {

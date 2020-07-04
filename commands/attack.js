@@ -24,12 +24,13 @@ module.exports = {
     user.save()
     tUser.save()
     if (weapon.enchant != null) {
-      const ench = app.getEnchants()
-      const exe = ench.get(weapon.enchant).name
-      exe.execute(user, tUser)
+      var ench = app.getEnchants()
+      ench = ench.get(weapon.enchant)
+      const name = ench.name
+      name.execute(message, user, tUser)
     }
 
-		func.log(`${message.author} attacked ${user.combat_target_id}`, message);
+		func.log(`attacked ${user.combat_target_id}`, message);
     if (!crit) { message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${rand}`); }
     else { message.channel.send(`${message.author.username} CRIT ${user.combat_target} for ${rand}`) }
     if (tUser.health < 1) {
@@ -39,7 +40,7 @@ module.exports = {
       tUser.health = Number(0)
       user.save()
       tUser.save()
-      func.log(`${message.author} killed ${user.combat_target_id}`)
+      func.log(`killed ${user.combat_target_id}`, message)
       message.channel.send(`${message.author.username} killed ${user.combat_target}`)
     }
     return

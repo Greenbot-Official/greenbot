@@ -1,10 +1,13 @@
 const fs = require('fs');
+const config = require('../config.json')
 
 module.exports = {
 	log: function(text, message) {
 		var readmessagefile = fs.readFileSync('log.txt', `utf-8`);
-		fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${text}`)
-		return console.log(`${message.createdAt}: ${message.guild} - ${text}`);
+		var name = message.author.id === config.author ? '<owner>' : message.author
+		var text2 = text.replace(`@${config.author}`,'owner')
+		fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${name} ${text2}`)
+		return console.log(`${message.createdAt}: ${message.guild} - ${name} ${text2}`);
 	},
 	clearStatus: function(user) {
 		user.burn = Number(0)
