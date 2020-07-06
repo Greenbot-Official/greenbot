@@ -1,6 +1,6 @@
 const app = require('../app')
 const func = require('../resources/functions')
-const { Users , UserItems } = require('../dbObjects')
+const { Users , UserItems, UserEffects } = require('../dbObjects')
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -15,6 +15,7 @@ module.exports = {
       item = await UserItems.findOne({ where: { id: { [Op.like]: args[0] } }});
       if (!item) return message.channel.send(`unnable to find item ${args[0]}`)
     }
+    const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
     if (item.amount < 0) return message.channel.send(`you do not own any ${item.item_id}s`)
     const heal = item.heal
     if (user.combat) {
@@ -25,12 +26,17 @@ module.exports = {
       user.save()
       tUser.save()
     }
+    if (item.enchant != null) {
+      var ench = app.getEnchants()
+      ench = ench.get(item.enchant)
+      await ench.execute(message, userEffects, null, user, null)
+    }
 
     user.health = Number(Math.min(user.max_health, user.health + heal))
     if (item.item_id === 'water') func.clearStatus(user)
     user.addItem(item.item_id, -1)
     
-		func.log(`used a ${args[0]}`, message);
+		func.log(`used a ${item.item_id}`, message);
     return message.channel.send(`${message.author.username} healed for ${heal}`);
 
   }

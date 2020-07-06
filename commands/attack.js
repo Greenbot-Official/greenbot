@@ -1,6 +1,6 @@
 const func = require('../resources/functions')
 const app = require('../app')
-const { UserItems } = require('../dbObjects')
+const { UserItems, UserEffects } = require('../dbObjects')
 const { Op } = require('sequelize')
 
 module.exports = {
@@ -14,6 +14,7 @@ module.exports = {
     if (!user.turn) return message.channel.send('not your turn')
     const tUser = app.currency.get(user.combat_target_id)
     const weapon = await UserItems.findOne({ where: { user_id: { [Op.like]: message.author.id }, equipped: true }})
+    const tUserEffects = await UserEffects.findOne({ where: { user_id: user.combat_target_id } })
     var rand = Math.round(((Math.random() - 0.5) * 2) + weapon.damage)
     var crit = Boolean((Math.round(Math.random() * 100) + user.luck) > 99)
     if (crit) rand * 2
@@ -26,8 +27,7 @@ module.exports = {
     if (weapon.enchant != null) {
       var ench = app.getEnchants()
       ench = ench.get(weapon.enchant)
-      const name = ench.name
-      name.execute(message, user, tUser)
+      ench.execute(message, null, tUserEffects, user, tUser)
     }
 
 		func.log(`attacked ${user.combat_target_id}`, message);

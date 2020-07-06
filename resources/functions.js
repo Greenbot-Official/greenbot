@@ -9,8 +9,8 @@ module.exports = {
 		fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${name} ${text2}`)
 		return console.log(`${message.createdAt}: ${message.guild} - ${name} ${text2}`);
 	},
-	clearStatus: function(user) {
-		user.burn = Number(0)
-		return user.save()
+	clearStatus: function(userEffects) {
+		userEffects.burn = Number(0)
+		return userEffects.save()
 	}
 }

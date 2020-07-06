@@ -1,7 +1,7 @@
 const config = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
-const { Users , Shop } = require('./dbObjects');
+const { Users , Shop , UserEffects } = require('./dbObjects');
 const { Op } = require('sequelize');
 const func = require('./resources/functions')
 
@@ -13,7 +13,6 @@ client.enchants = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
-const { CLIENT_RENEG_LIMIT } = require('tls');
 
 function getCommands() {
 	return client.commands
@@ -28,8 +27,6 @@ function getEnchants() {
 module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents , getEnchants };
 
 client.once('ready', async () => {
-	var count = 1
-	var i = 1
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);
@@ -47,14 +44,7 @@ client.once('ready', async () => {
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
-	client.user.setPresence({
-    status: 'online',
-    activity: {
-				name: `chillin with Lightning27009#1842`,
-        type: 'PLAYING',
-        url: 'https://discord.com/oauth2/authorize?client_id=703642701974995085&scope=bot&permissions=8'
-    }
-	})
+	client.user.setActivity('chillin with Lightning27009#1842')
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
@@ -63,27 +53,33 @@ client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
 	let prefix = config.globalPrefix;
-	const user = currency.get(message.author.id)
+	var user = currency.get(message.author.id)
+	var userEffects = await UserEffects.findOne({ where: { user_id: message.author.id }})
 	if (!user) {
-		const newUser = await Users.create({ user_id: message.author.id });
-		currency.set(message.author.id, newUser);
-		if (newUser.user_id === config.author) {
-			newUser.addUniqueItem('god\_sword','weapon',0,10,null)
-			newUser.addUniqueItem('debug\_stick','weapon',0,0,null)
+		user = await Users.create({ user_id: message.author.id });
+		userEffects = await UserEffects.create({ user_id: message.author.id })
+		currency.set(message.author.id, user);
+		if (user.user_id === config.author) {
+			user.addUniqueItem('god\_sword','weapon',0,10,null)
+			user.addUniqueItem('debug\_stick','weapon',0,0,null)
+			user.balance += Number(100)
+			user.save()
 		}
 	}
 	var cause
-	if (user.burn > 0) {
+	if (userEffects.burn > 0) {
 		user.health -= Number(1)
-		user.burn -= Number(1)
+		userEffects.burn -= Number(1)
 		user.save()
+		userEffects.save()
 		cause = 'burned to death'
 	}
-	if (user.health < 1) {
+	if (userEffects.health < 1) {
 		user.health = Number(1)
 		user.save()
+		userEffects.save()
 		func.clearStatus()
-		func.log(`${message.author} ${cause}`, message)
+		func.log(`${cause}`, message)
 		message.reply(`${cause}`)
 	}
 	if (!message.content.startsWith(prefix)) return;
