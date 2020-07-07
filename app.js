@@ -61,26 +61,12 @@ client.on('message', async message => {
 		currency.set(message.author.id, user);
 		if (user.user_id === config.author) {
 			user.addUniqueItem('god\_sword','weapon',0,10,null)
-			user.addUniqueItem('debug\_stick','weapon',0,0,null)
+			user.addUniqueItem('wacking\_stick','weapon',4,0,null)
 			user.balance += Number(100)
 			user.save()
 		}
 	}
-	var cause
-	if (userEffects.burn > 0) {
-		user.health -= Number(2)
-		userEffects.burn -= Number(1)
-		user.save()
-		userEffects.save()
-		cause = 'burned to death'
-	}
-	if (userEffects.poison > 0) {
-		user.health -= Number(1)
-		userEffects.burn -= Number(1)
-		user.save()
-		userEffects.save()
-		cause = 'died by poison'
-	}
+	const cause = func.updateEffects(user, userEffects)
 	if (user.health < 1) {
 		func.die(message, cause, user, userEffects)
 	}

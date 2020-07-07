@@ -37,5 +37,23 @@ module.exports = {
 		this.clearStatus(userEffects)
 		this.log(cause, message)
 		return message.reply(cause)
+	},
+	updateEffects: function(user, userEffects) {
+		if (userEffects.burn > 0) {
+			user.health -= Number(2)
+			userEffects.burn -= Number(1)
+			user.save()
+			userEffects.save()
+			if (userEffects.burn < 1) message.reply('you are no longer burning')
+			return cause = 'burned to death'
+		}
+		if (userEffects.poison > 0) {
+			user.health -= Number(1)
+			userEffects.burn -= Number(1)
+			user.save()
+			userEffects.save()
+			if (userEffects.poison < 1) message.reply('you are no longer poisoned')
+			return cause = 'died by poison'
+		}
 	}
 }

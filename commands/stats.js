@@ -15,8 +15,8 @@ module.exports = {
     const weapon = await UserItems.findOne({ where: { user_id: message.author.id, equipped: true }}) || 'no weapon equipped'
     const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
     var effects = ''
-    if (userEffects.burn > 0) effects += `<:fire_ball:730127089860345866>`
-    if (userEffects.poison > 0) effects += `${config.poison}`
+    if (userEffects.burn > 0) effects += `\nburn: ${userEffects.burn}`
+    if (userEffects.poison > 0) effects += `\npoison: ${userEffects.poison}`
     if (!user) return message.channel.send(`${target.username} was not found`)
     func.log(`is checking the stats of ${target}`, message)
     return message.channel.send(`${target.username}'s stats: \n` +
@@ -25,8 +25,7 @@ module.exports = {
       `luck: ${user.luck} \n` +
       `biggest fish: ${user.biggest_catch} \n` +
       `weapon: ${weapon.item_id}\n` +
-      `status\n` +
-      `${effects}`
+      `status${effects}`
       , { code: true })
 
   }
