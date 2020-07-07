@@ -27,7 +27,7 @@ module.exports = {
     if (weapon.enchant != null) {
       var ench = app.getEnchants()
       ench = ench.get(weapon.enchant)
-      ench.execute(message, null, tUserEffects, user, tUser)
+      await ench.execute(message, null, tUserEffects, user, tUser)
     }
 
 		func.log(`attacked ${user.combat_target_id}`, message);
@@ -40,6 +40,7 @@ module.exports = {
       tUser.health = Number(0)
       user.save()
       tUser.save()
+      func.clearStatus(tUserEffects)
       func.log(`killed ${user.combat_target_id}`, message)
       message.channel.send(`${message.author.username} killed ${user.combat_target}`)
     }

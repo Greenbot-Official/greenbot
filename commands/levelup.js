@@ -10,7 +10,7 @@ module.exports = {
 		const user = app.currency.get(message.author.id);
 		if (user.combat) return message.channel.send('you cannot do that while in combat')
 		const bal = user.balance || 0;
-		const calclvl = (user.level + 1) * 3
+		const calclvl = func.calclvl(user.level)
     if (bal < calclvl) return message.channel.send(`you do not have enough currency to level up`)
     user.level += Number(1)
     user.balance -= Number(calclvl)

@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const config = require('./config.json')
 
 const sequelize = new Sequelize('database', 'username', 'password', {
 	host: 'localhost',
@@ -19,7 +20,9 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'apple', cost: 5, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'water', cost: 8, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'bread', cost: 10, type: 'consumable', heal: 2}),
+		CurrencyShop.upsert({ name: 'antidote', cost: 20, type: 'consumable', heal: 1, enchant: 3 }),
 		CurrencyShop.upsert({ name: 'fishing\_potion', cost: 85, type: 'consumable', heal: 0, enchant: 1 }),
+		CurrencyShop.upsert({ name: `mysterious\_brew`, cost: 75, type: 'consumable', heal: 1, enchant: 3 }),
 		CurrencyShop.upsert({ name: 'stick', cost: 5, type: 'weapon', damage: 1}),
 		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 10, type: 'weapon', damage: 2}),
 		CurrencyShop.upsert({ name: 'wood\_sword', cost: 16, type: 'weapon', damage: 3}),

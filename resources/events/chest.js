@@ -47,11 +47,14 @@ module.exports = {
             weapon = 'iron\_greatsword'
             break;
         }
-        const rand4 = Math.round(Math.random() * 0)
+        const rand4 = Math.round(Math.random() * 1)
         var ench;
         switch (rand4) {
           case 0:
             ench = app.getEnchants(0)
+            break;
+          case 1:
+            ench = app.getEnchants(2)
             break;
         }
         find = `an ${weapon} of ${ench.name}`

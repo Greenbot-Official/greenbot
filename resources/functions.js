@@ -1,5 +1,6 @@
 const fs = require('fs');
-const config = require('../config.json')
+const config = require('../config.json');
+const { client } = require('../app');
 
 module.exports = {
 	log: function(text, message) {
@@ -10,8 +11,31 @@ module.exports = {
 		fs.writeFileSync('archives.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${name} ${text2}`)
 		return console.log(`${message.createdAt}: ${message.guild} - ${name} ${text2}`);
 	},
+	clear: function(userEffects, effect, message) {
+		if (effect === 'burn') {
+			userEffects.burn = Number(0)
+			message.reply('you are no longer burning')
+		} else if (effect === 'poison') {
+			userEffects.poison = Number(0)
+			message.reply('you are no longer poisoned')
+		}
+		return userEffects.save()
+	},
 	clearStatus: function(userEffects) {
 		userEffects.burn = Number(0)
+		userEffects.poison = Number(0)
 		return userEffects.save()
+	},
+	calclvl: function(lvl) {
+		return (lvl + 1) * 2
+	},
+	die: function(message, cause, user, userEffects) {
+		user.health = Number(1)
+		user.balance -= Math.round(user.balance / 6)
+		user.save()
+		userEffects.save()
+		this.clearStatus(userEffects)
+		this.log(cause, message)
+		return message.reply(cause)
 	}
 }

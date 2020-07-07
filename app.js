@@ -68,19 +68,21 @@ client.on('message', async message => {
 	}
 	var cause
 	if (userEffects.burn > 0) {
-		user.health -= Number(1)
+		user.health -= Number(2)
 		userEffects.burn -= Number(1)
 		user.save()
 		userEffects.save()
 		cause = 'burned to death'
 	}
-	if (user.health < 1) {
-		user.health = Number(1)
+	if (userEffects.poison > 0) {
+		user.health -= Number(1)
+		userEffects.burn -= Number(1)
 		user.save()
 		userEffects.save()
-		func.clearStatus()
-		func.log(`${cause}`, message)
-		message.reply(`${cause}`)
+		cause = 'died by poison'
+	}
+	if (user.health < 1) {
+		func.die(message, cause, user, userEffects)
 	}
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
