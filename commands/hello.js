@@ -1,4 +1,5 @@
 const func = require('../resources/functions')
+const app = require('../app')
 
 module.exports = {
   name: 'hello',

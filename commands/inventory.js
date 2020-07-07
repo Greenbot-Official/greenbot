@@ -16,9 +16,9 @@ module.exports = {
     func.log(`checked ${target}'s inventory`, message)
     return message.channel.send(
       'consumables:\n' +
-      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'consumable').map(item => `[${item.id}]${item.amount} ${item.item_id} heal:${item.heal}`).join('\n') + '\n\n' +
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'consumable' && a.amount > 0).map(item => `[${item.id}]${item.amount} ${item.item_id} heal:${item.heal}`).join('\n') + '\n\n' +
       'weapons:\n' +
-      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'weapon').map(item => `[${item.id}]${item.amount} ${item.item_id} damage:${item.damage}`).join('\n')
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'weapon' && a.amount > 0).map(item => `[${item.id}]${item.amount} ${item.item_id} damage:${item.damage}`).join('\n')
       , { code: true });
   }
 }
