@@ -6,19 +6,15 @@ module.exports = {
   id: 1,
   level: '1',
   async execute(message, user) {
-    const rand = Math.round(Math.random() * 2)
+    const rand = Math.round(Math.random() * 1)
     var stat;
     switch (rand) {
       case 0:
-        stat = 'being lucky'
-        user.luck += Number(1)
-        break;
-      case 1:
         stat = 'fishing'
         user.fish_exp += Number(2)
         break;
-      case 2:
-        stat = 'crime'
+      case 1:
+        stat = 'stealing'
         user.crime_exp += Number(2)
         break;
     }

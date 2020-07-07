@@ -7,6 +7,7 @@ module.exports = {
 		var name = message.author.id === config.author ? '<owner>' : message.author
 		var text2 = text.replace(`@${config.author}`,'owner')
 		fs.writeFileSync('log.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${name} ${text2}`)
+		fs.writeFileSync('archives.txt', readmessagefile+`\n${message.createdAt}: ${message.guild} - ${name} ${text2}`)
 		return console.log(`${message.createdAt}: ${message.guild} - ${name} ${text2}`);
 	},
 	clearStatus: function(userEffects) {

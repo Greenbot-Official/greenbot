@@ -11,7 +11,7 @@ module.exports = {
   async execute(message, args) {
     const target = message.mentions.users.first() || message.author
     const user = currency.get(target.id)
-    const weapon = await UserItems.findOne({ where: { equipped: true }}) || 'no weapon equipped'
+    const weapon = await UserItems.findOne({ where: { user_id: message.author.id, equipped: true }}) || 'no weapon equipped'
     if (!user) return message.channel.send(`${target.username} was not found`)
     func.log(`is checking the stats of ${target}`, message)
     return message.channel.send(`${target.username}'s stats: \n` +

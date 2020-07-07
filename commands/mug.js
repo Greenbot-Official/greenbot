@@ -36,7 +36,7 @@ module.exports = {
       tUser.balance -= Number(rand);
       tUser.save();
 
-      func.log(`${message.author} mugged ${target} for ${rand}`, message)
+      func.log(`mugged ${target} for ${rand}`, message)
       return message.channel.send(`${message.author} mugged ${target} for ${rand}💰`)
 
     }

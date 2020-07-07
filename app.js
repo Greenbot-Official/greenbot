@@ -74,7 +74,7 @@ client.on('message', async message => {
 		userEffects.save()
 		cause = 'burned to death'
 	}
-	if (userEffects.health < 1) {
+	if (user.health < 1) {
 		user.health = Number(1)
 		user.save()
 		userEffects.save()

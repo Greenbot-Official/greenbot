@@ -5,8 +5,8 @@ module.exports = {
   name: 'flame',
   id: 0,
   async execute(message, userEffects, tUserEffects, user, tUser) {
-    tUser.burn = Number(3)
-    tUser.save()
+    tUserEffects.burn = Number(3)
+    tUserEffects.save()
     return message.reply('your target was set on fire')
   },
 }

@@ -16,11 +16,13 @@ module.exports = {
       return message.channel.send(`you are in combat with ${user.combat_target}`)
     }
     const tUser = app.currency.get(target.id)
-    const equipped = await UserItems.findOne({ where: { equipped: true }})
+    const equipped = await UserItems.findOne({ where: { user_id: message.author.id, equipped: true }})
+    const tEquipped = await UserItems.findOne({ where: { user_id: user.combat_target_id, equipped: true }})
     if (!tUser || !target) return message.channel.send('unnable to find that user')
     if (user.combat) return message.channel.send('you are unnable to initiate combat')
     if (tUser.combat) return message.channel.send('that player is already in combat')
-    if (!equipped) return message.channel.send('you cannot enter combat without a weapon')
+    if (!equipped) return message.channel.send('your target does not have a weapon')
+    if (!tEquipped) return message.channel.send('you cannot enter combat without a weapon')
     if (Number(tUser.health / tUser.max_health) < Number(3/4)) return message.channel.send('that player\'s is too low health')
 
     this.cooldown = '300'
@@ -37,7 +39,7 @@ module.exports = {
     user.save()
     tUser.save()
 
-		func.log(`${message.author.id} initiated combat with ${target.id}`, message);
+		func.log(`initiated combat with ${target.id}`, message);
     return message.channel.send(`${message.author.username} initiated combat with ${target.username}`);
 
   }

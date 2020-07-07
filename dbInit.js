@@ -19,7 +19,7 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'apple', cost: 5, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'water', cost: 8, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'bread', cost: 10, type: 'consumable', heal: 2}),
-		CurrencyShop.upsert({ name: 'fishing\_potion', cost: 25, type: 'consumable', heal: 0, enchant: 1 }),
+		CurrencyShop.upsert({ name: 'fishing\_potion', cost: 85, type: 'consumable', heal: 0, enchant: 1 }),
 		CurrencyShop.upsert({ name: 'stick', cost: 5, type: 'weapon', damage: 1}),
 		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 10, type: 'weapon', damage: 2}),
 		CurrencyShop.upsert({ name: 'wood\_sword', cost: 16, type: 'weapon', damage: 3}),

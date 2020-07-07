@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
       allowNull: false,
     },
-    fish_effect: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-		},
 	}, {
 		timestamps: false,
 	});

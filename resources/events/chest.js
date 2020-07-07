@@ -37,9 +37,6 @@ module.exports = {
         find = `a book about ${stat}`
         break;
       case 3:
-        //wip
-        const enchFiles = app.fs.readdirSync('./enchants').filter(file => file.endsWith('.js'));
-        const ench = app.getEvents().get(Math.round(Math.random() * (enchFiles.length - 1)))
         const rand3 = Math.round(Math.random() * 1)
         var weapon;
         switch (rand3) {
@@ -48,6 +45,13 @@ module.exports = {
             break;
           case 1:
             weapon = 'iron\_greatsword'
+            break;
+        }
+        const rand4 = Math.round(Math.random() * 0)
+        var ench;
+        switch (rand4) {
+          case 0:
+            ench = app.getEnchants(0)
             break;
         }
         find = `an ${weapon} of ${ench.name}`
