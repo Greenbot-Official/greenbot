@@ -72,6 +72,16 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: 3,
 			allowNull: false,
 		},
+		strength: {
+			type: DataTypes.INTEGER,
+			defaultValue: 2,
+			allowNull: false
+		},
+		dexterity: {
+			type: DataTypes.INTEGER,
+			defaultValue: 2,
+			allowNull: false,
+		},
 	}, {
 		timestamps: false,
 	});

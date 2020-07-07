@@ -60,8 +60,8 @@ client.on('message', async message => {
 		userEffects = await UserEffects.create({ user_id: message.author.id })
 		currency.set(message.author.id, user);
 		if (user.user_id === config.author) {
-			user.addUniqueItem('god\_sword','weapon',0,10,null)
-			user.addUniqueItem('wacking\_stick','weapon',4,0,null)
+			user.addUniqueItem('god\_sword','weapon',0,10,'str',1,null)
+			user.addUniqueItem('wacking\_stick','weapon',4,0,'none',null,null)
 			user.balance += Number(100)
 			user.save()
 		}

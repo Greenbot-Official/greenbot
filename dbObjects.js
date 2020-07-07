@@ -25,18 +25,18 @@ Users.prototype.addItem = async function(item, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, heal: shopItem.heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
 };
 
-Users.prototype.addUniqueItem = async function(item, type, enchant, damage, heal) {
+Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal) {
 	const userItem = await UserItems.findOne({
-		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, heal: heal },
+		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal },
 	});
 	if (userItem) {
 		userItem.amount += Number(1)
 		return userItem.save()
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: 1, type: type, enchant: enchant, damage: damage, heal: heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: 1, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal });
 };
 
 Users.prototype.getItems = async function() {
