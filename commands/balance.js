@@ -1,4 +1,5 @@
 const func = require('../resources/functions')
+const app = require('../app')
 
 module.exports = {
   name: 'balance',
@@ -7,9 +8,10 @@ module.exports = {
   usage: 'balance [@user]',
   execute(message, args) {
     const target = message.mentions.users.first() || message.author
-		const bal = func.getBalance(target.id)
-    if (!bal) throw func.throwError('invalidUser')
-		func.log(`${message.author} checked ${target}'s balance of ${bal}`, message)
+		const user = app.currency.get(target.id);
+		var bal = user.balance
+    if (!bal) bal = 0
+		func.log(`checked ${target}'s balance of ${bal}`, message)
 		return message.channel.send(`${target} has ${bal}💰`)
 
   },

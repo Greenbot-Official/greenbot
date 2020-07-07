@@ -1,3 +1,4 @@
+const app = require('../app')
 const func = require('../resources/functions')
 const { Users } = require('../dbObjects')
 
@@ -8,11 +9,16 @@ module.exports = {
   usage: 'inv [@user]',
   async execute(message, args) {
 		const target = message.mentions.users.first() || message.author;
-		const user = await Users.findOne({ where: { user_id: target.id } });
-		const items = await user.getItems();
-		if (!items.length) message.channel.send(`${target.tag} has nothing!`);
-    func.log(`${message.author} checked ${target}'s inventory`, message)
-		return message.channel.send(`${target.tag} currently has:\n${items.map(t => `${t.amount} ${t.item.name}`).join('\n')}`);
-
+		const user = app.currency.get(target.id);
+    const items = await user.getItems();
+    if (!user) return message.channel.send(`${target} does not exist`)
+		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
+    func.log(`checked ${target}'s inventory`, message)
+    return message.channel.send(
+      'consumables:\n' +
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'consumable' && a.amount > 0).map(item => `[${item.id}]${item.amount} ${item.item_id} heal:${item.heal}`).join('\n') + '\n\n' +
+      'weapons:\n' +
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'weapon' && a.amount > 0).map(item => `[${item.id}]${item.amount} ${item.item_id} damage:${item.damage}`).join('\n')
+      , { code: true });
   }
 }

@@ -1,18 +1,30 @@
-const { token , globalPrefix , ownerId , support_guildId , suggestion_channelId } = require('./config');
+const config = require('./config');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
-const { Users } = require('./dbObjects');
+const { Users , Shop , UserEffects } = require('./dbObjects');
 const { Op } = require('sequelize');
+const func = require('./resources/functions')
 
 const client = new Discord.Client();
 const currency = new Discord.Collection();
 client.commands = new Discord.Collection();
-client.errors = new Discord.Collection();
+client.events = new Discord.Collection();
+client.enchants = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const fs = require('fs');
 
-module.exports = { Users , client , currency , fs };
+function getCommands() {
+	return client.commands
+}
+function getEvents() {
+	return client.events
+}
+function getEnchants() {
+	return client.enchants
+}
+
+module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents , getEnchants };
 
 client.once('ready', async () => {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -20,13 +32,19 @@ client.once('ready', async () => {
 		const command = require(`./commands/${file}`);
 		client.commands.set(command.name, command);
 	}
-	const errorFiles = fs.readdirSync('./errors').filter(file => file.endsWith('.js'));
-	for (const file of errorFiles) {
-		const error = require(`./errors/${file}`);
-		client.errors.set(error.name, error);
+	const eventFiles = fs.readdirSync('./resources/events').filter(file => file.endsWith('.js'));
+	for (const file of eventFiles) {
+		const event = require(`./resources/events/${file}`);
+		client.events.set(event.id, event);
+	}
+	const enchantFiles = fs.readdirSync('./resources/enchants').filter(file => file.endsWith('.js'));
+	for (const file of enchantFiles) {
+		const ench = require(`./resources/enchants/${file}`);
+		client.enchants.set(ench.id, ench);
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
+	client.user.setActivity('chillin with Lightning27009#1842')
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
@@ -34,7 +52,36 @@ client.once('ready', async () => {
 client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
-	let prefix = globalPrefix;
+	let prefix = config.globalPrefix;
+	var user = currency.get(message.author.id)
+	var userEffects = await UserEffects.findOne({ where: { user_id: message.author.id }})
+	if (!user) {
+		user = await Users.create({ user_id: message.author.id });
+		userEffects = await UserEffects.create({ user_id: message.author.id })
+		currency.set(message.author.id, user);
+		if (user.user_id === config.author) {
+			user.addUniqueItem('god\_sword','weapon',0,10,null)
+			user.addUniqueItem('debug\_stick','weapon',0,0,null)
+			user.balance += Number(100)
+			user.save()
+		}
+	}
+	var cause
+	if (userEffects.burn > 0) {
+		user.health -= Number(1)
+		userEffects.burn -= Number(1)
+		user.save()
+		userEffects.save()
+		cause = 'burned to death'
+	}
+	if (user.health < 1) {
+		user.health = Number(1)
+		user.save()
+		userEffects.save()
+		func.clearStatus()
+		func.log(`${cause}`, message)
+		message.reply(`${cause}`)
+	}
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
 	if (!input.length) return;
@@ -61,17 +108,15 @@ client.on('message', async message => {
 			return message.reply(`ahhhhh! too fast, slow it down for ${timeLeft.toFixed(1)} more second(s) before reusing the \`${commandToRun.name}\` command.`);
 		}
 	}
+
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
 	try {
 		return commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
-		const error = client.errors.get(e)
-		if (!client.errors.has(e)) console.log(e)
-		return message.channel.send(`${error.message}`)
+		console.log(e)
 	}
-	
+
 });
 
-client.login(token);
+client.login(config.token);
