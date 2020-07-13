@@ -14,7 +14,7 @@ module.exports = {
     const amount = args[2] || 1
     const tUser = app.currency.get(target.id)
     if (!tUser) return message.channel.send('could not find user')
-    var item = UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
+    let item = UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
     if (!item) {
       item = UserItems.findOne({ where: { user_id: message.author.id, id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
       if (!item) return message.channel.send(`invalid item ${args[1]}`)

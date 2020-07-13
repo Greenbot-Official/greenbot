@@ -23,11 +23,11 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'antidote', cost: 20, type: 'consumable', heal: 1, enchant: 3 }),
 		CurrencyShop.upsert({ name: 'fishing\_potion', cost: 85, type: 'consumable', heal: 0, enchant: 1 }),
 		CurrencyShop.upsert({ name: `mysterious\_brew`, cost: 75, type: 'consumable', heal: 1, enchant: 3 }),
-		CurrencyShop.upsert({ name: 'stick', cost: 5, type: 'weapon', damage: 1, attribute: 'none' }),
-		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 10, type: 'weapon', damage: 2, attribute: 'dex', scale: 0.1 }),
-		CurrencyShop.upsert({ name: 'wood\_sword', cost: 16, type: 'weapon', damage: 3, attribute: 'str', scale: 0.1 }),
-		CurrencyShop.upsert({ name: 'iron\_dagger', cost: 22, type: 'weapon', damage: 4, attribute: 'dex', scale: 0.5 }),
-		CurrencyShop.upsert({ name: 'iron\_greatsword', cost: 34, type: 'weapon', damage: 6, attribute: 'str', scale: 0.5 }),
+		CurrencyShop.upsert({ name: 'stick', cost: 10, type: 'weapon', damage: 1, attribute: 'none' }),
+		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 25, type: 'weapon', damage: 2, attribute: 'dex', scale: 0.1 }),
+		CurrencyShop.upsert({ name: 'wood\_sword', cost: 30, type: 'weapon', damage: 3, attribute: 'str', scale: 0.1 }),
+		CurrencyShop.upsert({ name: 'iron\_dagger', cost: 55, type: 'weapon', damage: 4, attribute: 'dex', scale: 1 }),
+		CurrencyShop.upsert({ name: 'iron\_greatsword', cost: 60, type: 'weapon', damage: 6, attribute: 'str', scale: 1 }),
 	];
 	try {
 		await Promise.all(shop);

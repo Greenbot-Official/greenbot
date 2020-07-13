@@ -15,7 +15,7 @@ module.exports = {
     const tUser = app.currency.get(user.combat_target_id)
     const weapon = await UserItems.findOne({ where: { user_id: { [Op.like]: message.author.id }, equipped: true }})
     const tUserEffects = await UserEffects.findOne({ where: { user_id: user.combat_target_id } })
-    var scale = Number(0)
+    let scale = Number(0)
     if (weapon.attribute != 'none') {
       if (weapon.attribute === 'str') {
         scale = Math.round(user.strength * weapon.scale)
@@ -23,8 +23,8 @@ module.exports = {
         scale = Math.round(user.dexterity * weapon.scale)
       }
     }
-    var rand = Math.round(((Math.random() - 0.5) * 2) + (weapon.damage + scale))
-    var crit = Boolean((Math.round(Math.random() * 100) + user.luck) > 99)
+    let rand = Math.round(((Math.random() - 0.5) * 2) + (weapon.damage + scale))
+    let crit = Boolean((Math.round(Math.random() * 100) + user.luck) > 99)
     if (crit) rand * 2
 
     user.turn = Boolean(false)
@@ -33,7 +33,7 @@ module.exports = {
     user.save()
     tUser.save()
     if (weapon.enchant != null) {
-      var ench = app.getEnchants()
+      let ench = app.getEnchants()
       ench = ench.get(weapon.enchant)
       await ench.execute(message, null, tUserEffects, user, tUser)
     }

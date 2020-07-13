@@ -53,8 +53,8 @@ client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.channel.type === 'dm') return;
 	let prefix = config.globalPrefix;
-	var user = currency.get(message.author.id)
-	var userEffects = await UserEffects.findOne({ where: { user_id: message.author.id }})
+	let user = currency.get(message.author.id)
+	let userEffects = await UserEffects.findOne({ where: { user_id: message.author.id }})
 	if (!user) {
 		user = await Users.create({ user_id: message.author.id });
 		userEffects = await UserEffects.create({ user_id: message.author.id })

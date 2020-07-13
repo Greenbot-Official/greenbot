@@ -9,8 +9,7 @@ module.exports = {
   execute(message, args) {
     const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);
-		var bal = user.balance
-    if (!bal) bal = 0
+		const bal = user.balance || 0
 		func.log(`checked ${target}'s balance of ${bal}`, message)
 		return message.channel.send(`${target} has ${bal}💰`)
 
