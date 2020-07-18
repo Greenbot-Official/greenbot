@@ -44,7 +44,7 @@ client.once('ready', async () => {
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
-	client.user.setActivity('chillin with Lightning27009#1842')
+	client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
@@ -106,5 +106,15 @@ client.on('message', async message => {
 	}
 
 });
+
+client.on("guildCreate", async (guild) => {
+	console.log(`[INFO] - JOINED GUILD ${guild}`)
+	client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
+})
+
+client.on("guildDelete", async (guild) => {
+		console.log(`[INFO] - LEFT GUILD ${guild}`)
+		client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
+})
 
 client.login(config.token);

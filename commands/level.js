@@ -13,7 +13,8 @@ module.exports = {
     const calclvl = func.calclvl(user.level)
     if (!args[0]) {
       func.log(`checked ${target}'s level`, message)
-      return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰`, { code: true })
+      return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰\n` + 
+      'stats available for levelup:\nhealth\nluck\nstrength\ndexterity', { code: true })
 
     } else {
       if (user.combat) return message.channel.send('you cannot do that while in combat')

@@ -18,7 +18,6 @@ module.exports = {
 		const randmult = crimexp / 3
     let rand = Math.round(Math.random() * randmult + 1)
     if (target === message.author) {
-      
       user.crime_exp += Number(1);
       user.balance += Number(rand);
       user.save();

@@ -4,13 +4,35 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
-	storage: 'database.sqlite',
+	storage: 'db/users.sqlite',
+});
+
+const shop = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'db/shop.sqlite',
+});
+
+const items = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'db/items.sqlite',
+});
+
+const adventures = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'db/adventure.sqlite',
 });
 
 const Users = sequelize.import('models/Users');
-const Shop = sequelize.import('models/Shop');
-const UserItems = sequelize.import('models/UserItems');
+const Shop = shop.import('models/Shop');
+const UserItems = items.import('models/UserItems');
 const UserEffects = sequelize.import('models/UserEffects')
+const Adventures = adventures.import('models/Adventure')
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
