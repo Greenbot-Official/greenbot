@@ -4,35 +4,14 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
-	storage: 'db/users.sqlite',
-});
-
-const shop = new Sequelize('database', 'username', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'db/shop.sqlite',
-});
-
-const items = new Sequelize('database', 'username', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'db/items.sqlite',
-});
-
-const adventures = new Sequelize('database', 'username', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'db/adventure.sqlite',
+	storage: 'database.sqlite',
 });
 
 const Users = sequelize.import('models/Users');
-const Shop = shop.import('models/Shop');
-const UserItems = items.import('models/UserItems');
+const Shop = sequelize.import('models/Shop');
+const UserItems = sequelize.import('models/UserItems');
 const UserEffects = sequelize.import('models/UserEffects')
-const Adventures = adventures.import('models/Adventure')
+const Adventures = sequelize.import('models/Adventure')
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
@@ -50,15 +29,15 @@ Users.prototype.addItem = async function(item, add) {
 	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
 };
 
-Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal) {
+Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal, amount) {
 	const userItem = await UserItems.findOne({
 		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal },
 	});
 	if (userItem) {
-		userItem.amount += Number(1)
+		userItem.amount += Number(amount)
 		return userItem.save()
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: 1, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: amount, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal });
 };
 
 Users.prototype.getItems = async function() {
@@ -84,4 +63,4 @@ Users.prototype.equip = async function(item) {
 	return
 };
 
-module.exports = { Users, Shop, UserItems, UserEffects };
+module.exports = { Users, Shop, UserItems, UserEffects, Adventures };

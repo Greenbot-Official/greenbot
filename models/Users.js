@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			primaryKey: true,
 		},
+		adventure: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
 		leaderboard: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false,

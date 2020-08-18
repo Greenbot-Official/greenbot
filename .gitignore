@@ -3,8 +3,6 @@ log.txt
 oldlog.txt
 start.bat
 package-lock.json
-db/adventure.sqlite
-db/items.sqlite
-db/shop.sqlite
-db/users.sqlite
+database.sqlite
 archives.txt
+reset.bat

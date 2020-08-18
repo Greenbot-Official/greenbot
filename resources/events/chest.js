@@ -58,7 +58,7 @@ module.exports = {
             break;
         }
         find = `an ${weapon} of ${ench.name}`
-        user.addUniqueItem(`${weapon}\_of\_${ench.name}`,'weapon',ench.id,5,'none',null,null)
+        await user.addUniqueItem(`${weapon}\_of\_${ench.name}`,'weapon',ench.id,5,'none',null,null, 1)
         break;
     }
     user.save()

@@ -19,7 +19,7 @@ module.exports = {
       item = await UserItems.findOne({ where: { user_id: message.author.id, id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
       if (!item) return message.channel.send(`invalid item ${args[1]}`)
     }
-    await tUser.addItem(item.item_id, amount)
+    await tUser.addUniqueItem(item.item_id, item.type, item.enchant, item.damage, item.attribute, item.scale, item.heal, amount)
     item.amount -= Number(amount)
     item.save()
     func.log(`gave ${target.id} ${amount} ${item.item_id}`, message)

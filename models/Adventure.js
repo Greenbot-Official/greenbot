@@ -2,23 +2,27 @@ module.exports = (sequelize, DataTypes) => {
 	return sequelize.define('adventure', {
     user_id: {
       type: DataTypes.STRING,
-      unique: true,
     },
     x_pos: {
       type: DataTypes.INTEGER,
-      unique: true,
     },
     y_pos: {
       type: DataTypes.INTEGER,
-      unique: true,
     },
-    room_type: {
+    type: {
       type: DataTypes.INTEGER,
-      unique: true,
+      defaultValue: 15,
+      allowNull: false,
     },
     player: {
       type: DataTypes.BOOLEAN,
-      unique: true,
+      defaultValue: false,
+      allowNull: false,
+    },
+    explored: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
     },
 	}, {
 		timestamps: false,
