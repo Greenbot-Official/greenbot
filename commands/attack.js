@@ -15,8 +15,16 @@ module.exports = {
     const tUser = app.currency.get(user.combat_target_id)
     const weapon = await UserItems.findOne({ where: { user_id: { [Op.like]: message.author.id }, equipped: true }})
     const tUserEffects = await UserEffects.findOne({ where: { user_id: user.combat_target_id } })
-    var rand = Math.round(((Math.random() - 0.5) * 2) + weapon.damage)
-    var crit = Boolean((Math.round(Math.random() * 100) + user.luck) > 99)
+    let scale = Number(0)
+    if (weapon.attribute != 'none') {
+      if (weapon.attribute === 'str') {
+        scale = Math.round(user.strength * weapon.scale)
+      } else if (weapon.attribute === 'dex') {
+        scale = Math.round(user.dexterity * weapon.scale)
+      }
+    }
+    let rand = Math.round(((Math.random() - 0.5) * 2) + (weapon.damage + scale))
+    let crit = Boolean((Math.round(Math.random() * 100) + user.luck) > 99)
     if (crit) rand * 2
 
     user.turn = Boolean(false)
@@ -25,9 +33,9 @@ module.exports = {
     user.save()
     tUser.save()
     if (weapon.enchant != null) {
-      var ench = app.getEnchants()
+      let ench = app.getEnchants()
       ench = ench.get(weapon.enchant)
-      ench.execute(message, null, tUserEffects, user, tUser)
+      await ench.execute(message, null, tUserEffects, user, tUser)
     }
 
 		func.log(`attacked ${user.combat_target_id}`, message);
@@ -40,6 +48,7 @@ module.exports = {
       tUser.health = Number(0)
       user.save()
       tUser.save()
+      func.clearStatus(tUserEffects)
       func.log(`killed ${user.combat_target_id}`, message)
       message.channel.send(`${message.author.username} killed ${user.combat_target}`)
     }

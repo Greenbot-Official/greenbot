@@ -5,3 +5,4 @@ start.bat
 package-lock.json
 database.sqlite
 archives.txt
+reset.bat

@@ -16,9 +16,8 @@ module.exports = {
 		const tBal = user.balance || 0;
 		const crimexp = user.crime_exp || 0
 		const randmult = crimexp / 3
-    var rand = Math.round(Math.random() * randmult + 1)
+    let rand = Math.round(Math.random() * randmult + 1)
     if (target === message.author) {
-      
       user.crime_exp += Number(1);
       user.balance += Number(rand);
       user.save();

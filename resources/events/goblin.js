@@ -6,7 +6,7 @@ module.exports = {
   id: 0,
   level: '1',
   async execute(message, user) {
-    var kill = Boolean((Math.round(Math.random() * 100) + user.luck) > 69)
+    let kill = Boolean((Math.round(Math.random() * 100) + user.luck) > 69)
     if (!kill) {
       user.health -= Number(1)
       user.save()

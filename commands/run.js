@@ -11,7 +11,7 @@ module.exports = {
     if (!user.combat) return message.channel.send('you are not in combat')
     if (!user.turn) return message.channel.send('not your turn')
     const tUser = app.currency.get(user.combat_target_id)
-    var rand = Math.round(Math.random() * 5)
+    let rand = Math.round(Math.random() * 5)
 
     user.turn = Boolean(false)
     tUser.turn = Boolean(true)

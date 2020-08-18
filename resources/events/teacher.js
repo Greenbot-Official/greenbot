@@ -7,7 +7,7 @@ module.exports = {
   level: '1',
   async execute(message, user) {
     const rand = Math.round(Math.random() * 1)
-    var stat;
+    let stat;
     switch (rand) {
       case 0:
         stat = 'fishing'

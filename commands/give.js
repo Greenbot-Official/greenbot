@@ -8,18 +8,18 @@ module.exports = {
   aliases: 'give',
   description: 'gives a user one of your items',
   usage: 'give {@target} {item} [amount]',
-  execute(message, args) {
+  async execute(message, args) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()
     const amount = args[2] || 1
     const tUser = app.currency.get(target.id)
     if (!tUser) return message.channel.send('could not find user')
-    var item = UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
+    let item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
     if (!item) {
-      item = UserItems.findOne({ where: { user_id: message.author.id, id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
+      item = await UserItems.findOne({ where: { user_id: message.author.id, id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
       if (!item) return message.channel.send(`invalid item ${args[1]}`)
     }
-    tUser.additem(item.item_id, amount)
+    await tUser.addUniqueItem(item.item_id, item.type, item.enchant, item.damage, item.attribute, item.scale, item.heal, amount)
     item.amount -= Number(amount)
     item.save()
     func.log(`gave ${target.id} ${amount} ${item.item_id}`, message)

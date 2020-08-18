@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
+		attribute: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
+		scale: {
+			type: DataTypes.DOUBLE,
+			allowNull: true,
+		},
 		heal: {
 			type: DataTypes.INTEGER,
 			allowNull: true,

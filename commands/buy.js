@@ -13,7 +13,7 @@ module.exports = {
 		if (!buyName) return message.channel.send('please enter a item to buy')
 		const user = app.currency.get(message.author.id);
 		if (user.combat) return message.channel.send('you cannot do that while in combat')
-		var item = await Shop.findOne({ where: { name: buyName }});
+		let item = await Shop.findOne({ where: { name: buyName }});
 		if (!item) {
 			item = await Shop.findOne({ where: { id: buyName }});
 			if (!item) return message.channel.send(`could not find item: ${buyName}`)
