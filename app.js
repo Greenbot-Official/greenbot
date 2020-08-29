@@ -28,7 +28,7 @@ function getTextures() {
 	return client.textures
 }
 
-module.exports = { Users , client , currency , fs , Shop , Discord , getCommands , getEvents , getEnchants , getTextures };
+module.exports = { Users , currency , fs , Shop , Discord , getCommands , getEvents , getEnchants , getTextures };
 
 client.once('ready', async () => {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -84,10 +84,12 @@ client.on('message', async message => {
 	if (user.user_id == config.author) {
 		if (command == 'devgive') {
 			user.balance += Number(commandArgs)
-			return user.save()
+			user.save()
+			return func.log(`gave themselves ${commandArgs}`, message)
 		
 		} else if (command == 'createweapon') {
 			if (!commandArgs[0]) return message.channel.send('item, type, enchant, damage, attribute, scale, heal, amount')
+			func.log(`created an item`, message)
 			return await user.addUniqueItem(commandArgs[0], commandArgs[1], commandArgs[2], commandArgs[3], commandArgs[4], commandArgs[5], commandArgs[6], commandArgs[7])
 		
 		} else if (command == 'pricechange') {
@@ -95,6 +97,7 @@ client.on('message', async message => {
 			if (!item) item = await Shop.findOne({ where: { id: commandArgs[0] } })
 			if (!item) return message.channel.send('not an item')
 			item.cost = Number(commandArgs[1])
+			func.log(`changed the price of an item`, message)
 			return item.save()
 
 		} 

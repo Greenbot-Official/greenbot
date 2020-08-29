@@ -2,4 +2,6 @@ start.bat
 archives.txt
 config.json
 database.sqlite
+userdatabase.sqlite
 package-lock.json
+node_modules

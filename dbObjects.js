@@ -7,11 +7,19 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-const Users = sequelize.import('models/Users');
+const userdata = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'userdatabase.sqlite',
+});
+
+const Users = userdata.import('models/Users');
 const Shop = sequelize.import('models/Shop');
-const UserItems = sequelize.import('models/UserItems');
-const UserEffects = sequelize.import('models/UserEffects')
+const UserItems = userdata.import('models/UserItems');
+const UserEffects = userdata.import('models/UserEffects')
 const Adventures = sequelize.import('models/Adventure')
+const PlayerShop = userdata.import('models/PlayerShop')
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
@@ -63,4 +71,36 @@ Users.prototype.equip = async function(item) {
 	return
 };
 
-module.exports = { Users, Shop, UserItems, UserEffects, Adventures };
+Users.prototype.PshopBuyItem = async function(item, add) {
+	const userItem = await UserItems.findOne({
+		where: { user_id: this.user_id, item_id: item },
+	});
+	const shopItem = await PlayerShop.findOne({
+		where: { name: item },
+	});
+	shopItem.amount -= Number(add)
+	shopItem.save()
+	if (userItem) {
+		userItem.amount += Number(add);
+		return userItem.save();
+	}
+	return await UserItems.upsert({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
+};
+
+Users.prototype.PshopSellItem = async function(item, cost, count, id) {
+	const userItem = await UserItems.findOne({
+		where: { user_id: this.user_id, item_id: item },
+	});
+	userItem.amount -= Number(count)
+	userItem.save()
+	const shopItem = await PlayerShop.findOne({
+		where: { name: item, seller_id: id, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal } 
+	})
+	if (shopItem) {
+		shopItem.amount += Number(count)
+		return shopItem.save()
+	}
+	return await PlayerShop.upsert({ name: userItem.item_id, seller_id: id, amount: count, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal })
+};
+
+module.exports = { Users, Shop, PlayerShop, UserItems, UserEffects, Adventures };
