@@ -6,6 +6,7 @@ module.exports = {
   aliases: 'lvl',
   description: 'checks target\'s level up status or levels up a stat',
   usage: 'level [@target || stat]',
+  admin: false,
   execute(message, args) {
     const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);

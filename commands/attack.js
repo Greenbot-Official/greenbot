@@ -8,6 +8,7 @@ module.exports = {
   aliases: 'atk',
   description: 'attacks player you are currently in combat with',
   usage: 'attack',
+  admin: false,
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')

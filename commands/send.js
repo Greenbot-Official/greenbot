@@ -6,6 +6,7 @@ module.exports = {
   aliases: 'transfer',
   description: 'sends target money',
   usage: 'send {@target} [amount]',
+  admin: false,
   execute(message, args) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()

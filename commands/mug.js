@@ -7,6 +7,7 @@ module.exports = {
   description: 'mugs target',
   usage: 'mug [@target]',
   cooldown: '300',
+  admin: false,
   async execute(message, args) {
     const target = message.mentions.users.first() || message.author
     const id = target.id

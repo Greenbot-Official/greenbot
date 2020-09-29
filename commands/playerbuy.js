@@ -2,14 +2,15 @@ const app = require('../app')
 const func = require('../resources/functions')
 const { PlayerShop } = require('../dbObjects')
 const config = require('../config.json');
+const { Op } = require('sequelize');
 
 module.exports = {
   name: 'playerbuy',
   aliases: 'pbuy',
   description: 'buys specified item from the player shop',
-  usage: 'playerbuy {item name/id} [amount]',
+	usage: 'playerbuy {item name/id} [amount]',
+	admin: false,
   async execute(message, args) {
-		if (message.author.id !== config.author) return message.channel.send('adventure curently not available')
 		const buyName = args[0]
 		const buyAmmount = args[1] || 1
 		if (!buyName) return message.channel.send('please enter a item to buy')
@@ -22,15 +23,15 @@ module.exports = {
 		}
 		const totalCost = item.cost * buyAmmount
 		const bal = user.balance || 0;
-        if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)
-        if (item.amount < 1) return message.channel.send(`could not find item: ${buyName}`)
+    if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)
+    if (item.amount < 1) return message.channel.send(`could not find item: ${buyName}`)
 		
 		user.balance -= Number(totalCost);
-        user.save();
+    user.save();
 		await user.PshopBuyItem(item.name, buyAmmount);
-        const seller = app.currency.get(item.seller_id)
-        seller.balance += Number(totalCost)
-        seller.save()
+    const seller = app.currency.get(item.seller_id)
+    seller.balance += Number(totalCost)
+    seller.save()
 		
 		func.log(`bought ${buyAmmount} ${item.name}`, message)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);

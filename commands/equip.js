@@ -8,6 +8,7 @@ module.exports = {
   aliases: 'equip',
   description: 'equips target weapon',
   usage: 'equip {weapon}',
+  admin: false,
   async execute(message, args) {
     const name = args[0]
     if (!name) return message.channel.send('please enter an item to equip')

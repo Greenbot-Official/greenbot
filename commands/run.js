@@ -6,6 +6,7 @@ module.exports = {
   aliases: 'run',
   description: 'attempt to leave combat',
   usage: 'run',
+  admin: false,
   execute(message, args) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')

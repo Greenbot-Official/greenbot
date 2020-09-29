@@ -8,8 +8,8 @@ module.exports = {
   aliases: 'psell',
   description: 'sells specified item from the your inventory',
   usage: 'playersell {item name/id} {cost} [amount]',
+  admin: false,
   async execute(message, args) {
-		if (message.author.id !== config.author) return message.channel.send('adventure curently not available')
 		const sellName = args[0]
     const sellPrice = args[1]
     let sellAmount = args[2]

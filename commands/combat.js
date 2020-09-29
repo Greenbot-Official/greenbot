@@ -8,6 +8,7 @@ module.exports = {
   description: 'initiates combat with a player',
   usage: 'combat [@target]',
   cooldown: '0',
+  admin: false,
   async execute(message, args) {
     const target = message.mentions.users.first()
     const user = app.currency.get(message.author.id)

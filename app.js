@@ -13,6 +13,8 @@ client.enchants = new Discord.Collection();
 client.textures = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
+const wordsihate = ['warframe','warfame','we all lift together']
+
 const fs = require('fs');
 
 function getCommands() {
@@ -77,37 +79,16 @@ client.on('message', async message => {
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();
 	if (!input.length) return;
+	if (input == ';' | input == ':') return;
 	const [, command, args] = input.match(/(\w+)\s*([\s\S]*)/);
 	const commandArgs = args.split(' ')
-	
-	// dev commands
-	if (user.user_id == config.author) {
-		if (command == 'devgive') {
-			user.balance += Number(commandArgs)
-			user.save()
-			return func.log(`gave themselves ${commandArgs}`, message)
-		
-		} else if (command == 'createweapon') {
-			if (!commandArgs[0]) return message.channel.send('item, type, enchant, damage, attribute, scale, heal, amount')
-			func.log(`created an item`, message)
-			return await user.addUniqueItem(commandArgs[0], commandArgs[1], commandArgs[2], commandArgs[3], commandArgs[4], commandArgs[5], commandArgs[6], commandArgs[7])
-		
-		} else if (command == 'pricechange') {
-			let item = await Shop.findOne({ where: { name: commandArgs[0] } })
-			if (!item) item = await Shop.findOne({ where: { id: commandArgs[0] } })
-			if (!item) return message.channel.send('not an item')
-			item.cost = Number(commandArgs[1])
-			func.log(`changed the price of an item`, message)
-			return item.save()
-
-		} 
-	}
 
 	const commandToRun = client.commands.get(command)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
 	if(!commandToRun){
 		return;
 	}
+	if (commandToRun.admin && user.user_id != config.author) return
 
 	// cooldown stuff
 	if (!cooldowns.has(commandToRun.name)) {

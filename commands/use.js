@@ -8,6 +8,7 @@ module.exports = {
   aliases: 'use',
   description: 'eats a consumable to heal you',
   usage: 'eat {consumable}',
+  admin: false,
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
 		let item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } }});

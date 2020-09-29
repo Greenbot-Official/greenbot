@@ -9,6 +9,7 @@ module.exports = {
   aliases: 'stat',
   description: 'gets the stats of a target',
   usage: 'stats [@target]',
+  admin: false,
   async execute(message, args) {
     const target = message.mentions.users.first() || message.author
     const user = currency.get(target.id)

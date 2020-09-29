@@ -7,6 +7,7 @@ module.exports = {
   aliases: 'shop',
   description: 'displays the items in the shop',
   usage: 'shop',
+  admin: false,
   async execute(message, args) {
 		const items = await Shop.findAll();
 		func.log(`is browsing the shop`, message)
