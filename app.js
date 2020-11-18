@@ -13,8 +13,6 @@ client.enchants = new Discord.Collection();
 client.textures = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
-const wordsihate = ['warframe','warfame','we all lift together']
-
 const fs = require('fs');
 
 function getCommands() {
@@ -30,7 +28,6 @@ function getTextures() {
 	return client.textures
 }
 
-module.exports = { Users , currency , fs , Shop , Discord , getCommands , getEvents , getEnchants , getTextures };
 
 client.once('ready', async () => {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -50,13 +47,24 @@ client.once('ready', async () => {
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
-	client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
+	client.user.setPresence({
+		activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` }
+	})
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
+async function runCommand(commandToRun, message, commandArgs, client) {
+	try {
+		return await commandToRun.execute(message, commandArgs, client);
+	} catch (e) {
+		func.log(`had an error with the ${command} command`, message)
+		console.log(e)
+	}
+}
 
 client.on('message', async message => {
 	if (message.author.bot) return;
+	if (message.guild.name == 'Discord Bot List') return;
 	if (message.channel.type === 'dm') return;
 	let prefix = config.globalPrefix;
 	let user = currency.get(message.author.id)
@@ -107,12 +115,7 @@ client.on('message', async message => {
 
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	try {
-		return await commandToRun.execute(message, commandArgs, client);
-	} catch (e) {
-		func.log(`had an error with the ${command} command`, message)
-		console.log(e)
-	}
+	return await runCommand(commandToRun, message, commandArgs, client)
 
 })
 
@@ -126,4 +129,5 @@ client.on("guildDelete", async (guild) => {
 		client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 })
 
+module.exports = { Users , currency , fs , Shop , Discord , client , getCommands , getEvents , getEnchants , getTextures , runCommand };
 client.login(config.token).catch(console.error())

@@ -38,24 +38,6 @@ module.exports = {
         .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.biggest_catch}`)
         .join('\n'), { code: true })
 
-    } else if (args[0] === 'crime') {
-      func.log(`is veiwing the crime leaderboard`, message)
-      return message.channel.send(app.currency.sort((a, b) => b.crime_exp - a.crime_exp)
-        .filter(user => client.users.cache.has(user.user_id))
-        .filter(user => user.leaderboard)
-        .first(10)
-        .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.crime_exp}`)
-        .join('\n'), { code: true })
-
-    } else if (args[0] === 'combat' || args[0] === 'battle' || args[0] === 'fighting') {
-      func.log(`is veiwing the combat leaderboard`, message)
-      return message.channel.send(app.currency.sort((a, b) => b.combat_exp - a.combat_exp)
-        .filter(user => client.users.cache.has(user.user_id))
-        .filter(user => user.leaderboard)
-        .first(10)
-        .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.combat_exp}`)
-        .join('\n'), { code: true })
-
     }
 
   }
