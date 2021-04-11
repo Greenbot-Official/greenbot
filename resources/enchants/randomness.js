@@ -3,7 +3,6 @@ const app = require('../../app')
 
 module.exports = {
   name: 'randomness',
-  id: 4,
   async execute(message, userEffects, tUserEffects, user, tUser) {
     const rand = Math.round(Math.random() * 7)
     switch (rand) {

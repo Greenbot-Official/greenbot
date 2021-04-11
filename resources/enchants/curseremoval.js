@@ -3,7 +3,6 @@ const app = require('../../app')
 
 module.exports = {
   name: 'curseremoval',
-  id: 5,
   async execute(message, userEffects, tUserEffects, user, tUser) {
     user.curse = false
     user.save()
