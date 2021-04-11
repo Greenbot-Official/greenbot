@@ -9,6 +9,7 @@ module.exports = {
   description: 'gives a user one of your items',
   usage: 'give {@target} {item} [amount]',
   admin: false,
+  removal: false,
   async execute(message, args) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()

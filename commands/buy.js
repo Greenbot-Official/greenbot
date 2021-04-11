@@ -8,6 +8,7 @@ module.exports = {
   description: 'buys specified item from the shop',
 	usage: 'buy {item name/id} [amount]',
 	admin: false,
+  removal: false,
   async execute(message, args) {
 		const buyName = args[0]
 		const buyAmmount = args[1] || 1

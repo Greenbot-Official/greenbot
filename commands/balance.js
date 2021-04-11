@@ -7,7 +7,8 @@ module.exports = {
   description: 'gets user\'s balance',
   usage: 'balance [@user]',
   admin: false,
-  execute(message, args) {
+  removal: false,
+  async execute(message, args) {
     const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);
 		const bal = user.balance || 0

@@ -8,6 +8,7 @@ module.exports = {
   description: 'displays options for leaderboard',
   usage: 'leaderboard [args]',
   admin: false,
+  removal: false,
   async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!args[0]) {

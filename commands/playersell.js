@@ -9,6 +9,7 @@ module.exports = {
   description: 'sells specified item from the your inventory',
   usage: 'playersell {item name/id} {cost} [amount]',
   admin: false,
+  removal: true,
   async execute(message, args) {
 		const sellName = args[0]
     const sellPrice = args[1]

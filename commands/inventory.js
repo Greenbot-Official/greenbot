@@ -8,6 +8,7 @@ module.exports = {
   description: 'checks user\'s inventory',
   usage: 'inv [@user]',
   admin: false,
+  removal: false,
   async execute(message, args) {
 		const target = message.mentions.users.first() || message.author;
 		const user = app.currency.get(target.id);

@@ -57,7 +57,7 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 	try {
 		return await commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
-		func.log(`had an error with the ${command} command`, message)
+		func.log(`had an error with the ${commandToRun} command`, message)
 		console.log(e)
 	}
 }
@@ -66,6 +66,7 @@ client.on('message', async message => {
 	if (message.author.bot) return;
 	if (message.guild.name == 'Discord Bot List') return;
 	if (message.channel.type === 'dm') return;
+	const now = Date.now();
 	let prefix = config.globalPrefix;
 	let user = currency.get(message.author.id)
 	let userEffects = await UserEffects.findOne({ where: { user_id: message.author.id }})
@@ -77,6 +78,15 @@ client.on('message', async message => {
 			user.addUniqueItem('god\_sword','weapon',0,10,'str',1,null, 1)
 			user.addUniqueItem('wacking\_stick','weapon',4,0,'none',null,null, 1)
 			user.balance += Number(100)
+			user.save()
+		}
+	}
+	if (user.curse) {
+		const curseTime = 60000;
+		const expirationTime = Number(user.curse_time) + curseTime;
+		if (now > expirationTime) {
+			message.channel.send('same')
+			user.curse_time = now
 			user.save()
 		}
 	}
@@ -97,12 +107,12 @@ client.on('message', async message => {
 		return;
 	}
 	if (commandToRun.admin && user.user_id != config.author) return
+	if (commandToRun.removal && user.user_id != config.author) return
 
 	// cooldown stuff
 	if (!cooldowns.has(commandToRun.name)) {
 		cooldowns.set(commandToRun.name, new Discord.Collection());
 	}
-	const now = Date.now();
 	const timestamps = cooldowns.get(commandToRun.name);
 	const cooldownAmount = (commandToRun.cooldown || 1) * 1000;
 	if (timestamps.has(message.author.id)) {

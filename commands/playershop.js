@@ -9,6 +9,7 @@ module.exports = {
   description: 'opens player shop',
   usage: 'playershop [page]',
   admin: false,
+  removal: true,
   async execute(message, args) {
     const items = await PlayerShop.findAll();
     const page = args[0] || 1

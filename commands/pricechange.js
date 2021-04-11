@@ -8,6 +8,7 @@ module.exports = {
   description: 'changes price of an item in the shop',
   usage: 'pricechange {item | id} {cost}',
   admin: true,
+  removal: false,
   async execute(message, args) {
     let item = await Shop.findOne({ where: { name: args[0] } })
     if (!item) item = await Shop.findOne({ where: { id: args[0] } })

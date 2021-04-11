@@ -7,8 +7,9 @@ module.exports = {
   aliases: 'fish',
   description: 'go fishing',
 	usage: 'fish',
-	cooldown: '60',
+	cooldown: '45',
 	admin: false,
+  removal: false,
   async execute (message, args) {
 		const user = app.currency.get(message.author.id);
 		if (user.combat) return message.channel.send('you cannot do that while in combat')

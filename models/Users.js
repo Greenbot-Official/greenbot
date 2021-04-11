@@ -87,6 +87,16 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: 2,
 			allowNull: false,
 		},
+		curse: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
+		curse_time: {
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+			allowNull: false,
+		},
 	}, {
 		timestamps: false,
 	});

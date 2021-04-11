@@ -7,7 +7,8 @@ module.exports = {
   description: 'sends target money',
   usage: 'send {@target} [amount]',
   admin: false,
-  execute(message, args) {
+  removal: false,
+  async execute(message, args) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()
     const amount = args[1] || 1

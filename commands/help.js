@@ -9,14 +9,22 @@ module.exports = {
   description: 'displays help menu',
   usage: 'help',
   admin: false,
-  execute(message, args) {
+  removal: false,
+  async execute(message, args) {
     const commands = app.getCommands()
     const target = message.author
     func.log(`is looking for help`, message)
     if (message.author.id != config.author) {
-      return message.channel.send(commands.filter(c => !c.admin).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
+      return message.channel.send(commands.filter(c => !c.admin && !c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
     } else {
-      return message.channel.send(commands.map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
+      message.channel.send(commands.filter(c => !c.admin && !c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
+      if (args[0] == "admin") {
+        message.channel.send(`\n ---- admin ----`, { code: true })
+        message.channel.send(commands.filter(c => c.admin && !c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
+        message.channel.send(`\n ---- marked for removal ----`, { code: true })
+        message.channel.send(commands.filter(c => c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
+      }
+      return
     }
   }
 }

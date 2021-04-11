@@ -7,6 +7,7 @@ module.exports = {
   description: 'gives self specified amount',
   usage: 'devgive {amount}',
   admin: true,
+  removal: false,
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
     user.balance += Number(args[0])

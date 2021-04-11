@@ -12,6 +12,7 @@ module.exports = {
   description: 'displays adventure menu',
   usage: 'adventure [args]',
   admin: true,
+  removal: false,
   async execute(message, args) {
     const id = message.author.id
     if (id !== config.author) return message.channel.send('adventure curently not available')
