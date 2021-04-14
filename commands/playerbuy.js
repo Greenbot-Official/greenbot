@@ -22,6 +22,7 @@ module.exports = {
 			item = await PlayerShop.findOne({ where: { id: buyName }});
 			if (!item) return message.channel.send(`could not find item: ${buyName}`)
 		}
+		if (isNaN(buyAmmount)) return message.channel.send('please enter an amount to buy')
 		const totalCost = item.cost * buyAmmount
 		const bal = user.balance || 0;
     if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)

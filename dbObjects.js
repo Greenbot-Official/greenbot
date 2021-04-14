@@ -20,6 +20,8 @@ const UserItems = userdata.import('models/UserItems');
 const UserEffects = userdata.import('models/UserEffects')
 const Adventures = sequelize.import('models/Adventure')
 const PlayerShop = userdata.import('models/PlayerShop')
+const QuestBoard = sequelize.import('models/QuestBoard')
+const Enemy = sequelize.import('models/Enemy')
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
@@ -103,4 +105,11 @@ Users.prototype.PshopSellItem = async function(item, cost, count, id) {
 	return await PlayerShop.upsert({ name: userItem.item_id, seller_id: id, amount: count, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal })
 };
 
-module.exports = { Users, Shop, PlayerShop, UserItems, UserEffects, Adventures };
+Users.prototype.addQuest = async function (quest) {
+	const questb = await QuestBoard.findOne({
+		where: { name: quest }
+	})
+	return await Enemy.upsert({ user_id: this.user_id, name: questb.enemy, max_health: questb.max_health, health: questb.max_health, enchant: questb.enchant, damage: questb.damage, reward: questb.reward })
+}
+
+module.exports = { Users, Shop, PlayerShop, UserItems, UserEffects, Adventures, QuestBoard, Enemy };

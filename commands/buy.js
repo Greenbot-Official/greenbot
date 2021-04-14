@@ -11,7 +11,7 @@ module.exports = {
   removal: false,
   async execute(message, args) {
 		const buyName = args[0]
-		const buyAmmount = args[1] || 1
+		var buyAmmount = args[1] || 1
 		if (!buyName) return message.channel.send('please enter a item to buy')
 		const user = app.currency.get(message.author.id);
 		if (user.combat) return message.channel.send('you cannot do that while in combat')
@@ -20,7 +20,9 @@ module.exports = {
 			item = await Shop.findOne({ where: { id: buyName }});
 			if (!item) return message.channel.send(`could not find item: ${buyName}`)
 		}
-		const totalCost = item.cost * buyAmmount
+		if (buyAmmount == 'max' || buyAmmount == 'all') buyAmmount = Math.floor(user.balance / item.cost)
+		if (isNaN(buyAmmount)) return message.channel.send('please enter an amount to buy')
+		const totalCost = item.cost * Number(buyAmmount)
 		const bal = user.balance || 0;
 		if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)
 		

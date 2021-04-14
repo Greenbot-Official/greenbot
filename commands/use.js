@@ -5,9 +5,9 @@ const { Op } = require('sequelize');
 
 module.exports = {
   name: 'use',
-  aliases: 'use',
+  aliases: 'eat',
   description: 'eats a consumable to heal you',
-  usage: 'eat {consumable}',
+  usage: 'use {consumable}',
   admin: false,
   removal: false,
   async execute(message, args) {

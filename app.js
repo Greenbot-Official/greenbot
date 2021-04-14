@@ -43,7 +43,7 @@ client.once('ready', async () => {
 	const enchantFiles = fs.readdirSync('./resources/enchants').filter(file => file.endsWith('.js'));
 	for (const file of enchantFiles) {
 		const ench = require(`./resources/enchants/${file}`);
-		client.enchants.set(ench.id, ench);
+		client.enchants.set(ench.name, ench);
 	}
 	const storedBalances = await Users.findAll();
 	storedBalances.forEach(b => currency.set(b.user_id, b));
@@ -63,7 +63,7 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 }
 
 client.on('message', async message => {
-	if (message.author.bot) return;
+	if (message.author.bot) return
 	if (message.guild.name == 'Discord Bot List') return;
 	if (message.channel.type === 'dm') return;
 	const now = Date.now();
@@ -90,7 +90,7 @@ client.on('message', async message => {
 			user.save()
 		}
 	}
-	const cause = func.updateEffects(user, userEffects)
+	const cause = func.updateEffects(message, user, userEffects)
 	if (user.health < 1) {
 		func.die(message, cause, user, userEffects)
 	}
@@ -107,7 +107,7 @@ client.on('message', async message => {
 		return;
 	}
 	if (commandToRun.admin && user.user_id != config.author) return
-	if (commandToRun.removal && user.user_id != config.author) return
+	if (commandToRun.removal && !config.tester.includes(message.author.id)) return
 
 	// cooldown stuff
 	if (!cooldowns.has(commandToRun.name)) {
@@ -115,7 +115,7 @@ client.on('message', async message => {
 	}
 	const timestamps = cooldowns.get(commandToRun.name);
 	const cooldownAmount = (commandToRun.cooldown || 1) * 1000;
-	if (timestamps.has(message.author.id)) {
+	if (timestamps.has(message.author.id) && !config.tester.includes(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;

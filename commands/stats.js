@@ -30,6 +30,7 @@ module.exports = {
       `luck: ${user.luck} \n` +
       `strength: ${user.strength}\n` +
       `dexterity: ${user.dexterity}\n` +
+      `fish exp: ${user.fish_exp}\n` +
       `biggest fish: ${user.biggest_catch} \n` +
       `weapon: ${wep}\n` +
       `status:${effects}`

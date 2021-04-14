@@ -16,6 +16,8 @@ const userdata = new Sequelize('database', 'username', 'password', {
 });
 
 const CurrencyShop = sequelize.import('models/Shop')
+const QuestBoard = sequelize.import('models/QuestBoard')
+sequelize.import('models/Enemy')
 sequelize.import('models/Adventure')
 userdata.import('models/Users')
 userdata.import('models/UserItems')
@@ -30,14 +32,17 @@ sequelize.sync({ force }).then(async () => {
 		CurrencyShop.upsert({ name: 'apple', cost: 15, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'water', cost: 10, type: 'consumable', heal: 1}),
 		CurrencyShop.upsert({ name: 'bread', cost: 30, type: 'consumable', heal: 2}),
-		CurrencyShop.upsert({ name: 'antidote', cost: 50, type: 'consumable', heal: 1, enchant: 3 }),
-		CurrencyShop.upsert({ name: 'fishing\_potion', cost: 100, type: 'consumable', heal: 0, enchant: 1 }),
-		CurrencyShop.upsert({ name: `mysterious\_brew`, cost: 75, type: 'consumable', heal: 1, enchant: 3 }),
+		CurrencyShop.upsert({ name: 'antidote', cost: 50, type: 'consumable', heal: 1 }),
+		CurrencyShop.upsert({ name: 'fishing\_potion', cost: 100, type: 'consumable', heal: 0, enchant: 'fishing' }),
+		CurrencyShop.upsert({ name: `mysterious\_brew`, cost: 75, type: 'consumable', heal: 1, enchant: 'mystery' }),
 		CurrencyShop.upsert({ name: 'stick', cost: 10, type: 'weapon', damage: 1, attribute: 'none' }),
 		CurrencyShop.upsert({ name: 'wood\_dagger', cost: 25, type: 'weapon', damage: 2, attribute: 'dex', scale: 0.1 }),
 		CurrencyShop.upsert({ name: 'wood\_sword', cost: 30, type: 'weapon', damage: 3, attribute: 'str', scale: 0.1 }),
 		CurrencyShop.upsert({ name: 'iron\_dagger', cost: 55, type: 'weapon', damage: 4, attribute: 'dex', scale: 1 }),
 		CurrencyShop.upsert({ name: 'iron\_greatsword', cost: 60, type: 'weapon', damage: 6, attribute: 'str', scale: 1 }),
+		
+		QuestBoard.upsert({ name: 'goblins', desc: 'we need you to kill the goblin that has been killing our sheep', diff: 1, enemy: 'goblin', damage: 2 }),
+		QuestBoard.upsert({ name: 'gigantic', desc: 'there is a terrifying giant living in those distant mountains, we need you to take care of it', diff: 100, enemy: 'giant', max_health: 100, damage: 12, reward: 10000 }),
 	];
 	try {
 		await Promise.all(shop);
