@@ -14,14 +14,14 @@ const userdata = new Sequelize('database', 'username', 'password', {
 	storage: 'userdatabase.sqlite',
 });
 
-const Users = userdata.import('models/Users');
-const Shop = sequelize.import('models/Shop');
-const UserItems = userdata.import('models/UserItems');
-const UserEffects = userdata.import('models/UserEffects')
-const Adventures = sequelize.import('models/Adventure')
-const PlayerShop = userdata.import('models/PlayerShop')
-const QuestBoard = sequelize.import('models/QuestBoard')
-const Enemy = sequelize.import('models/Enemy')
+const Users = require('./models/Users')(userdata, Sequelize.DataTypes);
+const Shop = require('./models/Shop')(sequelize, Sequelize.DataTypes);
+const UserItems = require('./models/UserItems')(userdata, Sequelize.DataTypes);
+const UserEffects = require('./models/UserEffects')(userdata, Sequelize.DataTypes)
+const Adventures = require('./models/Adventure')(sequelize, Sequelize.DataTypes)
+const PlayerShop = require('./models/PlayerShop')(userdata, Sequelize.DataTypes)
+const QuestBoard = require('./models/QuestBoard')(sequelize, Sequelize.DataTypes)
+const Enemy = require('./models/Enemy')(sequelize, Sequelize.DataTypes)
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 

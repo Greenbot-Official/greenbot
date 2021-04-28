@@ -6,9 +6,9 @@ module.exports = {
 	log: function(text, message) {
 		var readarchives = fs.readFileSync('archives.txt', `utf-8`);
 		var text2 = `${message.author} ${text}`
-		text2 = text2.replace(`<@${config.author}>`, '<owner>')
 		for (var i = 0; i < config.coolids.length; i++) {
 			text2 = text2.replace(`<@${config.coolids[i]}>`, `<${config.coolnames[i]}>`)
+			text2 = text2.replace(`<@${config.coolids[i]}>\'`, `<${config.coolnames[i]}>\'`)
 		}
 		fs.writeFileSync('archives.txt', readarchives+`\n${message.createdAt}: ${message.guild} - ${text2}`)
 		return console.log(`${message.createdAt}: ${message.guild} - ${text2}`);

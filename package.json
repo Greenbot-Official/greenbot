@@ -1,24 +1,25 @@
 {
-  "name": "bot",
+  "name": "greenbot",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmkoth431/greenbot.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmkoth431/greenbot/issues"
+  },
+  "homepage": "https://github.com/tmkoth431/greenbot#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.4.0",
-    "@keyv/sqlite": "^2.0.2",
-    "canvas": "^2.6.1",
-    "discord.js": "^12.3.1",
+    "discord.js": "^12.5.3",
     "fs": "0.0.1-security",
-    "keyv": "^4.0.1",
-    "opus": "0.0.0",
-    "pcm": "^1.0.3",
-    "sequelize": "^5.22.3",
-    "sqlite3": "^4.2.0"
+    "sequelize": "^6.6.2",
+    "sqlite3": "^5.0.2"
   }
 }

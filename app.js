@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const { Users , Shop , UserEffects } = require('./dbObjects');
 const { Op } = require('sequelize');
 const func = require('./resources/functions')
-const Canvas = require('canvas');
 
 const client = new Discord.Client();
 const currency = new Discord.Collection();
@@ -57,7 +56,7 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 	try {
 		return await commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
-		func.log(`had an error with the ${commandToRun} command`, message)
+		func.log(`had an error with the ${commandToRun} command :${message.content}`, message)
 		console.log(e)
 	}
 }

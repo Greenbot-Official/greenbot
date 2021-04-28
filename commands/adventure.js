@@ -2,7 +2,6 @@ const func = require('../resources/functions')
 const app = require('../app')
 const Discord = require('discord.js')
 const config = require('../config.json')
-const Canvas = require('canvas');
 const { Adventures } = require('../dbObjects');
 
 
