@@ -14,7 +14,9 @@ module.exports = {
 		const user = app.currency.get(target.id);
     const items = await user.getItems();
     if (!user) return message.channel.send(`${target} does not exist`)
-		if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
+    if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
+    let text = ''
+    
     func.log(`checked ${target}'s inventory`, message)
     return message.channel.send(
       'consumables:\n' +
