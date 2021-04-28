@@ -7,10 +7,21 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-const Users = sequelize.import('models/Users');
-const Shop = sequelize.import('models/Shop');
-const UserItems = sequelize.import('models/UserItems');
-const UserEffects = sequelize.import('models/UserEffects')
+const userdata = new Sequelize('database', 'username', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'userdatabase.sqlite',
+});
+
+const Users = require('./models/Users')(userdata, Sequelize.DataTypes);
+const Shop = require('./models/Shop')(sequelize, Sequelize.DataTypes);
+const UserItems = require('./models/UserItems')(userdata, Sequelize.DataTypes);
+const UserEffects = require('./models/UserEffects')(userdata, Sequelize.DataTypes)
+const Adventures = require('./models/Adventure')(sequelize, Sequelize.DataTypes)
+const PlayerShop = require('./models/PlayerShop')(userdata, Sequelize.DataTypes)
+const QuestBoard = require('./models/QuestBoard')(sequelize, Sequelize.DataTypes)
+const Enemy = require('./models/Enemy')(sequelize, Sequelize.DataTypes)
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
@@ -25,18 +36,18 @@ Users.prototype.addItem = async function(item, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, heal: shopItem.heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
 };
 
-Users.prototype.addUniqueItem = async function(item, type, enchant, damage, heal) {
+Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal, amount) {
 	const userItem = await UserItems.findOne({
-		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, heal: heal },
+		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal },
 	});
 	if (userItem) {
-		userItem.amount += Number(1)
+		userItem.amount += Number(amount)
 		return userItem.save()
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: 1, type: type, enchant: enchant, damage: damage, heal: heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: amount, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal });
 };
 
 Users.prototype.getItems = async function() {
@@ -62,4 +73,43 @@ Users.prototype.equip = async function(item) {
 	return
 };
 
-module.exports = { Users, Shop, UserItems, UserEffects };
+Users.prototype.PshopBuyItem = async function(item, add) {
+	const userItem = await UserItems.findOne({
+		where: { user_id: this.user_id, item_id: item },
+	});
+	const shopItem = await PlayerShop.findOne({
+		where: { name: item },
+	});
+	shopItem.amount -= Number(add)
+	shopItem.save()
+	if (userItem) {
+		userItem.amount += Number(add);
+		return userItem.save();
+	}
+	return await UserItems.upsert({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
+};
+
+Users.prototype.PshopSellItem = async function(item, cost, count, id) {
+	const userItem = await UserItems.findOne({
+		where: { user_id: this.user_id, item_id: item },
+	});
+	userItem.amount -= Number(count)
+	userItem.save()
+	const shopItem = await PlayerShop.findOne({
+		where: { name: item, seller_id: id, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal } 
+	})
+	if (shopItem) {
+		shopItem.amount += Number(count)
+		return shopItem.save()
+	}
+	return await PlayerShop.upsert({ name: userItem.item_id, seller_id: id, amount: count, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal })
+};
+
+Users.prototype.addQuest = async function (quest) {
+	const questb = await QuestBoard.findOne({
+		where: { name: quest }
+	})
+	return await Enemy.upsert({ user_id: this.user_id, name: questb.enemy, max_health: questb.max_health, health: questb.max_health, enchant: questb.enchant, damage: questb.damage, reward: questb.reward })
+}
+
+module.exports = { Users, Shop, PlayerShop, UserItems, UserEffects, Adventures, QuestBoard, Enemy };

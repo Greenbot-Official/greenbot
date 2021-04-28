@@ -1,7 +1,8 @@
-config.json
-log.txt
-oldlog.txt
 start.bat
-package-lock.json
-database.sqlite
 archives.txt
+config.json
+database.sqlite
+userdatabase.sqlite
+package-lock.json
+node_modules
+.idea/

@@ -2,10 +2,10 @@ const func = require('../functions')
 const app = require('../../app')
 
 module.exports = {
-  name: 'flame',
+  name: 'curseremoval',
   async execute(message, userEffects, tUserEffects, user, tUser) {
-    tUserEffects.burn = Number(3)
-    tUserEffects.save()
-    return message.reply('your target was set on fire')
+    user.curse = false
+    user.save()
+    return message.reply('you have been lifted of your curse')
   },
 }

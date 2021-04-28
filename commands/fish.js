@@ -4,16 +4,19 @@ const { UserEffects } = require('../dbObjects');
 
 module.exports = {
   name: 'fish',
-  aliases: 'fish',
+  aliases: 'f',
   description: 'go fishing',
 	usage: 'fish',
-	cooldown: '5',
+	cooldown: '45',
+	admin: false,
+  removal: false,
   async execute (message, args) {
 		const user = app.currency.get(message.author.id);
 		if (user.combat) return message.channel.send('you cannot do that while in combat')
 		const fishexp = user.fish_exp || 0;
-		const randmult = fishexp / 5
-		const rand = Math.round(Math.random() * randmult + 1)
+		const randmult = Math.sqrt(fishexp) * 2
+		const randmult2 = Number(user.luck) / Math.round((Math.random() + 1) * 2)
+		const rand = Math.round(Math.random() * randmult + 1 + randmult2)
 		const money = rand / 2
 		const biggest = user.biggest_catch || 0;
 		const newrec = Math.max(rand, biggest)

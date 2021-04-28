@@ -1,24 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-	return sequelize.define('user_item', {
-		user_id: DataTypes.STRING,
-		item_id: DataTypes.STRING,
-		amount: {
+	return sequelize.define('shop', {
+		name: {
+			type: DataTypes.STRING,
+			unique: true,
+        },
+        seller_id: {
+            type: DataTypes.STRING,
+        },
+        amount: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+		cost: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
-			'default': 0,
+            allowNull: false,
 		},
 		type: {
 			type: DataTypes.STRING,
-			defaultValue: 'default',
-			allowNull: false,
-		},
-		equipped: {
-			type: DataTypes.BOOLEAN,
-			defaultValue: false,
 			allowNull: false,
 		},
 		enchant: {
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 		damage: {

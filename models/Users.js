@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			primaryKey: true,
 		},
+		adventure: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
 		leaderboard: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false,
@@ -70,6 +75,26 @@ module.exports = (sequelize, DataTypes) => {
 		luck: {
 			type: DataTypes.INTEGER,
 			defaultValue: 3,
+			allowNull: false,
+		},
+		strength: {
+			type: DataTypes.INTEGER,
+			defaultValue: 2,
+			allowNull: false
+		},
+		dexterity: {
+			type: DataTypes.INTEGER,
+			defaultValue: 2,
+			allowNull: false,
+		},
+		curse: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			allowNull: false,
+		},
+		curse_time: {
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
 			allowNull: false,
 		},
 	}, {

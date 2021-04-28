@@ -5,12 +5,14 @@ const { Op } = require('sequelize');
 
 module.exports = {
   name: 'use',
-  aliases: 'use',
+  aliases: 'eat',
   description: 'eats a consumable to heal you',
-  usage: 'eat {consumable}',
+  usage: 'use {consumable}',
+  admin: false,
+  removal: false,
   async execute(message, args) {
     const user = app.currency.get(message.author.id)
-		var item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } }});
+		let item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } }});
 		if (!item) {
       item = await UserItems.findOne({ where: { id: { [Op.like]: args[0] } }});
       if (!item) return message.channel.send(`unnable to find item ${args[0]}`)
@@ -27,14 +29,15 @@ module.exports = {
       tUser.save()
     }
     if (item.enchant != null) {
-      var ench = app.getEnchants()
+      let ench = app.getEnchants()
       ench = ench.get(item.enchant)
       await ench.execute(message, userEffects, null, user, null)
     }
 
     user.health = Number(Math.min(user.max_health, user.health + heal))
-    if (item.item_id === 'water') func.clearStatus(user)
-    user.addItem(item.item_id, -1)
+    if (item.item_id === 'water') func.clear(userEffects, 'burn', message)
+    if (item.item_id === 'antidote') func.clear(userEffects, 'poison', message)
+    await user.addItem(item.item_id, -1)
     
 		func.log(`used a ${item.item_id}`, message);
     return message.channel.send(`${message.author.username} healed for ${heal}`);
