@@ -5,18 +5,18 @@ const { UserItems, UserEffects } = require('../dbObjects')
 const config = require('../config.json')
 
 module.exports = {
-  name: 'stats',
-  aliases: 'stat',
+  name: 'adminst',
+  aliases: 'adminst',
   description: 'gets the stats of a target',
   usage: 'stats [@target]',
-  admin: false,
+  admin: true,
   removal: false,
   async execute(message, args) {
     const target = message.mentions.users.first() || message.author
     const user = currency.get(target.id)
     if (!user) return message.channel.send(`${target.username} was not found`)
     let wep
-    const weapon = await UserItems.findOne({ where: { user_id: message.author.id, equipped: true }})
+    const weapon = await UserItems.findOne({ where: { user_id: message.author.id, equipped: true } })
     const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
     let effects = ''
     if (userEffects.burn > 0) effects += `\nburn: ${userEffects.burn}`
@@ -31,7 +31,13 @@ module.exports = {
       `strength: ${user.strength}\n` +
       `dexterity: ${user.dexterity}\n` +
       `fish exp: ${user.fish_exp}\n` +
-      `biggest fish: ${user.biggest_catch}\n` +
+      `biggest fish: ${user.biggest_catch} \n` +
+      `combat exp: ${user.combat_exp}\n` +
+      `crime exp: ${user.crime_exp}\n` +
+      `adventure: ${user.adventure}\n` +
+      `combat: ${user.combat}\n` +
+      `combat target: ${user.combat_target}\n` +
+      `combat tid: ${user.combat_target_id}\n` +
       `weapon: ${wep}\n` +
       `status:${effects}`
       , { code: true })

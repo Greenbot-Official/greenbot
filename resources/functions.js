@@ -5,13 +5,25 @@ const { client } = require('../app');
 module.exports = {
 	log: function(text, message) {
 		var readarchives = fs.readFileSync('archives.txt', `utf-8`);
-		var text2 = `${message.author} ${text}`
+		var text2 = `${String(text)}`
+		var author = `<${message.author.id}>`
 		for (var i = 0; i < config.coolids.length; i++) {
-			text2 = text2.replace(`<@${config.coolids[i]}>`, `<${config.coolnames[i]}>`)
-			text2 = text2.replace(`<@${config.coolids[i]}>\'`, `<${config.coolnames[i]}>\'`)
+			text2 = text2.replace(`${config.coolids[i]}`, `${config.coolnames[i]}`)
+			if (text2.includes(config.coolids[i])) console.log('name change failed')
+			author = author.replace(`${config.coolids[i]}`, `${config.coolnames[i]}`)
 		}
-		fs.writeFileSync('archives.txt', readarchives+`\n${message.createdAt}: ${message.guild} - ${text2}`)
-		return console.log(`${message.createdAt}: ${message.guild} - ${text2}`);
+		fs.writeFileSync('archives.txt', readarchives+`\n${message.createdAt}: ${message.guild} - ${author} ${text2}`)
+		return console.log(`${message.createdAt}: ${message.guild} - ${author} ${text2}`);
+	},
+	logconsole: function (text, time) {
+		var readarchives = fs.readFileSync('archives.txt', `utf-8`);
+		var text2 = `${String(text)}`
+		for (var i = 0; i < config.coolids.length; i++) {
+			text2 = text2.replace(`${config.coolids[i]}`, `${config.coolnames[i]}`)
+			if (text2.includes(config.coolids[i])) console.log('name change failed')
+		}
+		fs.writeFileSync('archives.txt', readarchives + `\n${time} - <console> ${text2}`)
+		return console.log(`${time} - <console> ${text2}`);
 	},
 	clear: function(userEffects, effect, message) {
 		if (effect === 'burn') {

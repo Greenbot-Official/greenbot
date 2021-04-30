@@ -56,9 +56,25 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 	try {
 		return await commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
-		func.log(`had an error with the ${commandToRun} command :${message.content}`, message)
-		console.log(e)
+		func.log(`had an error with the ${commandToRun}` + `\ncommand: ${message.content}`, message)
+		func.logconsole(e, Date.now())
 	}
+}
+
+async function userInit(user, effects, id, message) {
+	user = await Users.create({ user_id: id });
+	effects = await UserEffects.create({ user_id: id })
+	currency.set(id, user);
+	if (user.user_id === config.author) {
+		// item, type, enchant, damage, attribute, scale, heal, amount
+		user.addUniqueItem('god\_sword', 'weapon', null, 100, 'str', 1, null, 1)
+		user.addUniqueItem('wacking\_stick', 'weapon', 'randomness', 0, 'none', 0, null, 1)
+		user.balance += Number(100)
+		user.save()
+	}
+	user.save()
+  effects.save()
+	func.logconsole(`initialized user <${id}>`, message.createdAt)
 }
 
 client.on('message', async message => {
@@ -68,16 +84,28 @@ client.on('message', async message => {
 	const now = Date.now();
 	let prefix = config.globalPrefix;
 	let user = currency.get(message.author.id)
-	let userEffects = await UserEffects.findOne({ where: { user_id: message.author.id }})
+	let userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
 	if (!user) {
 		user = await Users.create({ user_id: message.author.id });
 		userEffects = await UserEffects.create({ user_id: message.author.id })
 		currency.set(message.author.id, user);
 		if (user.user_id === config.author) {
-			user.addUniqueItem('god\_sword','weapon',0,10,'str',1,null, 1)
-			user.addUniqueItem('wacking\_stick','weapon',4,0,'none',null,null, 1)
+			user.addUniqueItem('god\_sword', 'weapon', null, 100, 'str', 1, null, 1)
+			user.addUniqueItem('wacking\_stick', 'weapon', 'randomness', 0, 'none', 0, null, 1)
 			user.balance += Number(100)
 			user.save()
+		}
+		func.logconsole(`initialized user <${message.author.id}>`, message.createdAt)
+	}
+	const t = message.mentions.members.first()
+	if (t) {
+		let tuser = currency.get(t.id)
+		let tuserEffects = await UserEffects.findOne({ where: { user_id: t.id } })
+		if (!tuser) {
+			tuser = await Users.create({ user_id: t.id });
+			tuserEffects = await UserEffects.create({ user_id: t.id })
+			currency.set(t.id, tuser);
+			func.logconsole(`initialized user <${t.id}>`, message.createdAt)
 		}
 	}
 	if (user.curse) {
@@ -129,12 +157,12 @@ client.on('message', async message => {
 })
 
 client.on("guildCreate", async (guild) => {
-	console.log(`[INFO] - JOINED GUILD ${guild}`)
+	func.logconsole(`JOINED GUILD ${guild}`, Date.now())
 	client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 })
 
 client.on("guildDelete", async (guild) => {
-		console.log(`[INFO] - LEFT GUILD ${guild}`)
+		func.logconsole(`LEFT GUILD ${guild}`, Date.now())
 		client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 })
 

@@ -12,7 +12,15 @@ module.exports = {
   removal: false,
   async execute(message, args) {
     const name = args[0]
-    if (!name) return message.channel.send('please enter an item to equip')
+    if (!name) {
+      const user = app.currency.get(message.author.id)
+      let weapon = UserItems.findOne({ where: { user_id: message.author.id, equipped: true } })
+      if (!weapon) return message.channel.send('please enter an weapon to equip')
+      weapon.equipped = Boolean(false)
+      weapon.save()
+      func.log(`dequipped ${weapon.item_id}`, message);
+      return message.channel.send(`${message.author.username} dequipped ${weapon.item_id}`);
+    }
     const user = app.currency.get(message.author.id)
     let weapon = await UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: name }, amount: { [Op.gt]: 0} }})
     if (!weapon) {

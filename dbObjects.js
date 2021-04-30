@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize')
 
 const sequelize = new Sequelize('database', 'username', 'password', {
 	host: 'localhost',

@@ -14,7 +14,7 @@ module.exports = {
     const level = user.level || 0;
     const calclvl = func.calclvl(user.level)
     if (!args[0]) {
-      func.log(`checked ${target}'s level`, message)
+      func.log(`checked ${target} level`, message)
       return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰\n` + 
       'stats available for levelup:\nhealth\nluck\nstrength\ndexterity', { code: true })
 

@@ -12,7 +12,7 @@ module.exports = {
     const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);
 		const bal = user.balance || 0
-		func.log(`checked ${target}'s balance of ${bal}`, message)
+		func.log(`checked ${target} balance of ${bal}`, message)
 		return message.channel.send(`${target} has ${bal}💰`)
 
   },
