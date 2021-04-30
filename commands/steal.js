@@ -9,14 +9,14 @@ module.exports = {
   cooldown: '300',
   admin: false,
   removal: true,
-  execute(message, args) {
+  execute(message, args, client) {
     const target = message.mentions.users.first() || message.author
     const user = app.currency.get(target.id)
     const tBal = user.balance
     if (target === message.author) {
       app.addCrimeExp(message.author.id, 1)
       app.add(message.author.id, rand)
-      func.log(`mugged an innocent civilian for ${rand}`, message)
+      func.log(`mugged an innocent civilian for ${rand}`, message, client)
       return message.channel.send(`${message.author} mugged an innocent civilian for ${rand}💰`)
 
     } else {
@@ -24,7 +24,7 @@ module.exports = {
       rand = Math.min(rand, tBal)
       app.add(message.author.id, rand)
       app.add(target.id, -rand)
-      app.log(`${message.author} mugged ${target} for ${rand}`, message)
+      app.log(`${message.author} mugged ${target} for ${rand}`, message, client)
       return message.channel.send(`${message.author} mugged ${target} for ${rand}💰`)
 
     }

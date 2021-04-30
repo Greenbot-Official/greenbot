@@ -10,7 +10,7 @@ module.exports = {
   usage: 'playersell {item name/id} {cost} [amount]',
   admin: false,
   removal: true,
-  async execute(message, args) {
+  async execute(message, args, client) {
 		const sellName = args[0]
     const sellPrice = args[1]
     let sellAmount = args[2]
@@ -27,7 +27,7 @@ module.exports = {
     if (item.amount < sellAmount) return message.channel.send('you do not have enough of that item')
     user.PshopSellItem(item.item_id, sellPrice, sellAmount, user.user_id)
 		
-		func.log(`sold ${sellAmount} ${item.item_id}`, message)
+    func.log(`sold ${sellAmount} ${item.item_id}`, message, client)
 		return message.channel.send(`You've sold ${sellAmount} ${item.item_id}`);
 
   }

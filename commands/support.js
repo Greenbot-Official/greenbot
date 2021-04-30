@@ -7,8 +7,8 @@ module.exports = {
   usage: 'support',
   admin: false,
   removal: false,
-  async execute(message, args) {
-		func.log(`is looking for the support server`, message);
+  async execute(message, args, client) {
+    func.log(`is looking for the support server`, message, client);
     return message.channel.send("https://discord.gg/teVCtMX");
 
   }

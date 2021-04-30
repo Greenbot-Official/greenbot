@@ -12,11 +12,11 @@ module.exports = {
   usage: 'adventure [args]',
   admin: false,
   removal: true,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const id = message.author.id
     const user = app.currency.get(id)
     if (!args[0]) {
-      func.log('is veiwing the adventure help menu', message)
+      func.log('is veiwing the adventure help menu', message, client)
       return message.channel.send(
         `start: - starts a new adventure\n` +
         ``)

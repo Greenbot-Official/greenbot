@@ -8,7 +8,7 @@ module.exports = {
   usage: 'run',
   admin: false,
   removal: true,
-  execute(message, args) {
+  execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')
     if (!user.turn) return message.channel.send('not your turn')
@@ -29,7 +29,7 @@ module.exports = {
     user.save()
     tUser.save()
 
-    func.log(`ran away from ${user.combat_target_id}`, message);
+    func.log(`ran away from ${user.combat_target_id}`, message, client);
     return message.channel.send(`${message.author.username} ran away from ${user.combat_target}`);
 
   }

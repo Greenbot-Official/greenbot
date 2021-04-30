@@ -10,7 +10,7 @@ module.exports = {
   cooldown: '0',
   admin: false,
   removal: true,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const target = message.mentions.users.first()
     const user = app.currency.get(message.author.id)
     if (!args[0]) {
@@ -42,7 +42,7 @@ module.exports = {
     user.save()
     tUser.save()
 
-    func.log(`initiated combat with <@${target.id}>`, message);
+    func.log(`initiated combat with <@${target.id}>`, message, client);
     return message.channel.send(`${message.author.username} initiated combat with ${target.username}`);
 
   }

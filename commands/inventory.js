@@ -9,7 +9,7 @@ module.exports = {
   usage: 'inv [@user]',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
 		const target = message.mentions.users.first() || message.author;
 		const user = app.currency.get(target.id);
     const items = await user.getItems();
@@ -18,7 +18,7 @@ module.exports = {
     let wep
     const weapon = await UserItems.findOne({ where: { user_id: message.author.id, equipped: true } })
     if (!weapon) { wep = '' } else { wep = `\n\nequipped:\n${weapon.item_id} damage:${weapon.damage} attribute: ${weapon.attribute}` }
-    func.log(`checked ${target} inventory`, message)
+    func.log(`checked ${target} inventory`, message, client)
     return message.channel.send(
       'consumables:\n' +
       items.sort((a, b) => a.id - b.id).filter(a => a.type === 'consumable' && a.amount > 0).map(item => `[${item.id}]${item.amount} ${item.item_id} heal:${item.heal}`).join('\n') +

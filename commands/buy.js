@@ -9,7 +9,7 @@ module.exports = {
 	usage: 'buy {item name/id} [amount]',
 	admin: false,
   removal: false,
-  async execute(message, args) {
+	async execute(message, args, client) {
 		const buyName = args[0]
 		var buyAmmount = args[1] || 1
 		if (!buyName) return message.channel.send('please enter a item to buy')
@@ -30,7 +30,7 @@ module.exports = {
 		await user.addItem(item.name, buyAmmount);
 		user.save();
 		
-		func.log(`bought ${buyAmmount} ${item.name}`, message)
+		func.log(`bought ${buyAmmount} ${item.name}`, message, client)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 
   }

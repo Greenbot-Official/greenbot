@@ -11,7 +11,7 @@ module.exports = {
 	usage: 'playerbuy {item name/id} [amount]',
 	admin: false,
   removal: true,
-  async execute(message, args) {
+	async execute(message, args, client) {
 		const buyName = args[0]
 		const buyAmmount = args[1] || 1
 		if (!buyName) return message.channel.send('please enter a item to buy')
@@ -35,7 +35,7 @@ module.exports = {
     seller.balance += Number(totalCost)
     seller.save()
 		
-		func.log(`bought ${buyAmmount} ${item.name}`, message)
+		func.log(`bought ${buyAmmount} ${item.name}`, message, client)
 		return message.channel.send(`You've bought ${buyAmmount} ${item.name}`);
 
   }

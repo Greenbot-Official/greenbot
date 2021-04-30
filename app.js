@@ -57,24 +57,8 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 		return await commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
 		func.log(`had an error with the ${commandToRun}` + `\ncommand: ${message.content}`, message)
-		func.logconsole(e, Date.now())
+		func.logconsole(e, Date.now(), client)
 	}
-}
-
-async function userInit(user, effects, id, message) {
-	user = await Users.create({ user_id: id });
-	effects = await UserEffects.create({ user_id: id })
-	currency.set(id, user);
-	if (user.user_id === config.author) {
-		// item, type, enchant, damage, attribute, scale, heal, amount
-		user.addUniqueItem('god\_sword', 'weapon', null, 100, 'str', 1, null, 1)
-		user.addUniqueItem('wacking\_stick', 'weapon', 'randomness', 0, 'none', 0, null, 1)
-		user.balance += Number(100)
-		user.save()
-	}
-	user.save()
-  effects.save()
-	func.logconsole(`initialized user <${id}>`, message.createdAt)
 }
 
 client.on('message', async message => {
@@ -95,7 +79,7 @@ client.on('message', async message => {
 			user.balance += Number(100)
 			user.save()
 		}
-		func.logconsole(`initialized user <${message.author.id}>`, message.createdAt)
+		func.logconsole(`initialized user <${message.author.id}>`, message.createdAt, client)
 	}
 	const t = message.mentions.members.first()
 	if (t) {
@@ -105,7 +89,7 @@ client.on('message', async message => {
 			tuser = await Users.create({ user_id: t.id });
 			tuserEffects = await UserEffects.create({ user_id: t.id })
 			currency.set(t.id, tuser);
-			func.logconsole(`initialized user <${t.id}>`, message.createdAt)
+			func.logconsole(`initialized user <${t.id}>`, message.createdAt, client)
 		}
 	}
 	if (user.curse) {
@@ -133,7 +117,7 @@ client.on('message', async message => {
 	if(!commandToRun){
 		return;
 	}
-	if (commandToRun.admin && user.user_id != config.author) return
+	if (commandToRun.admin && !config.author.includes(message.author.id)) return
 	if (commandToRun.removal && !config.tester.includes(message.author.id)) return
 
 	// cooldown stuff

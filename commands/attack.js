@@ -10,7 +10,7 @@ module.exports = {
   usage: 'attack',
   admin: false,
   removal: true,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')
     if (!user.turn) return message.channel.send('not your turn')
@@ -40,7 +40,7 @@ module.exports = {
       await ench.execute(message, null, tUserEffects, user, tUser)
     }
 
-    func.log(`attacked ${user.combat_target_id}`, message);
+    func.log(`attacked ${user.combat_target_id}`, message, client);
     if (!crit) { message.channel.send(`${message.author.username} attacked ${user.combat_target} for ${rand}`); }
     else { message.channel.send(`${message.author.username} CRIT ${user.combat_target} for ${rand}`) }
     if (tUser.health < 1) {
@@ -51,7 +51,7 @@ module.exports = {
       user.save()
       tUser.save()
       func.clearStatus(tUserEffects)
-      func.log(`killed ${user.combat_target_id}`, message)
+      func.log(`killed ${user.combat_target_id}`, message, client)
       message.channel.send(`${message.author.username} killed ${user.combat_target}`)
     }
     return

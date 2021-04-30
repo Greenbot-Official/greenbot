@@ -1,9 +1,8 @@
 const fs = require('fs');
 const config = require('../config.json');
-const { client } = require('../app');
 
 module.exports = {
-	log: function(text, message) {
+	log: function(text, message, client) {
 		var readarchives = fs.readFileSync('archives.txt', `utf-8`);
 		var text2 = `${String(text)}`
 		var author = `<${message.author.id}>`
@@ -13,9 +12,10 @@ module.exports = {
 			author = author.replace(`${config.coolids[i]}`, `${config.coolnames[i]}`)
 		}
 		fs.writeFileSync('archives.txt', readarchives+`\n${message.createdAt}: ${message.guild} - ${author} ${text2}`)
+		client.channels.cache.get('837801271036608572').send(`${message.guild} - ${author} ${text2}`)
 		return console.log(`${message.createdAt}: ${message.guild} - ${author} ${text2}`);
 	},
-	logconsole: function (text, time) {
+	logconsole: function (text, time, client) {
 		var readarchives = fs.readFileSync('archives.txt', `utf-8`);
 		var text2 = `${String(text)}`
 		for (var i = 0; i < config.coolids.length; i++) {
@@ -23,6 +23,7 @@ module.exports = {
 			if (text2.includes(config.coolids[i])) console.log('name change failed')
 		}
 		fs.writeFileSync('archives.txt', readarchives + `\n${time} - <console> ${text2}`)
+		client.channels.cache.get('837801271036608572').send(`<console> ${text2}`)
 		return console.log(`${time} - <console> ${text2}`);
 	},
 	clear: function(userEffects, effect, message) {

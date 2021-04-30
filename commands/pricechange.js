@@ -9,12 +9,12 @@ module.exports = {
   usage: 'pricechange {item | id} {cost}',
   admin: true,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     let item = await Shop.findOne({ where: { name: args[0] } })
     if (!item) item = await Shop.findOne({ where: { id: args[0] } })
     if (!item) return message.channel.send('not an item')
     item.cost = Number(args[1])
-    func.log(`changed the price of an item`, message)
+    func.log(`changed the price of an item`, message, client)
     return item.save()
 
   }

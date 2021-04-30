@@ -10,15 +10,15 @@ module.exports = {
   usage: 'help',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const commands = app.getCommands()
     const target = message.author
-    func.log(`is looking for help`, message)
+    func.log(`is looking for help`, message, client)
     if (!config.tester.includes(message.author.id)) {
       return message.channel.send(commands.filter(c => !c.admin && !c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
     } else {
       message.channel.send(commands.filter(c => !c.admin && !c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
-      if (args[0] == "admin" && message.author.id == config.author) {
+      if (args[0] == "admin" && config.author.includes(message.author.id)) {
         message.channel.send(`\n ---- admin ----`, { code: true })
         message.channel.send(commands.filter(c => c.admin && !c.removal).map(c => `${c.usage}: - ${c.description}`).join('\n'), { code: true })
         message.channel.send(`\n ---- marked for removal ----`, { code: true })

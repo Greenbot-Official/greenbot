@@ -10,7 +10,7 @@ module.exports = {
   usage: 'equip {weapon}',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const name = args[0]
     if (!name) {
       const user = app.currency.get(message.author.id)
@@ -18,7 +18,7 @@ module.exports = {
       if (!weapon) return message.channel.send('please enter an weapon to equip')
       weapon.equipped = Boolean(false)
       weapon.save()
-      func.log(`dequipped ${weapon.item_id}`, message);
+      func.log(`dequipped ${weapon.item_id}`, message, client);
       return message.channel.send(`${message.author.username} dequipped ${weapon.item_id}`);
     }
     const user = app.currency.get(message.author.id)
@@ -29,7 +29,7 @@ module.exports = {
     }
     if (weapon.type != 'weapon') return message.channel.send(`${name} is not a weapon`)
     await user.equip(weapon.item_id)
-    func.log(`equipped ${weapon.item_id}`, message);
+    func.log(`equipped ${weapon.item_id}`, message, client);
     return message.channel.send(`${message.author.username} equipped ${weapon.item_id}`);
 
   }

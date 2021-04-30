@@ -10,7 +10,7 @@ module.exports = {
   usage: 'give {@target} {item} [amount]',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()
     const amount = args[2] || 1
@@ -25,7 +25,7 @@ module.exports = {
     await tUser.addUniqueItem(item.item_id, item.type, item.enchant, item.damage, item.attribute, item.scale, item.heal, amount)
     item.amount -= Number(amount)
     item.save()
-    func.log(`gave ${target.id} ${amount} ${item.item_id}`, message)
+    func.log(`gave ${target.id} ${amount} ${item.item_id}`, message, client)
     return message.channel.send(`you gave ${args[0]} ${amount} ${item.item_id}`)
 
   }

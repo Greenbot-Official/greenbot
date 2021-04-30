@@ -9,10 +9,10 @@ module.exports = {
   usage: 'questboard [quest name/id]',
   admin: true,
   removal: true,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const quests = await QuestBoard.findAll();
-    func.log(`is browsing the shop`, message)
     if (!args[0]) {
+      func.log(`is browsing the quest board`, message, client)
       return message.channel.send(
         quests.sort((a, b) => a.diff - b.diff).map(q => `[${q.id}]${q.name}: ${q.desc} ${q.reward}💰`).join('\n\n')
         , { code: true }
@@ -32,7 +32,7 @@ module.exports = {
       await user.addQuest(q.name);
       user.save();
 
-      func.log(`accepted ${q.name}`, message)
+      func.log(`accepted ${q.name}`, message, client)
       message.channel.send(`You've accepted the quest ${q.name}!`);
 
       const enemy = Enemy.findOne({ where: { user_id: user.user_id } })

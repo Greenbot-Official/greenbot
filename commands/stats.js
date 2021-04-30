@@ -11,7 +11,7 @@ module.exports = {
   usage: 'stats [@target]',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const target = message.mentions.users.first() || message.author
     const user = currency.get(target.id)
     if (!user) return message.channel.send(`${target.username} was not found`)
@@ -23,7 +23,7 @@ module.exports = {
     if (userEffects.poison > 0) effects += `\npoison: ${userEffects.poison}`
     if (user.curse) effects += `\nCURSED`
     if (!weapon.item_id) { wep = 'none' } else { wep = weapon.item_id }
-    func.log(`is checking the stats of ${target}`, message)
+    func.log(`is checking the stats of ${target}`, message, client)
     return message.channel.send(`${target.username}'s stats: \n` +
       `level: ${user.level} \n` +
       `health: ${user.health}/${user.max_health} \n` +

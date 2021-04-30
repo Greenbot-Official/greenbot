@@ -10,7 +10,7 @@ module.exports = {
   usage: 'use {consumable}',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
 		let item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } }});
 		if (!item) {
@@ -39,7 +39,7 @@ module.exports = {
     if (item.item_id === 'antidote') func.clear(userEffects, 'poison', message)
     await user.addItem(item.item_id, -1)
     
-		func.log(`used a ${item.item_id}`, message);
+    func.log(`used a ${item.item_id}`, message, client);
     return message.channel.send(`${message.author.username} healed for ${heal}`);
 
   }

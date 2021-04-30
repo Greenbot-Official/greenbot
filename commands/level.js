@@ -8,13 +8,13 @@ module.exports = {
   usage: 'level [@target || stat]',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const target = message.mentions.users.first() || message.author
 		const user = app.currency.get(target.id);
     const level = user.level || 0;
     const calclvl = func.calclvl(user.level)
     if (!args[0]) {
-      func.log(`checked ${target} level`, message)
+      func.log(`checked ${target} level`, message, client)
       return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰\n` + 
       'stats available for levelup:\nhealth\nluck\nstrength\ndexterity', { code: true })
 
@@ -48,7 +48,7 @@ module.exports = {
         return message.channel.send(`unknown stat ${args}`)
       }
       user.save()
-      func.log(`leveled up their ${stat}`, message)
+      func.log(`leveled up their ${stat}`, message, client)
       return message.channel.send(`${message.author.username} leveled up their ${stat}`)
 
     }

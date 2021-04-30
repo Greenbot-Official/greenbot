@@ -8,7 +8,7 @@ module.exports = {
   usage: 'send {@target} [amount]',
   admin: false,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()
     const amount = args[1] || 1
@@ -21,7 +21,7 @@ module.exports = {
     user.save()
     tUser.save()
 
-		func.log(`transfered ${amount} to ${target.id}`, message);
+    func.log(`transfered ${amount} to ${target.id}`, message, client);
     return message.channel.send(`sent ${amount}💰 to ${args[0]}`);
 
   }

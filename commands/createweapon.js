@@ -8,10 +8,10 @@ module.exports = {
   usage: 'createweapon {item} {type} {ench} {damage} {attribute} {scale} {heal} {amount}',
   admin: true,
   removal: false,
-  async execute(message, args) {
+  async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!args[0]) return message.channel.send('item, type, enchant, damage, attribute, scale, heal, amount')
-    func.log(`created an item`, message)
+    func.log(`created an item`, message, client)
     return await user.addUniqueItem(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 
   }

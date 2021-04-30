@@ -10,7 +10,7 @@ module.exports = {
 	cooldown: '45',
 	admin: false,
   removal: false,
-  async execute (message, args) {
+	async execute(message, args, client) {
 		const user = app.currency.get(message.author.id);
 		if (user.combat) return message.channel.send('you cannot do that while in combat')
 		const fishexp = user.fish_exp || 0;
@@ -26,7 +26,7 @@ module.exports = {
 		user.biggest_catch = Number(newrec)
 		user.save();
 
-		func.log(`caught a ${rand}in fish`, message)
+		func.log(`caught a ${rand}in fish`, message, client)
 		return message.channel.send(`${message.author} caught a ${rand}in :fish:`)
 
   }
