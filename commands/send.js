@@ -11,10 +11,12 @@ module.exports = {
   async execute(message, args, client) {
     if (!args) return message.channel.send('invalid arguments')
     const target = message.mentions.users.first()
-    const amount = args[1] || 1
+    let amount = args[1] || 1
     const user = app.currency.get(message.author.id)
     const tUser = app.currency.get(target.id)
     if (!tUser) return message.channel.send('could not find user')
+    if (isNaN(amount)) return message.channel.send('please enter a number')
+    amount = Math.abs(amount)
 
     user.balance -= Number(amount)
     tUser.balance += Number(amount)

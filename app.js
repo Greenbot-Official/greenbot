@@ -56,7 +56,7 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 	try {
 		return await commandToRun.execute(message, commandArgs, client);
 	} catch (e) {
-		func.log(`had an error with the ${commandToRun}` + `\ncommand: ${message.content}`, message)
+		func.log(`had an error with the ${commandToRun}` + `\ncommand: ${message.content}`, message, client)
 		func.logconsole(e, Date.now(), client)
 	}
 }
@@ -73,7 +73,7 @@ client.on('message', async message => {
 		user = await Users.create({ user_id: message.author.id });
 		userEffects = await UserEffects.create({ user_id: message.author.id })
 		currency.set(message.author.id, user);
-		if (user.user_id === config.author) {
+		if (config.author.includes(message.author.id)) {
 			user.addUniqueItem('god\_sword', 'weapon', null, 100, 'str', 1, null, 1)
 			user.addUniqueItem('wacking\_stick', 'weapon', 'randomness', 0, 'none', 0, null, 1)
 			user.balance += Number(100)

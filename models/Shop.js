@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 		},
 		scale: {
-			type: DataTypes.DOUBLE,
+			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 		heal: {
