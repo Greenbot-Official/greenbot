@@ -103,7 +103,7 @@ client.on('message', async message => {
 	}
 	const cause = func.updateEffects(message, user, userEffects)
 	if (user.health < 1) {
-		func.die(message, cause, user, userEffects)
+		func.die(message, cause, user, userEffects, client)
 	}
 	if (!message.content.startsWith(prefix)) return;
 	const input = message.content.slice(prefix.length).trim();

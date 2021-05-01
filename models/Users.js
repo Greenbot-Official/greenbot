@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		leaderboard: {
 			type: DataTypes.BOOLEAN,
-			defaultValue: false,
+			defaultValue: true,
 			allowNull: false,
 		},
 		level: {

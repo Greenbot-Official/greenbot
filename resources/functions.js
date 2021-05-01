@@ -44,13 +44,13 @@ module.exports = {
 	calclvl: function(lvl) {
 		return (lvl + 1) * 2
 	},
-	die: function(message, cause, user, userEffects) {
+	die: function(message, cause, user, userEffects, client) {
 		user.health = Number(1)
 		user.balance = 0
 		user.save()
 		userEffects.save()
 		this.clearStatus(userEffects)
-		this.log(cause, message)
+		this.log(cause, message, client)
 		return message.reply(cause)
 	},
 	updateEffects: function(message, user, userEffects) {
