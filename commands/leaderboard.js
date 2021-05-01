@@ -39,6 +39,15 @@ module.exports = {
         .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.biggest_catch}`)
         .join('\n'), { code: true })
 
+    } else if (args[0] === 'crime') {
+      func.log(`is veiwing the crime leaderboard`, message, client)
+      return message.channel.send(app.currency.sort((a, b) => b.crime_exp - a.crime_exp)
+        .filter(user => client.users.cache.has(user.user_id))
+        .filter(user => user.leaderboard)
+        .first(10)
+        .map((user, position) => `(${position + 1}) ${(client.users.cache.get(user.user_id).tag)}: ${user.crime_exp}`)
+        .join('\n'), { code: true })
+
     }
 
   }
