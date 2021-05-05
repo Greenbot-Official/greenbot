@@ -37,7 +37,7 @@ Users.prototype.addItem = async function(item, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal, desc: shopItem.desc });
 };
 
 Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal, amount) {
@@ -87,7 +87,7 @@ Users.prototype.PshopBuyItem = async function(item, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return await UserItems.upsert({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
+	return await UserItems.upsert({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal, desc: shopItem.desc });
 };
 
 Users.prototype.PshopSellItem = async function(item, cost, count, id) {
@@ -103,7 +103,7 @@ Users.prototype.PshopSellItem = async function(item, cost, count, id) {
 		shopItem.amount += Number(count)
 		return shopItem.save()
 	}
-	return await PlayerShop.upsert({ name: userItem.item_id, seller_id: id, amount: count, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal })
+	return await PlayerShop.upsert({ name: userItem.item_id, seller_id: id, amount: count, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal, desc: shopItem.desc })
 };
 
 Users.prototype.addQuest = async function (quest) {

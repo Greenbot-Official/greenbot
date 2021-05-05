@@ -27,13 +27,15 @@ function getTextures() {
 	return client.textures
 }
 
-
-client.once('ready', async () => {
+function loadcmd() {
 	const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);
 		client.commands.set(command.name, command);
 	}
+}
+client.once('ready', async () => {
+	loadcmd()
 	const eventFiles = fs.readdirSync('./resources/events').filter(file => file.endsWith('.js'));
 	for (const file of eventFiles) {
 		const event = require(`./resources/events/${file}`);
@@ -150,5 +152,5 @@ client.on("guildDelete", async (guild) => {
 		client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 })
 
-module.exports = { Users , currency , fs , Shop , Discord , client , getCommands , getEvents , getEnchants , getTextures , runCommand };
+module.exports = { Users , currency , fs , Shop , Discord , client , getCommands , getEvents , getEnchants , getTextures , runCommand , loadcmd };
 client.login(config.token).catch(console.error())

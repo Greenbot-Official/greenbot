@@ -26,16 +26,6 @@ module.exports = {
 		client.channels.cache.get('837801271036608572').send(`<console> ${text2}`)
 		return console.log(`${time} - <console> ${text2}`);
 	},
-	clear: function(userEffects, effect, message) {
-		if (effect === 'burn') {
-			userEffects.burn = Number(0)
-			message.reply('you are no longer burning')
-		} else if (effect === 'poison') {
-			userEffects.poison = Number(0)
-			message.reply('you are no longer poisoned')
-		}
-		return userEffects.save()
-	},
 	clearStatus: function(userEffects) {
 		userEffects.burn = Number(0)
 		userEffects.poison = Number(0)

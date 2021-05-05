@@ -8,7 +8,7 @@ module.exports = {
   usage: 'steal [@target]',
   cooldown: '500',
   admin: false,
-  removal: true,
+  removal: false,
   execute(message, args, client) {
     const target = message.mentions.users.first() || message.author
     const user = app.currency.get(target.id)

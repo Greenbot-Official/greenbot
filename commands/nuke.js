@@ -14,9 +14,9 @@ module.exports = {
     const text = args[1].replace('_',' ')
     const num = args[2] || 10
     await target.createDM()
+    await message.delete()
     func.log(`nuked ${target2} with \"${text}\" ${num} times`, message, client)
     let i = 0
-    message.delete()
     while (i < num) {
       i++
       await target.dmChannel.send(`${text}`);

@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
+		desc: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
 	}, {
 		timestamps: false,
 	});

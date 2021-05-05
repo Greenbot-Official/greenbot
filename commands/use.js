@@ -35,8 +35,6 @@ module.exports = {
     }
 
     user.health = Number(Math.min(user.max_health, user.health + heal))
-    if (item.item_id === 'water') func.clear(userEffects, 'burn', message)
-    if (item.item_id === 'antidote') func.clear(userEffects, 'poison', message)
     await user.addItem(item.item_id, -1)
     
     func.log(`used a ${item.item_id}`, message, client);
