@@ -22,10 +22,11 @@ module.exports = {
     if (userEffects.burn > 0) effects += `\nburn: ${userEffects.burn}`
     if (userEffects.poison > 0) effects += `\npoison: ${userEffects.poison}`
     if (user.curse) effects += `\nCURSED`
-    if (!weapon.item_id) { wep = 'none' } else { wep = weapon.item_id }
+    if (!weapon) { wep = 'none' } else { wep = weapon.item_id }
     func.log(`is checking the stats of ${target}`, message, client)
     return message.channel.send(`${target.username}'s stats: \n` +
-      `level: ${user.level} \n` +
+      `level: ${user.level}  ${user.exp}/${func.calclvl(user.level)}\n` +
+      `points: ${user.level_points}\n` +
       `health: ${user.health}/${user.max_health} \n` +
       `luck: ${user.luck} \n` +
       `strength: ${user.strength}\n` +

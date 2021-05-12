@@ -89,6 +89,7 @@ client.on('message', async message => {
 		}
 		func.logconsole(`initialized user <${message.author.id}>`, message.createdAt, client)
 	}
+	func.levelup(message, user, client)
 	const t = message.mentions.members.first()
 	if (t) {
 		let tuser = currency.get(t.id)
@@ -148,8 +149,8 @@ client.on('message', async message => {
 
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	return await runCommand(commandToRun, message, commandArgs, client)
-
+	await runCommand(commandToRun, message, commandArgs, client)
+	return func.levelup(message, user, client)
 })
 
 client.on("guildCreate", async (guild) => {

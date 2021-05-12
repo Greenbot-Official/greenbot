@@ -5,51 +5,50 @@ module.exports = {
   name: 'level',
   aliases: ['lvl'],
   description: 'checks target\'s level up status or levels up a stat',
-  usage: 'level [@target || stat]',
+  usage: 'level [stat] [amount]',
   admin: false,
   removal: false,
   async execute(message, args, client) {
-    const target = message.mentions.users.first() || message.author
-		const user = app.currency.get(target.id);
-    const level = user.level || 0;
-    const calclvl = func.calclvl(user.level)
+		const user = app.currency.get(message.author.id);
     if (!args[0]) {
-      func.log(`checked ${target} level`, message, client)
-      return message.channel.send(`${target.username}'s level: \n${level} \n${target.username}'s next level up: \n${calclvl}💰\n` + 
+      func.log(`checked their level`, message, client)
+      return message.channel.send(`${message.author}'s level: \n${user.level}  ${user.exp}/${func.calclvl(user.level)} \n${target.username}'s next level up: \n${calclvl}💰\n` + 
       'stats available for levelup:\nhealth\nluck\nstrength\ndexterity', { code: true })
 
     } else {
       if (user.combat) return message.channel.send('you cannot do that while in combat')
-      const bal = user.balance || 0;
-      const calclvl = func.calclvl(user.level)
-      if (bal < calclvl) return message.channel.send(`you do not have enough currency to level up`)
-      user.level += Number(1)
-      user.balance -= Number(calclvl)
+      if (user.level_points <= 0) return message.channel.send('you do not have any level points')
+      let amount = args[1]
+      if (amount == 'max') amount = user.level_points
+      if (isNaN(amount)) return message.channel.send('please enter a number')
+      amount = Math.min(amount, user.level_points)
+      user.level += Number(amount)
+      user.level_points -= Number(amount)
       user.save()
       let stat;
-      if (args[0] === 'health') {
+      if (args[0] == 'health') {
         stat = 'health'
-        user.max_health += Number(1)
+        user.max_health += Number(amount)
         user.health = user.max_health
   
-      } else if (args[0] === 'luck') {
+      } else if (args[0] == 'luck') {
         stat = 'luck'
-        user.luck += Number(1)
+        user.luck += Number(amount)
   
-      } else if (args[0] === 'strength' || args[0] === 'str') {
+      } else if (args[0] == 'strength' || args[0] == 'str') {
         stat = 'strength'
-        user.strength += Number(1)
+        user.strength += Number(amount)
   
-      } else if (args[0] === 'dexterity' || args[0] === 'dex') {
+      } else if (args[0] == 'dexterity' || args[0] == 'dex') {
         stat = 'dexterity'
-        user.dexterity += Number(1)
+        user.dexterity += Number(amount)
   
       } else {
         return message.channel.send(`unknown stat ${args}`)
       }
       user.save()
       func.log(`leveled up their ${stat}`, message, client)
-      return message.channel.send(`${message.author.username} leveled up their ${stat}`)
+      return message.channel.send(`${message.author} leveled up their ${stat}`)
 
     }
   }

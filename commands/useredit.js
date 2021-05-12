@@ -4,7 +4,7 @@ const config = require('../config.json')
 
 module.exports = {
   name: 'useredit',
-  aliases: ['useredit'],
+  aliases: ['edituser'],
   description: 'edits user data',
   usage: 'useredit {id} {stat} {value}',
   admin: true,
@@ -21,6 +21,12 @@ module.exports = {
         break
       case 'level':
         user.level = Number(args[2])
+        break
+      case 'exp':
+        user.exp = Number(args[2])
+        break
+      case 'level_points':
+        user.level_points = Number(args[2])
         break
       case 'turn':
         user.turn = Boolean(args[2])

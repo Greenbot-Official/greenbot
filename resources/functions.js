@@ -33,7 +33,20 @@ module.exports = {
 		return userEffects.save()
 	},
 	calclvl: function(lvl) {
-		return (lvl + 1) * 2
+		return Math.round(Math.pow((lvl + 1), 1.5))
+	},
+	levelup: function (message, user, client) {
+		if (user.exp >= this.calclvl(user.level)) {
+			user.exp -= this.calclvl(user.level)
+			user.level += Number(1)
+			user.level_points += Number(1)
+			user.save()
+			this.logconsole(`${user.user_id} leveled up`, message.createdAt, client)
+			message.channel.send(`${message.author} leveled up`)
+			this.levelup(message, user, client)
+		} else {
+			return
+		}
 	},
 	die: function(message, cause, user, userEffects, client) {
 		user.health = Number(1)
@@ -61,5 +74,6 @@ module.exports = {
 			if (userEffects.poison < 1) message.reply('you are no longer poisoned')
 			return cause = 'died by poison'
 		}
+		return cause = 'just died'
 	}
 }
