@@ -5,7 +5,7 @@ const { Op } = require('sequelize')
 
 module.exports = {
   name: 'attack',
-  aliases: 'atk',
+  aliases: ['atk'],
   description: 'attacks player you are currently in combat with',
   usage: 'attack',
   admin: false,

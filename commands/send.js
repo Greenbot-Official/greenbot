@@ -3,7 +3,7 @@ const app = require('../app')
 
 module.exports = {
   name: 'send',
-  aliases: 'transfer',
+  aliases: ['transfer'],
   description: 'sends target money',
   usage: 'send {@target} [amount]',
   admin: false,

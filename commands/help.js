@@ -5,7 +5,7 @@ const config = require('../config.json')
 
 module.exports = {
   name: 'help',
-  aliases: 'help',
+  aliases: ['help'],
   description: 'displays help menu',
   usage: 'help',
   admin: false,

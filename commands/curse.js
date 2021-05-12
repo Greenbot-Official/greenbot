@@ -3,9 +3,9 @@ const app = require('../app')
 
 module.exports = {
   name: 'curse',
-  aliases: 'curse',
+  aliases: ['curse'],
   description: 'says hello',
-  usage: 'hello',
+  usage: 'curse {target}',
   admin: true,
   removal: false,
   async execute(message, args, client) {

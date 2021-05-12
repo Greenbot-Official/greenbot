@@ -7,13 +7,14 @@ module.exports = {
 		var text2 = `${String(text)}`
 		var author = `<${message.author.id}>`
 		for (var i = 0; i < config.coolids.length; i++) {
+			text2 = text2.replace('@', '')
 			text2 = text2.replace(`${config.coolids[i]}`, `${config.coolnames[i]}`)
 			if (text2.includes(config.coolids[i])) console.log('name change failed')
 			author = author.replace(`${config.coolids[i]}`, `${config.coolnames[i]}`)
 		}
 		fs.writeFileSync('archives.txt', readarchives+`\n${message.createdAt}: ${message.guild} - ${author} ${text2}`)
 		client.channels.cache.get('837801271036608572').send(`${message.guild} - ${author} ${text2}`)
-		return console.log(`${message.createdAt}: ${message.guild} - ${author} ${text2}`);
+		return console.log(`${client.ws.ping}ms ${message.createdAt}: ${message.guild} - ${author} ${text2}`);
 	},
 	logconsole: function (text, time, client) {
 		var readarchives = fs.readFileSync('archives.txt', `utf-8`);
@@ -24,7 +25,7 @@ module.exports = {
 		}
 		fs.writeFileSync('archives.txt', readarchives + `\n${time} - <console> ${text2}`)
 		client.channels.cache.get('837801271036608572').send(`<console> ${text2}`)
-		return console.log(`${time} - <console> ${text2}`);
+		return console.log(`${client.ws.ping}ms ${time} - <console> ${text2}`);
 	},
 	clearStatus: function(userEffects) {
 		userEffects.burn = Number(0)

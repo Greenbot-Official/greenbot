@@ -4,7 +4,7 @@ const { Shop } = require('../dbObjects');
 
 module.exports = {
   name: 'pricechange',
-  aliases: 'pricechange',
+  aliases: ['pricechange'],
   description: 'changes price of an item in the shop',
   usage: 'pricechange {item | id} {cost}',
   admin: true,

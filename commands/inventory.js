@@ -4,7 +4,7 @@ const { Users, UserItems } = require('../dbObjects')
 
 module.exports = {
   name: 'inventory',
-  aliases: 'inv',
+  aliases: ['inv'],
   description: 'checks user\'s inventory',
   usage: 'inv [@user]',
   admin: false,

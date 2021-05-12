@@ -6,7 +6,7 @@ const config = require('../config.json')
 
 module.exports = {
   name: 'stats',
-  aliases: 'stat',
+  aliases: ['stat'],
   description: 'gets the stats of a target',
   usage: 'stats [@target]',
   admin: false,

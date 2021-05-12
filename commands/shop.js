@@ -4,7 +4,7 @@ const { Shop } = require('../dbObjects')
 
 module.exports = {
   name: 'shop',
-  aliases: 'shop',
+  aliases: ['shop'],
   description: 'displays the items in the shop',
   usage: 'shop',
   admin: false,

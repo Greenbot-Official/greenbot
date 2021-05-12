@@ -4,7 +4,7 @@ const { UserItems } = require('../dbObjects')
 
 module.exports = {
   name: 'combat',
-  aliases: 'combat',
+  aliases: ['combat'],
   description: 'initiates combat with a player',
   usage: 'combat [@target]',
   cooldown: '0',

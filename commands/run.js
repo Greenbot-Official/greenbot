@@ -3,7 +3,7 @@ const app = require('../app')
 
 module.exports = {
   name: 'run',
-  aliases: 'run',
+  aliases: ['run'],
   description: 'attempt to leave combat',
   usage: 'run',
   admin: false,

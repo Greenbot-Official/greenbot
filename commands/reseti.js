@@ -5,7 +5,7 @@ const { UserItems } = require('../dbObjects')
 
 module.exports = {
   name: 'reseti',
-  aliases: 'reseti',
+  aliases: ['reseti'],
   description: 'resets targets inventory',
   usage: 'resetinv {id}',
   admin: true,

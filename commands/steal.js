@@ -3,7 +3,7 @@ const func = require('../resources/functions')
 
 module.exports = {
   name: 'steal',
-  aliases: 'steal',
+  aliases: ['steal'],
   description: 'chance to steal money from target',
   usage: 'steal [@target]',
   cooldown: '500',
@@ -20,13 +20,13 @@ module.exports = {
         user.balance += money
         user.save()
         func.log(`mugged an innocent civilian for ${money}`, message, client)
-        return message.channel.send(`${message.author} mugged an innocent civilian for ${money}💰`)
+        return message.channel.send(`${message.author} stole from an innocent civilian for ${money}💰`)
       } else {
         user.crime_exp -= 1
         user.balance -= (money * 1.5)
         user.save()
         func.log(`tried mugged an innocent civilian and lost ${money * 1.5}`, message, client)
-        return message.channel.send(`${message.author} tried mugged an innocent civilian and lost ${money * 1.5}💰`)
+        return message.channel.send(`${message.author} tried to steal from an innocent civilian and lost ${money * 1.5}💰`)
       }
 
     } else {
@@ -40,8 +40,8 @@ module.exports = {
         u.balance += money
         user.save()
         u.save()
-        func.log(`${message.author} mugged ${target} for ${money}`, message, client)
-        return message.channel.send(`${message.author} mugged ${target} for ${money}💰`)
+        func.log(`${message.author} stole ${target} for ${money}`, message, client)
+        return message.channel.send(`${message.author} stole ${money}💰 from ${target}`)
       } else {
         const money = Math.round(user.balance * .05)
         user.crime_exp += 1
@@ -51,7 +51,7 @@ module.exports = {
         user.save()
         u.save()
         func.log(`${message.author} tried to mug ${target} and lost ${money}`, message, client)
-        return message.channel.send(`${message.author} tried to mug ${target} and lost ${money}💰`)
+        return message.channel.send(`${message.author} tried to steal from ${target} and lost ${money}💰`)
       }
 
     }

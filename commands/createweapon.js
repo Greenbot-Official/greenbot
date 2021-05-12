@@ -3,7 +3,7 @@ const app = require('../app')
 
 module.exports = {
   name: 'createweapon',
-  aliases: 'createweapon',
+  aliases: ['createweapon'],
   description: 'creates a new item',
   usage: 'createweapon {item} {type} {ench} {damage} {attribute} {scale} {heal} {amount}',
   admin: true,

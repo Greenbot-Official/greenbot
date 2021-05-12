@@ -1,8 +1,13 @@
 const config = require('./config');
 const Discord = require('discord.js');
+const Topgg = require("@top-gg/sdk")
+const express = require("express")
+const top_app = express()
 const { Users , Shop , UserEffects } = require('./dbObjects');
 const { Op } = require('sequelize');
 const func = require('./resources/functions')
+const webhook = new Topgg.Webhook(config.topgg_auth)
+
 
 const client = new Discord.Client();
 const currency = new Discord.Collection();
@@ -52,6 +57,7 @@ client.once('ready', async () => {
 		activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` }
 	})
 	console.log(`Logged in as ${client.user.tag}!`);
+	top_app.listen(80)
 });
 
 async function runCommand(commandToRun, message, commandArgs, client) {
@@ -98,9 +104,13 @@ client.on('message', async message => {
 		const curseTime = 60000;
 		const expirationTime = Number(user.curse_time) + curseTime;
 		if (now > expirationTime) {
-			message.channel.send('same')
-			user.curse_time = now
-			user.save()
+			try {
+				await message.delete()
+				user.curse_time = now
+				user.save()
+			} catch (e) {
+				console.log('could not delete message')
+			}
 		}
 	}
 	const cause = func.updateEffects(message, user, userEffects)
@@ -143,14 +153,18 @@ client.on('message', async message => {
 })
 
 client.on("guildCreate", async (guild) => {
-	func.logconsole(`JOINED GUILD ${guild}`, Date.now())
+	func.logconsole(`JOINED GUILD ${guild}`, Date.now(), client)
 	client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 })
 
 client.on("guildDelete", async (guild) => {
-		func.logconsole(`LEFT GUILD ${guild}`, Date.now())
+		func.logconsole(`LEFT GUILD ${guild}`, Date.now(), client)
 		client.user.setPresence({ activity: { type: 'LISTENING', name: `${client.guilds.cache.size} servers. | ::help` } })
 })
+
+top_app.post(config.vote_webhook, webhook.listener(vote => {
+	console.log(vote.user + 'voted!')
+}))
 
 module.exports = { Users , currency , fs , Shop , Discord , client , getCommands , getEvents , getEnchants , getTextures , runCommand , loadcmd };
 client.login(config.token).catch(console.error())

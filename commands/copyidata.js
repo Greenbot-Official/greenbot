@@ -4,7 +4,7 @@ const config = require('../config.json')
 
 module.exports = {
   name: 'copyidata',
-  aliases: 'copyidata',
+  aliases: ['copyidata'],
   description: 'sends the item data of the items in users inv',
   usage: 'copyinvdata {id}',
   admin: true,

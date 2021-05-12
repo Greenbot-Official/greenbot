@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 
 module.exports = {
   name: 'give',
-  aliases: 'give',
+  aliases: ['give'],
   description: 'gives a user one of your items',
   usage: 'give {@target} {item} [amount]',
   admin: false,

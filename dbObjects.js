@@ -37,7 +37,7 @@ Users.prototype.addItem = async function(item, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal, desc: shopItem.desc });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
 };
 
 Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal, amount) {
@@ -48,7 +48,7 @@ Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attr
 		userItem.amount += Number(amount)
 		return userItem.save()
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: amount, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, amount: amount, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal, desc: 'no description provided' });
 };
 
 Users.prototype.getItems = async function() {

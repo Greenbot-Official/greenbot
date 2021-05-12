@@ -7,7 +7,7 @@ const { Adventures } = require('../dbObjects');
 
 module.exports = {
   name: 'adventure',
-  aliases: 'ad',
+  aliases: ['ad'],
   description: 'displays adventure menu',
   usage: 'adventure [args]',
   admin: false,

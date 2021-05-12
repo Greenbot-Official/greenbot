@@ -3,7 +3,7 @@ const app = require('../app')
 
 module.exports = {
   name: 'balance',
-  aliases: 'bal',
+  aliases: ['bal'],
   description: 'gets user\'s balance',
   usage: 'balance [@user]',
   admin: false,

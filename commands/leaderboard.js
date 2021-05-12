@@ -4,7 +4,7 @@ const { Users } = require('../dbObjects')
 
 module.exports = {
   name: 'leaderboard',
-  aliases: 'top',
+  aliases: ['top'],
   description: 'displays options for leaderboard',
   usage: 'leaderboard [args]',
   admin: false,

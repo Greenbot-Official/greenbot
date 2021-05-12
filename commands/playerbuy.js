@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 
 module.exports = {
   name: 'playerbuy',
-  aliases: 'pbuy',
+  aliases: ['pbuy'],
   description: 'buys specified item from the player shop',
 	usage: 'playerbuy {item name/id} [amount]',
 	admin: false,

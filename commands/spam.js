@@ -3,7 +3,7 @@ const app = require('../app')
 
 module.exports = {
   name: 'spam',
-  aliases: 'spam',
+  aliases: ['spam'],
   description: 'says hello',
   usage: 'spam {@user} {text} [number]',
   admin: true,

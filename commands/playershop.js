@@ -5,7 +5,7 @@ const config = require('../config.json');
 
 module.exports = {
   name: 'playershop',
-  aliases: 'pshop',
+  aliases: ['pshop'],
   description: 'opens player shop',
   usage: 'playershop [page]',
   admin: false,

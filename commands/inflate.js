@@ -3,7 +3,7 @@ const app = require('../app')
 
 module.exports = {
   name: 'inflate',
-  aliases: 'cc',
+  aliases: ['cc'],
   description: 'creates money',
   usage: 'inflate {amount}',
   admin: true,

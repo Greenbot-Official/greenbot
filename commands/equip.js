@@ -5,7 +5,7 @@ const { Op } = require('sequelize')
 
 module.exports = {
   name: 'equip',
-  aliases: 'equip',
+  aliases: ['equip'],
   description: 'equips target weapon',
   usage: 'equip {weapon}',
   admin: false,

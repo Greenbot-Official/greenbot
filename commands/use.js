@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 
 module.exports = {
   name: 'use',
-  aliases: 'eat',
+  aliases: ['eat'],
   description: 'eats a consumable to heal you',
   usage: 'use {consumable}',
   admin: false,

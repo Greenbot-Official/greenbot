@@ -4,7 +4,7 @@ const config = require('../config.json')
 
 module.exports = {
   name: 'hello',
-  aliases: 'hi',
+  aliases: ['hi'],
   description: 'says hello',
   usage: 'hello',
   admin: false,

@@ -5,7 +5,7 @@ const config = require('../config.json');
 
 module.exports = {
   name: 'playersell',
-  aliases: 'psell',
+  aliases: ['psell'],
   description: 'sells specified item from the your inventory',
   usage: 'playersell {item name/id} {cost} [amount]',
   admin: false,

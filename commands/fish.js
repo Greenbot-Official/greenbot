@@ -4,7 +4,7 @@ const { UserEffects } = require('../dbObjects');
 
 module.exports = {
   name: 'fish',
-  aliases: 'f',
+  aliases: ['f'],
   description: 'go fishing',
 	usage: 'fish',
 	cooldown: '45',

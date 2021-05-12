@@ -2,7 +2,7 @@ const func = require('../resources/functions')
 
 module.exports = {
   name: 'support',
-  aliases: 'support',
+  aliases: ['support'],
   description: 'gets link to the support server',
   usage: 'support',
   admin: false,

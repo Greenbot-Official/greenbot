@@ -3,7 +3,7 @@ const func = require('../resources/functions')
 
 module.exports = {
   name: 'level',
-  aliases: 'lvl',
+  aliases: ['lvl'],
   description: 'checks target\'s level up status or levels up a stat',
   usage: 'level [@target || stat]',
   admin: false,

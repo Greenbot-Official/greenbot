@@ -34,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		desc: {
 			type: DataTypes.STRING,
-			allowNull: true,
+			defaultValue: 'no description provided',
+			allowNull: false,
 		},
 	}, {
 		timestamps: false,
