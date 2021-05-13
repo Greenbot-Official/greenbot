@@ -24,6 +24,7 @@ module.exports = {
 		user.balance += Number(rand);
 		user.fish_exp += Number(1);
 		user.biggest_catch = Number(newrec)
+		user.exp += Number(1)
 		user.save();
 
 		func.log(`caught a ${rand}in fish`, message, client)

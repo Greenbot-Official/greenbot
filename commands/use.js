@@ -19,6 +19,7 @@ module.exports = {
     }
     const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
     if (item.amount < 0) return message.channel.send(`you do not own any ${item.item_id}s`)
+    if (user.type != 'c') return message.channel.send(`${args[0]} is not a consumable`)
     const heal = item.heal
     if (user.combat) {
       if (!user.turn) return message.channel.send('not your turn in combat')

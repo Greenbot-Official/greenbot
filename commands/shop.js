@@ -14,9 +14,9 @@ module.exports = {
     func.log(`is browsing the shop`, message, client)
 		return message.channel.send(
       'consumables:\n' +
-      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'consumable').map(item => `[${item.id}]${item.name}: ${item.cost}💰 heal:${item.heal}`).join('\n') + '\n\n' +
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'c').map(item => `[${item.id}]${item.name}: ${item.cost}💰 heal:${item.heal}`).join('\n') + '\n\n' +
       'weapons:\n' +
-      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'weapon').map(item => `[${item.id}]${item.name}: ${item.cost}💰 damage:${item.damage} attribute: ${item.attribute}`).join('\n')
+      items.sort((a, b) => a.id - b.id).filter(a => a.type === 'w').map(item => `[${item.id}]${item.name}: ${item.cost}💰 damage:${item.damage} attribute: ${item.attribute}`).join('\n')
       , { code: true }
       );
 

@@ -18,6 +18,7 @@ module.exports = {
       if (suc >= 50) {
         user.crime_exp += 1
         user.balance += money
+        user.exp += Number(2)
         user.save()
         func.log(`mugged an innocent civilian for ${money}`, message, client)
         return message.channel.send(`${message.author} stole from an innocent civilian for ${money}💰`)
@@ -38,6 +39,7 @@ module.exports = {
         user.balance -= money
         u.crime_exp += 1
         u.balance += money
+        u.exp += Number(3)
         user.save()
         u.save()
         func.log(`${message.author} stole ${target} for ${money}`, message, client)
