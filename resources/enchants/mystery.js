@@ -4,7 +4,7 @@ const app = require('../../app')
 module.exports = {
   name: 'mystery',
   async execute(message, userEffects, tUserEffects, user, tUser) {
-    const rand = Math.round(Math.random() * 3)
+    const rand = Math.round(Math.random() * 4)
     switch (rand) {
       case 0:
         userEffects.burn = Number(2)
@@ -26,6 +26,12 @@ module.exports = {
         user.save()
         message.reply('you get luckier')
         break;
+      case 4:
+        user.curse = true
+        user.curse_time = Date.now()
+        user.save()
+        message.reply(`you have been cursed`);
+        break
     }
   },
 }
