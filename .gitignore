@@ -6,3 +6,4 @@ userdatabase.sqlite
 package-lock.json
 node_modules
 .idea/
+users.txt

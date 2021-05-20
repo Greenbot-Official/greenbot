@@ -4,7 +4,6 @@ const Topgg = require("@top-gg/sdk")
 const express = require("express")
 const top_app = express()
 const { Users , Shop , UserEffects } = require('./dbObjects');
-const { Op } = require('sequelize');
 const func = require('./resources/functions')
 const webhook = new Topgg.Webhook(config.topgg_auth)
 
@@ -87,6 +86,7 @@ client.on('message', async message => {
 			user.balance += Number(100)
 			user.save()
 		}
+		fs.writeFileSync('users.txt', `${fs.readFileSync('users.txt', 'utf-8')} \n${message.author.id}`)
 		func.logconsole(`initialized user <${message.author.id}>`, message.createdAt, client)
 	}
 	func.levelup(message, user, client)
@@ -167,5 +167,5 @@ top_app.post(config.vote_webhook, webhook.listener(vote => {
 	console.log(vote.user + 'voted!')
 }))
 
-module.exports = { Users , currency , fs , Shop , Discord , client , getCommands , getEvents , getEnchants , getTextures , runCommand , loadcmd };
+module.exports = { Users , UserEffects , currency , fs , Shop , Discord , client , getCommands , getEvents , getEnchants , getTextures , runCommand , loadcmd };
 client.login(config.token).catch(console.error())
