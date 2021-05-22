@@ -81,8 +81,8 @@ client.on('message', async message => {
 		userEffects = await UserEffects.create({ user_id: message.author.id })
 		currency.set(message.author.id, user);
 		if (config.author.includes(message.author.id)) {
-			user.addUniqueItem('god\_sword', 'w', null, 100, 'str', 1, null, 1)
-			user.addUniqueItem('wacking\_stick', 'w', 'randomness', 0, 'none', 0, null, 1)
+			user.addUniqueItem('god\_sword', 'w', null, 100, 'str', 1, null, null, 1)
+			user.addUniqueItem('wacking\_stick', 'w', 'randomness', 0, 'none', 0, null, null, 1)
 			user.balance += Number(100)
 			user.save()
 		}
@@ -99,6 +99,7 @@ client.on('message', async message => {
 			tuserEffects = await UserEffects.create({ user_id: t.id })
 			currency.set(t.id, tuser);
 			func.logconsole(`initialized user <${t.id}>`, message.createdAt, client)
+			fs.writeFileSync('users.txt', `${fs.readFileSync('users.txt', 'utf-8')} \n${t.id}`)
 		}
 	}
 	if (user.curse) {

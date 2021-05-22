@@ -24,6 +24,7 @@ module.exports = {
 			if (text2.includes(config.coolids[i])) console.log('name change failed')
 		}
 		fs.writeFileSync('archives.txt', readarchives + `\n${time} - <console> ${text2}`)
+		if (!client) return console.log(`<console> ${text2}`);
 		client.channels.cache.get('837801271036608572').send(`<console> ${text2}`)
 		return console.log(`${client.ws.ping}ms ${time} - <console> ${text2}`);
 	},
@@ -41,7 +42,7 @@ module.exports = {
 			user.level += Number(1)
 			user.level_points += Number(1)
 			user.save()
-			this.logconsole(`${user.user_id} leveled up`, message.createdAt, client)
+			this.logconsole(`<${user.user_id}> leveled up`, message.createdAt, client)
 			message.channel.send(`${message.author} leveled up`)
 			this.levelup(message, user, client)
 		} else {

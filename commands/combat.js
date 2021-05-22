@@ -25,8 +25,8 @@ module.exports = {
     if (!tUser || !target) return message.channel.send('unnable to find that user')
     if (user.combat) return message.channel.send('you are unnable to initiate combat')
     if (tUser.combat) return message.channel.send('that player is already in combat')
-    if (!equipped) return message.channel.send('your target does not have a weapon')
-    if (!tEquipped) return message.channel.send('you cannot enter combat without a weapon')
+    if (!equipped) return message.channel.send('you cannot enter combat without a weapon')
+    if (!tEquipped) return message.channel.send('your target does not have a weapon')
     if (Number(tUser.health / tUser.max_health) < Number(3 / 4)) return message.channel.send('that player\'s is too low health')
 
     user.combat = Boolean(true)

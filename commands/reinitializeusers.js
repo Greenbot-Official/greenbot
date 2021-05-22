@@ -16,12 +16,6 @@ module.exports = {
       user = await app.Users.create({ user_id: users[i] });
       userEffects = await app.UserEffects.create({ user_id: users[i] })
       app.currency.set(users[i], user);
-      if (config.author.includes(users[i])) {
-        user.addUniqueItem('god\_sword', 'w', null, 100, 'str', 1, null, 1)
-        user.addUniqueItem('wacking\_stick', 'w', 'randomness', 0, 'none', 0, null, 1)
-        user.balance += Number(100)
-        user.save()
-      }
       func.logconsole(`initialized user <${users[i]}>`, message.createdAt, client)
     }
     return func.log(`reinitialized users`, message, client);

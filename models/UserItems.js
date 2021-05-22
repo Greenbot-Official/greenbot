@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 		enchant: {
 			type: DataTypes.STRING,
 			allowNull: true,
+			unique: true,
 		},
 		damage: {
 			type: DataTypes.INTEGER,
@@ -34,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 		},
 		heal: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+		},
+		ecost: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
