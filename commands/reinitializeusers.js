@@ -11,7 +11,7 @@ module.exports = {
   removal: false,
   async execute(message, args, client) {
     const usersfile = app.fs.readFileSync('users.txt', 'utf-8')
-    let users = usersfile.split(' ')
+    let users = usersfile.split(' \n')
     for (let i = 0; i <= users.length; i++) {
       user = await app.Users.create({ user_id: users[i] });
       userEffects = await app.UserEffects.create({ user_id: users[i] })

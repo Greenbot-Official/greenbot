@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
 		ecost: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
+			defaultValue: 0,
 		},
 	}, {
 		timestamps: false,

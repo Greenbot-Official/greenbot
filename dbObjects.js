@@ -8,19 +8,12 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-const userdata = new Sequelize('database', 'username', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'userdatabase.sqlite',
-});
-
-const Users = require('./models/Users')(userdata, Sequelize.DataTypes);
+const Users = require('./models/Users')(sequelize, Sequelize.DataTypes);
 const Shop = require('./models/Shop')(sequelize, Sequelize.DataTypes);
-const UserItems = require('./models/UserItems')(userdata, Sequelize.DataTypes);
-const UserEffects = require('./models/UserEffects')(userdata, Sequelize.DataTypes)
+const UserItems = require('./models/UserItems')(sequelize, Sequelize.DataTypes);
+const UserEffects = require('./models/UserEffects')(sequelize, Sequelize.DataTypes)
 const Adventures = require('./models/Adventure')(sequelize, Sequelize.DataTypes)
-const PlayerShop = require('./models/PlayerShop')(userdata, Sequelize.DataTypes)
+const PlayerShop = require('./models/PlayerShop')(sequelize, Sequelize.DataTypes)
 const QuestBoard = require('./models/QuestBoard')(sequelize, Sequelize.DataTypes)
 const Enemy = require('./models/Enemy')(sequelize, Sequelize.DataTypes)
 

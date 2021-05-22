@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const { currency } = require('./app');
 const config = require('./config.json')
-const func = require('./resources/functions')
 
 const sequelize = new Sequelize('database', 'username', 'password', {
 	host: 'localhost',
@@ -10,25 +9,17 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-const userdata = new Sequelize('database', 'username', 'password', {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	storage: 'userdatabase.sqlite',
-});
 
-
-const Users = require('./models/Users')(userdata, Sequelize.DataTypes);
+const Users = require('./models/Users')(sequelize, Sequelize.DataTypes);
 const Shop = require('./models/Shop')(sequelize, Sequelize.DataTypes);
-const UserItems = require('./models/UserItems')(userdata, Sequelize.DataTypes);
-const UserEffects = require('./models/UserEffects')(userdata, Sequelize.DataTypes)
+const UserItems = require('./models/UserItems')(sequelize, Sequelize.DataTypes);
+const UserEffects = require('./models/UserEffects')(sequelize, Sequelize.DataTypes)
 const Adventures = require('./models/Adventure')(sequelize, Sequelize.DataTypes)
-const PlayerShop = require('./models/PlayerShop')(userdata, Sequelize.DataTypes)
+const PlayerShop = require('./models/PlayerShop')(sequelize, Sequelize.DataTypes)
 const QuestBoard = require('./models/QuestBoard')(sequelize, Sequelize.DataTypes)
 const Enemy = require('./models/Enemy')(sequelize, Sequelize.DataTypes)
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
-const forceusers = process.argv.includes('--users') || process.argv.includes('-u');
 
 sequelize.sync({ force }).then(async () => {
 	const shop = [
@@ -54,24 +45,6 @@ sequelize.sync({ force }).then(async () => {
 		await Promise.all(shop);
 		console.log('db synced');
 		sequelize.close();
-	} catch (e) {
-		console.log(e)
-	}
-}).catch(console.error);
-userdata.sync({ forceusers }).then(async () => {
-	let users = [
-		Users.upsert({ name: '392469920878821378' })
-	]
-	let usersfile = app.fs.readFileSync('users.txt', 'utf-8')
-	usersfile = usersfile.split(' ')
-	for (let i = 0; i <= usersfile.length; i++) {
-		user = await Users.create({ user_id: usersfile[i] });
-		userEffects = await UserEffects.create({ user_id: usersfile[i] })
-		func.logconsole(`initialized user <${usersfile[i]}>`, null, null)
-	}
-	try {
-		console.log('users synced');
-		userdata.close()
 	} catch (e) {
 		console.log(e)
 	}
