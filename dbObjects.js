@@ -19,9 +19,9 @@ const Enemy = require('./models/Enemy')(sequelize, Sequelize.DataTypes)
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
-Users.prototype.addItem = async function(item, add) {
+Users.prototype.addItem = async function(item, id, add) {
 	const userItem = await UserItems.findOne({
-		where: { user_id: this.user_id, item_id: item },
+		where: { user_id: this.user_id, item_id: item , id: id },
 	});
 	const shopItem = await Shop.findOne({
 		where: { name: item },

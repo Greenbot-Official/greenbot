@@ -27,7 +27,7 @@ module.exports = {
 		if (totalCost > bal) return message.channel.send(`you do not have enough money for that`)
 		
 		user.balance -= Number(totalCost);
-		await user.addItem(item.name, buyAmmount);
+		await user.addItem(item.name, item.id, buyAmmount);
 		user.save();
 		
 		func.log(`bought ${buyAmmount} ${item.name}`, message, client)

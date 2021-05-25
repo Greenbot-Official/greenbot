@@ -36,7 +36,7 @@ module.exports = {
       }
 
       user.health = Number(Math.min(user.max_health, user.health + heal))
-      await user.addItem(item.item_id, -1)
+      await user.addItem(item.item_id, item.id, -1)
     
       func.log(`used a ${item.item_id}`, message, client);
       return message.channel.send(`${message.author.username} healed for ${heal}`);
@@ -45,12 +45,21 @@ module.exports = {
       if (!equipped) return message.channel.send('must have a weapon equipped to enchant')
       if (user.level_points < item.ecost) return message.channel.send('you dont have enough level points')
       equipped.amount -= Number(1)
+      equipped.equipped = Boolean(false)
       equipped.save()
-      await UserItems.upsert({})
+
+      const is_item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: `${equipped.item_id} of ${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale, amount: 1, equipped: true } })
+      if (!is_item) await UserItems.create({ user_id: message.author.id, item_id: `${equipped.item_id} of ${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale })
+      else await user.addItem(is_item.item_id, is_item.id, 1)
+
+      await user.addItem(item.item_id, item.id, -1)
       user.level_points -= Number(item.ecost)
-      await user.addItem(item.item_id, -1)
       user.save()
-      func.log(`enchanted ${equipped.item_id} with ${item.ench}`, message, client);
+      
+      is_item.equipped = Boolean(true)
+      is_item.save()
+
+      func.log(`enchanted ${equipped.item_id} with ${item.enchant}`, message, client);
       return message.channel.send(`${message.author.username} healed for ${heal}`);
     }
     return message.channel.send(`${args[0]} is not a consumable`)
