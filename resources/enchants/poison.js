@@ -6,6 +6,6 @@ module.exports = {
   async execute(message, userEffects, tUserEffects, user, tUser) {
     tUserEffects.poison = Number(6)
     tUserEffects.save()
-    return message.reply('your target has been poisoned')
+    return message.channel.send(`<@${tUser.user_id}>, you have been poisoned`)
   },
 }

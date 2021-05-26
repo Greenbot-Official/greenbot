@@ -29,28 +29,28 @@ module.exports = {
       case 4:
         tUserEffects.burn = Number(2)
         tUserEffects.save()
-        message.reply('your target has been set on fire')
+        message.channel.send(`<@${tUser.user_id}>, you have been set on fire`)
         break
       case 5:
         tUserEffects.poison = Number(5)
         tUserEffects.save()
-        message.reply('your target has been poisoned')
+        message.channel.send(`<@${tUser.user_id}>, you have been poisoned`)
         break
       case 6:
         tUser.fish_exp += Math.round(tUser.fish_exp / 15)
         tUser.save()
-        message.reply('your target gets better at fishing')
+        message.channel.send(`<@${tUser.user_id}>, you got better at fishing`)
         break
       case 7:
         tUser.luck += Number(2)
         tUser.save()
-        message.reply('your target gets luckier')
+        message.channel.send(`<@${tUser.user_id}>, you got luckier`)
         break
       case 8:
         tUser.curse = true
         tUser.curse_time = Date.now()
         tUser.save()
-        message.reply(`your target has been cursed`);
+        message.channel.send(`<@${tUser.user_id}>, you have been cursed`)
         break
     }
   },

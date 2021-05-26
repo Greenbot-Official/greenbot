@@ -1,6 +1,6 @@
 const app = require('../app')
 const func = require('../resources/functions')
-const { UserItems, UserEffects } = require('../dbObjects')
+const { UserItems, UserEffects, Shop } = require('../dbObjects')
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -12,9 +12,9 @@ module.exports = {
   removal: false,
   async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
-    let item = await UserItems.findOne({ where: { item_id: { [Op.like]: args[0] } } });
+    let item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: args[0] } } });
     if (!item) {
-      item = await UserItems.findOne({ where: { id: { [Op.like]: args[0] } } });
+      item = await UserItems.findOne({ where: { user_id: message.author.id, shop_id: args[0] } });
       if (!item) return message.channel.send(`unnable to find item ${args[0]}`)
     }
     const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
@@ -48,8 +48,8 @@ module.exports = {
       equipped.equipped = Boolean(false)
       equipped.save()
 
-      const is_item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: `${equipped.item_id} of ${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale, amount: 1, equipped: true } })
-      if (!is_item) await UserItems.create({ user_id: message.author.id, item_id: `${equipped.item_id} of ${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale })
+      const is_item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: `${equipped.item_id}\_of\_${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale, amount: 1, equipped: true } })
+      if (!is_item) await UserItems.create({ user_id: message.author.id, item_id: `${equipped.item_id}\_of\_${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale })
       else await user.addItem(is_item.item_id, is_item.id, 1)
 
       await user.addItem(item.item_id, item.id, -1)

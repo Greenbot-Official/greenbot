@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		cost: {
 			type: DataTypes.INTEGER,
+			defaultValue: 0,
 			allowNull: false,
 		},
 		type: {
@@ -15,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
 		enchant: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
-			unique: true,
 		},
 		damage: {
 			type: DataTypes.INTEGER,
@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
 		desc: {
 			type: DataTypes.STRING,
 			defaultValue: 'no description provided',
+			allowNull: false,
+		},
+		buyable: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: true,
 			allowNull: false,
 		},
 	}, {

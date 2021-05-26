@@ -9,7 +9,7 @@ module.exports = {
   description: 'attacks player you are currently in combat with',
   usage: 'attack',
   admin: false,
-  removal: true,
+  removal: false,
   async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')
@@ -52,8 +52,8 @@ module.exports = {
       tUser.save()
       func.clearStatus(tUserEffects)
       func.log(`killed ${user.combat_target_id}`, message, client)
-      message.channel.send(`${message.author.username} killed ${user.combat_target}`)
+      return message.channel.send(`${message.author.username} killed ${user.combat_target}`)
     }
-    return
+    return message.channel.send(`<@${user.combat_target_id}>, it is your turn`)
   }
 }

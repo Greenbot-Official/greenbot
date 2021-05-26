@@ -22,11 +22,12 @@ module.exports = {
       return message.channel.send(`${message.author.username} dequipped ${weapon.item_id}`);
     }
     const user = app.currency.get(message.author.id)
-    let weapon = await UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: name }, amount: { [Op.gt]: 0} }})
+    let weapon = await UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: name }}})
     if (!weapon) {
-      weapon = await UserItems.findOne({ where: { user_id: message.author.id, id: { [Op.like]: name }, amount: { [Op.gt]: 0} }})
+      weapon = await UserItems.findOne({ where: { user_id: message.author.id, shop_id: name }})
       if (!weapon) return message.channel.send('could not find that item')
     }
+    if (weapon.amount <= 0) return message.channel.send('you do not have any of that item')
     if (weapon.type != 'w') return message.channel.send(`${name} is not a weapon`)
     await user.equip(weapon.item_id)
     func.log(`equipped ${weapon.item_id}`, message, client);

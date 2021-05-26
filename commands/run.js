@@ -7,7 +7,7 @@ module.exports = {
   description: 'attempt to leave combat',
   usage: 'run',
   admin: false,
-  removal: true,
+  removal: false,
   execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')
@@ -20,8 +20,10 @@ module.exports = {
     user.save()
     tUser.save()
 
-    if (rand < 3) return message.channel.send('you failed to run away')
-
+    if (rand < 3) {
+      message.channel.send('you failed to run away')
+      return message.channel.send(`<@${user.combat_target_id}>, it is your turn`)
+    }
     user.combat = Boolean(false)
     user.combat_exp -= Number(1)
     tUser.combat = Boolean(false)

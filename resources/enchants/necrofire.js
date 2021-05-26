@@ -6,6 +6,6 @@ module.exports = {
   async execute(message, userEffects, tUserEffects, user, tUser) {
     tUserEffects.necrofire = Boolean(true)
     tUserEffects.save()
-    return message.reply('your target was set on fire')
+    return message.channel.send(`<@${tUser.user_id}>, you have been set on fire`)
   },
 }

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize')
+const config = require('./config.json')
 
 const sequelize = new Sequelize('database', 'username', 'password', {
 	host: 'localhost',
@@ -19,6 +20,7 @@ const Enemy = require('./models/Enemy')(sequelize, Sequelize.DataTypes)
 
 UserItems.belongsTo(Shop, { foreignKey: 'item_id', as: 'item' });
 
+
 Users.prototype.addItem = async function(item, id, add) {
 	const userItem = await UserItems.findOne({
 		where: { user_id: this.user_id, item_id: item , id: id },
@@ -30,18 +32,34 @@ Users.prototype.addItem = async function(item, id, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
+	return UserItems.create({ user_id: this.user_id, item_id: item, shop_id: shopItem.id, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal, ecost: shopItem.ecost });
 };
 
 Users.prototype.addUniqueItem = async function(item, type, enchant, damage, attribute, scale, heal, ecost, amount) {
 	const userItem = await UserItems.findOne({
-		where: { user_id: this.user_id, item_id: item, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal, ecost: ecost },
+		where: {
+			user_id: this.user_id,
+			item_id: item,
+			type: type,
+			enchant: enchant,
+			damage: damage,
+			attribute: attribute,
+			scale: scale,
+			heal: heal,
+			ecost: ecost
+		},
 	});
 	if (userItem) {
 		userItem.amount += Number(amount)
 		return userItem.save()
 	}
-	return UserItems.create({ user_id: this.user_id, item_id: item, amount: amount, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal, ecost: ecost, desc: 'no description provided' });
+	await Shop.create({ name: item, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, ecost: ecost, buyable: false })
+	const shopItem = await Shop.findOne({
+		where: {
+			name: item,
+			enchant: enchant
+	}})
+	return UserItems.create({ user_id: this.user_id, item_id: item, shop_id: shopItem.id, amount: amount, type: type, enchant: enchant, damage: damage, attribute: attribute, scale: scale, heal: heal, ecost: ecost });
 };
 
 Users.prototype.getItems = async function() {
@@ -80,7 +98,7 @@ Users.prototype.PshopBuyItem = async function(item, add) {
 		userItem.amount += Number(add);
 		return userItem.save();
 	}
-	return await UserItems.upsert({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal, desc: shopItem.desc });
+	return await UserItems.upsert({ user_id: this.user_id, item_id: item, amount: add, type: shopItem.type, enchant: shopItem.enchant, damage: shopItem.damage, attribute: shopItem.attribute, scale: shopItem.scale, heal: shopItem.heal });
 };
 
 Users.prototype.PshopSellItem = async function(item, cost, count, id) {
@@ -90,7 +108,17 @@ Users.prototype.PshopSellItem = async function(item, cost, count, id) {
 	userItem.amount -= Number(count)
 	userItem.save()
 	const shopItem = await PlayerShop.findOne({
-		where: { name: item, seller_id: id, cost: cost, type: userItem.type, enchant: userItem.enchant, damage: userItem.damage, attribute: userItem.attribute, scale: userItem.scale, heal: userItem.heal } 
+		where: {
+			name: item,
+			seller_id: id,
+			cost: cost,
+			type: userItem.type,
+			enchant: userItem.enchant,
+			damage: userItem.damage,
+			attribute: userItem.attribute,
+			scale: userItem.scale,
+			heal: userItem.heal
+		}
 	})
 	if (shopItem) {
 		shopItem.amount += Number(count)
