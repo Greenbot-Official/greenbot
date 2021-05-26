@@ -20,6 +20,7 @@ module.exports = {
 			item = await Shop.findOne({ where: { id: buyName }});
 			if (!item) return message.channel.send(`could not find item: ${buyName}`)
 		}
+		if (!item.buyable) return message.channel.send('cannot buy that item')
 		if (buyAmmount == 'max' || buyAmmount == 'all') buyAmmount = Math.floor(user.balance / item.cost)
 		if (isNaN(buyAmmount)) return message.channel.send('please enter an amount to buy')
 		const totalCost = item.cost * Number(buyAmmount)

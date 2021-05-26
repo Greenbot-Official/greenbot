@@ -21,7 +21,7 @@ module.exports = {
     }
 
     func.log(`is veiwing item ${item.name}`, message, client)
-    return message.channel.send(`[${item.id}]${item.name}: ${item.desc}`);
+    return message.channel.send(`[${item.shop_id}]${item.name}: ${item.desc}`);
 
   }
 

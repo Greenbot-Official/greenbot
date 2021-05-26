@@ -48,8 +48,8 @@ module.exports = {
       equipped.equipped = Boolean(false)
       equipped.save()
 
-      const is_item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: `${equipped.item_id}\_of\_${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale, amount: 1, equipped: true } })
-      if (!is_item) await UserItems.create({ user_id: message.author.id, item_id: `${equipped.item_id}\_of\_${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale })
+      const is_item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: `${equipped.item_id}\_of\_${item.enchant}`, type: equipped.type, enchant: item.enchant, damage: equipped.damage, attribute: equipped.attribute, scale: equipped.scale, equipped: true } })
+      if (!is_item) await user.addUniqueItem(`${equipped.item_id}\_of\_${item.enchant}`, equipped.type, item.enchant, equipped.damage, equipped.attribute, equipped.scale, null, null, 1)
       else await user.addItem(is_item.item_id, is_item.id, 1)
 
       await user.addItem(item.item_id, item.id, -1)

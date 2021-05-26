@@ -18,11 +18,11 @@ module.exports = {
     if (!tUser) return message.channel.send('could not find user')
     let item = await UserItems.findOne({ where: { user_id: message.author.id, item_id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
     if (!item) {
-      item = await UserItems.findOne({ where: { user_id: message.author.id, id: { [Op.like]: args[1] }, amount: { [Op.gte]: amount } } })
+      item = await UserItems.findOne({ where: { user_id: message.author.id, shop_id: args[1], amount: { [Op.gte]: amount } } })
       if (!item) return message.channel.send(`invalid item ${args[1]}`)
     }
     if (isNaN(amount)) return message.channel.send('please enter a number to give')
-    await tUser.addUniqueItem(item.item_id, item.type, item.enchant, item.damage, item.attribute, item.scale, item.heal, amount)
+    await tUser.addUniqueItem(item.item_id, item.type, item.enchant, item.damage, item.attribute, item.scale, item.heal, item.ecost, amount)
     item.amount -= Number(amount)
     item.save()
     func.log(`gave ${target.id} ${amount} ${item.item_id}`, message, client)
