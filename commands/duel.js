@@ -3,10 +3,10 @@ const app = require('../app')
 const { UserItems } = require('../dbObjects')
 
 module.exports = {
-  name: 'combat',
-  aliases: ['combat'],
+  name: 'duel',
+  aliases: ['duel', 'combat'],
   description: 'initiates combat with a player',
-  usage: 'combat [@target]',
+  usage: 'duel [@target]',
   cooldown: '0',
   admin: false,
   removal: false,
@@ -45,7 +45,7 @@ module.exports = {
 
     func.log(`initiated combat with <@${target.id}>`, message, client);
     message.channel.send(`${message.author.username} initiated combat with ${target.username}`);
-    return message.channel.send(`<@${user.user_id}>, it is your turn`)
+    return message.channel.send(`<@${tUser.user_id}>, it is your turn`)
 
   }
 }

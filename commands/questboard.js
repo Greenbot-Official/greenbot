@@ -14,14 +14,14 @@ module.exports = {
     if (!args[0]) {
       func.log(`is browsing the quest board`, message, client)
       return message.channel.send(
-        quests.sort((a, b) => a.diff - b.diff).map(q => `[${q.id}]${q.name}: ${q.desc} ${q.reward}💰`).join('\n\n')
+        quests.sort((a, b) => a.diff - b.diff).map(q => `[${q.id}]${q.name}: ${q.desc} | ${q.reward}💰`).join('\n\n')
         , { code: true }
       );
     } else {
       let qname = args[0]
       if (!qname) return message.channel.send('please enter a quest to take')
       const user = app.currency.get(message.author.id);
-      // if (user.combat) return message.channel.send('you cannot do that while in combat')
+      if (user.combat) return message.channel.send('you cannot do that while in combat')
       let q = await QuestBoard.findOne({ where: { name: qname } });
       if (!q) {
         q = await QuestBoard.findOne({ where: { id: qname } });
@@ -29,6 +29,9 @@ module.exports = {
       }
 
       user.combat = Boolean(true)
+      user.turn = Boolean(true)
+      user.combat_target = q.enemy
+      user.combat_target_id = '0'
       await user.addQuest(q.name);
       user.save();
 

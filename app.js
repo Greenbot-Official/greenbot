@@ -70,8 +70,8 @@ async function runCommand(commandToRun, message, commandArgs, client) {
 
 client.on('message', async message => {
 	if (message.author.bot) return
-	if (message.guild.name == 'Discord Bot List') return;
 	if (message.channel.type === 'dm') return;
+	if (message.guild.name == 'Discord Bot List') return;
 	const now = Date.now();
 	let prefix = config.globalPrefix;
 	let user = currency.get(message.author.id)

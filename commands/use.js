@@ -1,6 +1,6 @@
 const app = require('../app')
 const func = require('../resources/functions')
-const { UserItems, UserEffects, Shop } = require('../dbObjects')
+const { UserItems, UserEffects, Shop, Enemy } = require('../dbObjects')
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -21,6 +21,25 @@ module.exports = {
     if (item.amount < 0) return message.channel.send(`you do not own any ${item.item_id}s`)
     if (user.combat) {
       if (!user.turn) return message.channel.send('not your turn in combat')
+
+      if (user.combat_target_id == '0') {
+        const enemy = Enemy.findOne({ where: { user_id: message.author.id } })
+        const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
+        let erand = Math.round(((Math.random() - 0.5) * 2) + (enemy.damage))
+        let ecrit = Boolean((Math.round(Math.random() * 100) + 5) > 99)
+        if (ecrit) erand * 2
+        user.health -= Number(erand)
+        user.save()
+        if (!ecrit) { message.channel.send(`${message.author.username} was hit by ${enemy.name} for ${erand}`); }
+        else { message.channel.send(`${message.author.username} was CRIT by ${enemy.name} for ${erand}`) }
+        if (user.health < 1) {
+          user.combat = Boolean(false)
+          user.save()
+          func.die(message, `was killed by the ${enemy.name}`, user, userEffects, client)
+          return await Enemy.destroy({ where: { user_id: message.author.id } })
+        }
+      }
+
       const tUser = app.currency.get(user.combat_target_id)
       user.turn = Boolean(false)
       tUser.turn = Boolean(true)

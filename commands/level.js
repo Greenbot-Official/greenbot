@@ -25,25 +25,27 @@ module.exports = {
       user.level_points -= Number(amount)
       user.save()
       let stat;
-      if (args[0] == 'health') {
-        stat = 'health'
-        user.max_health += Number(amount)
-        user.health = user.max_health
-  
-      } else if (args[0] == 'luck') {
-        stat = 'luck'
-        user.luck += Number(amount)
-  
-      } else if (args[0] == 'strength' || args[0] == 'str') {
-        stat = 'strength'
-        user.strength += Number(amount)
-  
-      } else if (args[0] == 'dexterity' || args[0] == 'dex') {
-        stat = 'dexterity'
-        user.dexterity += Number(amount)
-  
-      } else {
-        return message.channel.send(`unknown stat ${args}`)
+      switch (args[0]) {
+        case 'health':
+          stat = 'health'
+          user.max_health += Number(amount)
+          user.health = user.max_health
+          break
+        case 'luck':
+          stat = 'luck'
+          user.luck += Number(amount)
+          break
+        case 'strength' || 'str':
+          stat = 'strength'
+          user.strength += Number(amount)
+          break
+        case 'dexterity' || 'dex':
+          stat = 'dexterity'
+          user.dexterity += Number(amount)
+          break
+        default:
+          message.channel.send(`unknown stat ${args}`)
+          break
       }
       user.save()
       func.log(`leveled up their ${stat}`, message, client)

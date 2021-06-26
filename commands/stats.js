@@ -1,7 +1,7 @@
 const app = require('../app')
 const func = require('../resources/functions')
 const { currency } = require('../app')
-const { UserItems, UserEffects } = require('../dbObjects')
+const { UserItems, UserEffects, Enemy } = require('../dbObjects')
 const config = require('../config.json')
 
 module.exports = {
@@ -23,6 +23,7 @@ module.exports = {
     if (userEffects.poison > 0) effects += `\npoison: ${userEffects.poison}`
     if (user.curse) effects += `\nCURSED`
     if (!weapon) { wep = 'none' } else { wep = weapon.item_id }
+    const enemy = await Enemy.findOne({ where: { user_id: message.author.id } })
     func.log(`is checking the stats of ${target}`, message, client)
     return message.channel.send(`${target.username}'s stats: \n` +
       `level: ${user.level}  ${user.exp}/${func.calclvl(user.level)}\n` +
@@ -34,7 +35,10 @@ module.exports = {
       `fish exp: ${user.fish_exp}\n` +
       `biggest fish: ${user.biggest_catch}\n` +
       `weapon: ${wep}\n` +
-      `status:${effects}`
+      `status:${effects}` +
+      `${enemy ? `\n\nEnemy:\n` +
+      `name: ${enemy.name}\n` +
+      `health: ${enemy.health}/${enemy.max_health}` : ''}`
       , { code: true })
 
   }

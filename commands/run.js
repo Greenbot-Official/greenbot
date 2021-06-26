@@ -1,5 +1,6 @@
 const func = require('../resources/functions')
 const app = require('../app')
+const { Enemy, UserEffects } = require('../dbObjects')
 
 module.exports = {
   name: 'run',
@@ -8,13 +9,31 @@ module.exports = {
   usage: 'run',
   admin: false,
   removal: false,
-  execute(message, args, client) {
+  async execute(message, args, client) {
     const user = app.currency.get(message.author.id)
     if (!user.combat) return message.channel.send('you are not in combat')
     if (!user.turn) return message.channel.send('not your turn')
-    const tUser = app.currency.get(user.combat_target_id)
-    let rand = Math.round(Math.random() * 4)
+    let rand = Math.random() * 4
 
+    if (user.combat_target_id == '0') {
+      const enemy = await Enemy.findOne({ where: { user_id: message.author.id } })
+      const userEffects = await UserEffects.findOne({ where: { user_id: message.author.id } })
+      let erand = Math.round(((Math.random() - 0.5) * 2) + (enemy.damage))
+      let ecrit = Boolean((Math.round(Math.random() * 100) + 5) > 99)
+      if (ecrit) erand * 2
+      user.health -= Number(erand)
+      user.save()
+      if (!ecrit) { message.channel.send(`${message.author.username} was hit by ${enemy.name} for ${erand}`); }
+      else { message.channel.send(`${message.author.username} was CRIT by ${enemy.name} for ${erand}`) }
+      if (user.health < 1) {
+        user.combat = Boolean(false)
+        user.save()
+        func.die(message, `was killed by the ${enemy.name}`, user, userEffects, client)
+        return await Enemy.destroy({ where: { user_id: message.author.id } })
+      }
+    }
+
+    const tUser = app.currency.get(user.combat_target_id)
     user.turn = Boolean(false)
     tUser.turn = Boolean(true)
     user.save()
